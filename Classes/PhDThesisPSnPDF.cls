@@ -9,7 +9,7 @@
 %% License: MIT License (c) 2016 Krishna Kumar                                %%
 %% GitHub Repo: https://github.com/kks32/phd-thesis-template/                 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% \renewcommand{\chaptername}{Capítulo}
 % ************************** Class Identification ******************************
 \newcommand\fileversion{2.3.1}
 \newcommand\filedate{2016/04/23}
@@ -127,6 +127,10 @@
   \fi
 }
 
+
+
+
+
 % ************************* Header / Footer Styling ****************************
 \newif\ifPHD@textJustify\PHD@textJustifytrue % Set Justification true
 \DeclareOption{flushleft}{\PHD@textJustifyfalse}
@@ -183,6 +187,9 @@ footnotes.}
 
 % Page Size
 \newcommand\PHD@papersize{a4paper} % Set Default as a4paper
+
+
+
 
 \DeclareOption{a4paper}{\renewcommand\PHD@papersize{a4paper}}
 \DeclareOption{a5paper}{\renewcommand\PHD@papersize{a5paper}}
@@ -258,15 +265,15 @@ supported!}
 % Add appendices
 \RequirePackage[title,titletoc]{appendix}
 
-\renewcommand{\contentsname}{Table of contents}
-\renewcommand{\listfigurename}{List of figures}
-\renewcommand{\listtablename}{List of tables}
+\renewcommand{\contentsname}{Tabla de contenido}
+\renewcommand{\listfigurename}{Lista de figuras}
+\renewcommand{\listtablename}{Lista de tablas}
 
 % Hides Contents appearing from TOC, but adds it to bookmarks
 \let\temptableofcontents\tableofcontents
 \renewcommand{\tableofcontents}{
   \cleardoublepage
-  \pdfbookmark[0]{\contentsname}{Contents}
+  \pdfbookmark[0]{\contentsname}{Contenido}
   \temptableofcontents
 }
 
@@ -702,7 +709,7 @@ supported!}
 % type” means exactly (in terms of millimetres baseline distance). The following
 % LaTeX setting has routinely been considered perfectly acceptable:
 
-\renewcommand\baselinestretch{1.2}
+\renewcommand\baselinestretch{1.5}
 
 % ******************************** Justification *******************************
 % Left aligned as per University identity guidelines
@@ -866,7 +873,7 @@ wish to left align your text}
 \newcommand{\advisor}[1]{\renewcommand{\@advisor}{#1}\PHD@advisortrue}
 
 % Advisor Title (Advisor - Default, can be changed)
-\newcommand{\@advisorrole}{Advisor: }
+\newcommand{\@advisorrole}{Asesores: }
 \newcommand{\advisorrole}[1]{\renewcommand{\@advisorrole}{#1}}
 
 % Advisor width to align
@@ -1161,7 +1168,7 @@ wish to left align your text}
 \newsavebox{\PHD@author}
 \begin{lrbox}{\PHD@author}
   \begin{minipage}[c]{\textwidth}
-    \centering \Large \bfseries{\@author}
+    \centering \large \@author
       \vspace{0.5em}   
   \end{minipage}
 \end{lrbox}
@@ -1185,6 +1192,9 @@ wish to left align your text}
 \end{lrbox}
 
 % Advisor Box
+
+
+
 \newsavebox{\PHD@advisor}
 \begin{lrbox}{\PHD@advisor}
   \begin{minipage}[c]{\textwidth}
@@ -1192,10 +1202,7 @@ wish to left align your text}
       % advisor is not defined
     }{
       \begin{center}
-        \makebox[\widthof{advisorrole} + \@advisorlinewidth][c]{
-          \Large
           \@advisorrole \parbox[t]{\@advisorlinewidth}{\@advisor}
-        }
       \end{center}
       \vspace{0.5em}
     } % advisor is defined

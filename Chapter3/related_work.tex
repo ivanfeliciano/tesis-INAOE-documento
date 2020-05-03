@@ -1,0 +1,150 @@
+\chapter{Trabajo relacionado}
+
+% **************************** Define Graphics Path **************************
+\graphicspath{{Chapter3/Figs/}}
+
+
+El aprendizaje por refuerzo y la inferencia
+causal han evolucionado de manera 
+independiente y prácticamente sin 
+ninguna interacción, a pesar de que ambos
+pueden estar relacionados en algunos
+procesos de solución de problemas.
+Por lo tanto, trabajos recientes
+se han enfocado en conectar estos dos
+campos  \cite{Gershman2017, 6-DBLP:journals/midm/YuDLR19}, \cite{6-DBLP:journals/midm/YuDLR19}, \cite{lu2018deconfounding}, \cite{dasgupta2019causal}. La meta de estos trabajos es mostrar que el RL puede ser más robusto y general a través de mecanismos
+causales y viceversa.
+Esos trabajos están buscando unir ambos
+campos en un nuevo enfoque conocido como
+\textit{aprendizaje por refuerzo causal}, un paradigma que combina
+ambas perspectivas para resolver problemas que no pueden
+resolverse de manera individual en cada disciplina \cite{CausalRL2019EliasB}, \cite{chaochao_2019}.
+No obstante, hasta donde sabe el autor, 
+este nuevo enfoque propuesto no ha sido 
+sido formulado de tal forma que sustente de manera formal su conexión.
+% ni el problema de aprendizaje por 
+% refuerzo ni el del enfoque de causalidad en este trabajo, han 
+
+
+En las siguientes dos secciones se presentan las dos direcciones 
+en las que se encuentran trabajando actualmente, la primera con
+un enfoque de usar razonamiento causal en aprendizaje por refuerzo
+y la segunda que busca descubrir relaciones causales utilizando
+aprendizaje por refuerzo.
+La última sección menciona algunos trabajos que buscan guiar la
+selección de acciones en un agente de RL.
+
+\section{Razonamiento causal en aprendizaje por refuerzo}
+
+
+Los autores en \cite{Gershman2017}, desde un enfoque psicológico, establecen que
+el modelo usado en los algoritmos de aprendizaje por refuerzo basados en modelo
+es causal.
+Ellos establecen algunas relaciones causales fundamentales en el aprendizaje por
+refuerzo. Tomar una acción en un estado causa una recompensa y una 
+transición a un nuevo estado.
+Sin embargo, no se aborda o explica el mecanismo intervencionista de la inferencia causal.
+
+\begin{table}[h]
+\centering
+\caption{Relaciones causales en RL según \cite{Gershman2017}.}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Causas         & Efecto     \\ \midrule
+estado, acción & estado     \\
+estado, acción & recompensa \\ \bottomrule
+\end{tabular}
+\end{table}
+
+% consider the problem of learning goodpolicies solely from historical data in which unobserved factors (confounders) affect bothobserved actions and rewards.
+También se han atacado problemas clásicos de RL 
+en configuraciones observacionales donde existen factores de confusión. Los autores en \cite{bareinboim2015bandits} \cite{lu2018deconfounding}
+han abordado el manejo de estos factores de confusión (aquellas variables que afectan a la acción y la salida).
+
+La idea de utilizar conocimiento de modelos
+causales para evitar o reducir el aprendizaje a 
+prueba y error en RL es un área con escasa 
+exploración pero prometedora.
+Los autores en \cite{lattimore2016causal},
+explotan información causal en el problema
+del bandido y muestran de qué manera, a través
+de intervenciones, se puede mejorar la
+tasa en la que se identifican las acciones
+con una recompensa más alta. A pesar de atacar un problema más pequeño
+que el que se plantea en un MDP, su propuesta motiva a utilizar 
+conocimiento causal para tomar decisiones.
+
+
+En \cite{nair2019causal}, se propone
+aprender un grafo causal y
+entrenar una política con ayuda del grafo para generalizar sobre 
+configuraciones diferentes de una misma
+tarea.
+Sin embargo, debido a que el enfoque es sobre la generalización, en el algunos casos
+se hace una búsqueda sobre todas las acciones para ver sus efectos.
+
+
+En general, a diferencia de los trabajos anteriores,
+en esta investigación se busca reducir el espacio de exploración
+de acciones. 
+Por medio del uso de un modelo causal, la selección de acciones es guiada, limitando así la posibilidad de cometer errores de manera recurrente.
+
+\section{Descubrimiento causal usando aprendizaje por refuerzo}
+
+Por otra parte, se ha mostrado que el razonamiento causal puede surgir a partir del aprendizaje por refuerzo \cite{dasgupta2019causal}, \cite{madumal2019explainable} \cite{bengio2019metatransfer}.
+
+
+En \cite{dasgupta2019causal} la idea general es mostrar que el razonamiento
+causal puede surgir de RL. 
+Se propone entrenar un agente que haga razonamiento causal a través del uso de  meta aprendizaje por refuerzo. Se entrena una red recurrente (RNN) con RL para resolver una serie de problemas que contienen estructuras causales.
+Se encontró que el agente puede realizar razonamiento causal en situaciones
+no vistas de manera que se obtengan recompensas. El agente
+puede seleccionar intervenciones informativas, hacer inferencia causal a partir
+de datos observacionales y hacer predicciones contrafactuales.
+
+% En \cite{bengio2019metatransfer} se propone un aprender estructuras 
+% causales basándose en qué tan rápido se adapta un agente a nuevas
+% distribuciones. Esto, bajo la suposición de que cuando el conocimiento de una distribución está representado apropiadamente, entonces los cambios son menores.
+
+
+La propuesta de los autores en \cite{nair2019causal} consiste en
+aprender mediante aprendizaje supervisado de trayectorias 
+de observación observadas un modelo de inducción causal, que de acuerdo con ellos es un modelo que a partir
+de observaciones como entrada construye un modelo causal.
+% ausal reasoning has been an indispensable capability for humans and other in-telligent animals to interact with the physical world. In this work, we propose toendow an artificial agent with the capability of causal reasoning for completinggoal-directed tasks.  We develop learning-based approaches to inducing causalknowledge in the form of directed acyclic graphs, which can be used to contex-tualize a learned goal-conditional policy to perform tasks in novel environmentswith latent causal structures.  We leverage attention mechanisms in our causalinduction model and goal-conditional policy, enabling us to incrementally generatethe causal graph from the agent’s visual observations and to selectively use theinduced graph for determining actions.  Our experiments show that our methodeffectively generalizes towards completing new tasks in novel environments withpreviously unseen causal structures
+
+
+\section{Exploración guiada en aprendizaje por refuerzo}
+
+Un problema fundamental en los algoritmos de aprendizaje por refuerzo
+es el balance entre la exploración del ambiente y la explotación
+de la información con la que cuenta el agente y existen diversas técnicas para lidiar con este compromiso.
+Las estrategias de explotación y exploración no 
+son dirigidas y no buscan explícitamente transiciones
+interesantes \cite{mcfarlane2018survey}.
+Usar modelos predictivos parece una manera 
+prometedora para lidiar con este problema \cite{hafner2019dream}.
+ 
+Una técnica reciente para una exploración 
+guiada sin apoyo de un modelo causal ha sido
+propuesta por \cite{mazumder2019guided}.
+Los autores proponen un nuevo método
+para acelerar el entrenamiento de algoritmos de RL con el uso de una propiedad presente
+en algunos problemas, la cual denominan \textit{permisibilidad estado-acción}.
+La idea principal es tener un clasificador
+que guíe el paso de la selección de acciones. Éste clasifica si se llega
+a una solución óptima dada la acción y el
+estado actual. Sin embargo, el enfoque sigue siendo
+asociativo.
+
+Los autores en \cite{saunders2017trial} proponen un esquema 
+para exploración segura a través de la intervención de un humano. El humano controla la interfaz entre el agente y el ambiente, vigila
+al agente y bloquea cualquier acción que pueda ser catastrófica. Este enfoque
+está limitado a donde un humano pueda intervenir durante la interacción 
+del agente con su ambiente.
+
+% Hablar de los world model
+% he program to move statistical learning towards causal learning has links to reinforcementlearning (RL), a sub-field of machine learning. RL used to be (and still often is) considered a field that has trouble withreal-world high-dimensional data, one reason being that feedback in the form of a reinforcement signal is relativelysparse when compared to label information in supervised learning. The DeepQ agent (Mnih et al., 2015) yielded resultsthat the community would not have considered possible at the time, yet it still has major weaknesses when compared toanimate intelligence. Two major issues can be stated in terms of questions (Schölkopf, 2015, 2017):Question 1: why is RL on the original high-dimensional ATARI games harder than on downsampled versions?Forhumans, reducing the resolution of a game screen would make the problem harder, yet this is exactly what was done tomake the DeepQ system work. Animals likely have methods to identify objects (in computer game lingo, “sprites”) bygrouping pixels according to “common fate” (known from Gestalt psychology) or common response to intervention.This question thus is related to the question of what constitutes an object, which concerns not only perception butalso concerns how we interact with the world. We can pick up one object, but not half an object. Objects thus alsocorrespond to modular structures that can be separately intervened upon or manipulated.  The idea that objects aredefined by their behavior under transformation is a profound one not only in psychology, but also in mathematics, cf.Klein (1872); MacLane (1971)
+
+
+% Question 2: why is RL easier if we permute the replayed data?As an agent moves about in the world, it influences thekind of data it gets to see, and thus the statistics change over time. This violates the IID assumption, and as mentionedearlier, the DeepQ agent stores and re-trains on past data (a process the authors liken to dreaming) in order to be ableto employ standard IID function learning techniques.  However, temporal order contains information that animateintelligence uses.  Information is not only contained in temporal order, but also in the fact that slow changes of thestatistics effectively create a multi-domain setting. Multi-domain data have been shown to help identify causal (and thusrobust) features, and more generally in the search for causal structure, by looking for invariances (Peters et al., 2017).This could enable RL agents to find robust components in their models that are likely to generalize to other parts ofthe state space. One way to do this is to employ model-based RL using SCMs, an approach which can help address aproblem of confounding in RL where time-varying and time-invariant unobserved confounders influence both actionsand rewards (Lu et al., 2018). In such an approach, nonstationarities would be a feature rather than a bug, and agentswould actively seek out regions that are different from the known ones in order to challenge their existing model andunderstand which components are robust. This search can be viewed and potentially analyzed as a form ofintrinsicmotivation,a concept related to latent learning in Ethology that has been gaining traction in RL (Chentanez et al., 2005).Finally, a large open area in causal learning is the connection to dynamics. While we may naively think that causality isalways about time, most existing causal models do not (and need not) talk about time. For instance, returning to ourexample of altitude and temperature, there is an underlying temporal physical process that ensures that higher placestend to be colder. On the level of microscopic equations of motion for the involved particles, there is a clear causalstructure (as described above, a differential equation specifies exactly which past values affect the current value of avariable). However, when we talk about the dependence or causality between altitude and temperature, we need notworry about the details of this temporal structure — we are given a dataset where time does not appear, and we canreason about how that dataset would look if we were to intervene on temperature or altitude. It is intriguing to thinkabout how to build bridges between these different levels of description. Some progress has been made in derivingSCMs that describe the interventional behavior of a coupled system that is in an equilibrium state and perturbed in an“adiabatic” way (Mooij et al., 2013), with generalizations to oscillatory systems (Rubenstein et al., 2018). There is nofundamental reason why simple SCMs should be derivable in general. Rather, an SCM is a high-level abstraction of anunderlying system of differential equations, and such an equation can only be derived if suitable high-level variablescan be defined (Rubenstein et al., 2017), which is probably the exception rather than the rule.RL is closer to causality research than the machine learning mainstream in that it sometimes effectively directlyestimates do-probabilities.  E.g., on-policy learning estimates do-probabilities for the interventions specified by thepolicy (note that these may not be hard interventions if the policy depends on other variables). However, as soon asoff-policy learning is considered, in particular in the batch (or observational) setting (Lange et al., 2012), issues ofcausality become

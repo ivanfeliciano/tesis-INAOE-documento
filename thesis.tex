@@ -1,4 +1,4 @@
-\documentclass[letterpaper,12pt,times,numbered,print,index]{Classes/PhDThesisPSnPDF}
+\documentclass[letterpaper,12pt,numbered,print,index]{Classes/PhDThesisPSnPDF}
 
 
 % `oneside' or `twoside'(default): Printing double side (twoside) or single
@@ -95,9 +95,10 @@
 % ******************************** Front Matter ********************************
 \begin{document}
 
-\frontmatter
+\includepdf[pages={1}]{portada.pdf}
+% \frontmatter
 
-\maketitle
+% \maketitle
 
 % \include{Dedication/dedication}
 % \include{Declaration/declaration}
@@ -121,8 +122,8 @@
 \mainmatter
 
 \include{Chapter1/introduction}
-% \include{Chapter2/chapter2}
-% \include{Chapter3/chapter3}
+\include{Chapter2/background}
+\include{Chapter3/related_work}
 %\include{Chapter4/chapter4}
 %\include{Chapter5/chapter5}
 %\include{Chapter6/chapter6}
@@ -141,10 +142,10 @@
 % Bibliography style previews: http://nodonn.tipido.net/bibstyle.php
 % Reference styles: http://sites.stat.psu.edu/~surajit/present/bib.htm
 
-\bibliographystyle{apalike}
-%\bibliographystyle{unsrt} % Use for unsorted references  
+% \bibliographystyle{apalike}
+\bibliographystyle{plainnat} % Use for unsorted references  
 %\bibliographystyle{plainnat} % use this to have URLs listed in References
-\cleardoublepage
+% \cleardoublepage
 \bibliography{References/references} % Path to your References.bib file
 
 
@@ -168,6 +169,6 @@
 % \end{appendices}
 
 % *************************************** Index ********************************
-\printthesisindex % If index is present
+% \printthesisindex % If index is present
 
 \end{document}

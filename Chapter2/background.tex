@@ -3,108 +3,582 @@
 %****************************** Second Chapter *********************************
 %*******************************************************************************
 
-\chapter{Antecedentes}
+\chapter{Marco teórico}
 
-\ifpdf
-    \graphicspath{{Chapter2/Figs/Raster/}{Chapter2/Figs/PDF/}{Chapter2/Figs/}}
-\else
-    \graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/}}
-\fi
+\graphicspath{{Chapter2/Figs/}}
 
+En este capítulo se describen conceptos importantes para esta investigación.
+Los dos campos que conducen este trabajo son
+el aprendizaje por refuerzo y la causalidad.
+Es por eso que se presentan de manera general cada uno
+de estos en las siguientes dos
+secciones.
+La primera sección describe lo que es el aprendizaje
+por refuerzo, el planteamiento del problema
+como un proceso de decisión de Markov, las ecuaciones
+fundamentales para su solución y algunos métodos para
+resolverlo.
+La segunda sección contiene las ideas que se utilizan
+con respecto al enfoque de intervencionista de causalidad que se sigue en este trabajo, la definición de causalidad propuesta
+por \cite{spirtes2000causation}, la 
+representación de conocimiento en modelos gráficos 
+causales y la definición de intervenciones en un modelo usando el operador $do(\cdot)$ \cite{pearl_2009}.
 
-\section[Short title]{Reasonably long section title}
+\section{Aprendizaje por refuerzo}
 
-% Uncomment this line, when you have siunitx package loaded.
-%The SI Units for dynamic viscosity is \si{\newton\second\per\metre\squared}.
-I'm going to randomly include a picture Figure~\ref{fig:minion}.
+El aprendizaje por interacción es una idea esencial que subyace en casi todas la teorías
+de aprendizaje e inteligencia \cite{sutton_barto_2018}.
+Una perspectiva dentro del aprendizaje automático enfocada al aprendizaje dirigido a metas a través de interacciones es el aprendizaje por refuerzo.
 
+El aprendizaje por refuerzo se encarga de aprender el comportamiento de un agente 
+de tal forma que se maximice una señal de recompensa numérica, esto es, a que un
+agente aprenda a mapear estados de su mundo a acciones. Al aprendiz o agente no se le 
+dice qué acciones tomar, en cambio éste debe descubrir cuáles, al intentarlas, producen
+una mayor recompensa. Las dos características que más importantes que diferencian al
+aprendizaje por refuerzo de otros paradigmas en el aprendizaje automático son 
+la búsqueda a prueba-y-error y la recompensa retardada.
 
-If you have trouble viewing this document contact Krishna at: \href{mailto:kks32@cam.ac.uk}{kks32@cam.ac.uk} or raise an issue at \url{https://github.com/kks32/phd-thesis-template/}
-
-
-\begin{figure}[htbp!] 
-\centering    
-\includegraphics[width=1.0\textwidth]{minion}
-\caption[Minion]{This is just a long figure caption for the minion in Despicable Me from Pixar}
-\label{fig:minion}
-\end{figure}
-
-
-\section*{Enumeration}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae laoreet lectus. Donec lacus quam, malesuada ut erat vel, consectetur eleifend tellus. Aliquam non feugiat lacus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque a dolor sit amet dui malesuada malesuada id ac metus. Phasellus posuere egestas mauris, sed porta arcu vulputate ut. Donec arcu erat, ultrices et nisl ut, ultricies facilisis urna. Quisque iaculis, lorem non maximus pretium, dui eros auctor quam, sed sodales libero felis vel orci. Aliquam neque nunc, elementum id accumsan eu, varius eu enim. Aliquam blandit ante et ligula tempor pharetra. Donec molestie porttitor commodo. Integer rutrum turpis ac erat tristique cursus. Sed venenatis urna vel tempus venenatis. Nam eu rhoncus eros, et condimentum elit. Quisque risus turpis, aliquam eget euismod id, gravida in odio. Nunc elementum nibh risus, ut faucibus mauris molestie eu.
- Vivamus quis nunc nec nisl vulputate fringilla. Duis tempus libero ac justo laoreet tincidunt. Fusce sagittis gravida magna, pharetra venenatis mauris semper at. Nullam eleifend felis a elementum sagittis. In vel turpis eu metus euismod tempus eget sit amet tortor. Donec eu rhoncus libero, quis iaculis lectus. Aliquam erat volutpat. Proin id ullamcorper tortor. Fusce vestibulum a enim non volutpat. Nam ut interdum nulla. Proin lacinia felis malesuada arcu aliquet fringilla. Aliquam condimentum, tellus eget maximus porttitor, quam sem luctus massa, eu fermentum arcu diam ac massa. Praesent ut quam id leo molestie rhoncus. Praesent nec odio eget turpis bibendum eleifend non sit amet mi. Curabitur placerat finibus velit, eu ultricies risus imperdiet ut. Suspendisse lorem orci, luctus porta eros a, commodo maximus nisi.
-
-Nunc et dolor diam. Phasellus eu justo vitae diam vehicula tristique. Vestibulum vulputate cursus turpis nec commodo. Etiam elementum sit amet erat et pellentesque. In eu augue sed tortor mollis tincidunt. Mauris eros dui, sagittis vestibulum vestibulum vitae, molestie a velit. Donec non felis ut velit aliquam convallis sit amet sit amet velit. Aliquam vulputate, elit in lacinia lacinia, odio lacus consectetur quam, sit amet facilisis mi justo id magna. Curabitur aliquet pulvinar eros. Cras metus enim, tristique ut magna a, interdum egestas nibh. Aenean lorem odio, varius a sollicitudin non, cursus a odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; 
-\begin{enumerate}
-\item The first topic is dull
-\item The second topic is duller
-\begin{enumerate}
-\item The first subtopic is silly
-\item The second subtopic is stupid
-\end{enumerate}
-\item The third topic is the dullest
-\end{enumerate}
-Morbi bibendum est aliquam, hendrerit dolor ac, pretium sem. Nunc molestie, dui in euismod finibus, nunc enim viverra enim, eu mattis mi metus id libero. Cras sed accumsan justo, ut volutpat ipsum. Nam faucibus auctor molestie. Morbi sit amet eros a justo pretium aliquet. Maecenas tempor risus sit amet tincidunt tincidunt. Curabitur dapibus gravida gravida. Vivamus porta ullamcorper nisi eu molestie. Ut pretium nisl eu facilisis tempor. Nulla rutrum tincidunt justo, id placerat lacus laoreet et. Sed cursus lobortis vehicula. Donec sed tortor et est cursus pellentesque sit amet sed velit. Proin efficitur posuere felis, porta auctor nunc. Etiam non porta risus. Pellentesque lacinia eros at ante iaculis, sed aliquet ipsum volutpat. Suspendisse potenti.
-
-Ut ultrices lectus sed sagittis varius. Nulla facilisi. Nullam tortor sem, placerat nec condimentum eu, tristique eget ex. Nullam pretium tellus ut nibh accumsan elementum. Aliquam posuere gravida tellus, id imperdiet nulla rutrum imperdiet. Nulla pretium ullamcorper quam, non iaculis orci consectetur eget. Curabitur non laoreet nisl. Maecenas lacinia, lorem vel tincidunt cursus, odio lorem aliquet est, gravida auctor arcu urna id enim. Morbi accumsan bibendum ipsum, ut maximus dui placerat vitae. Nullam pretium ac tortor nec venenatis. Nunc non aliquet neque. 
-
-\section*{Itemize}
-\begin{itemize}
-\item The first topic is dull
-\item The second topic is duller
-\begin{itemize}
-\item The first subtopic is silly
-\item The second subtopic is stupid
-\end{itemize}
-\item The third topic is the dullest
-\end{itemize}
-
-\section*{Description}
-\begin{description}
-\item[The first topic] is dull
-\item[The second topic] is duller
-\begin{description}
-\item[The first subtopic] is silly
-\item[The second subtopic] is stupid
-\end{description}
-\item[The third topic] is the dullest
-\end{description}
-
-
-\clearpage
-
-\tochide\section{Hidden section}
-\textbf{Lorem ipsum dolor sit amet}, \textit{consectetur adipiscing elit}. In magna nisi, aliquam id blandit id, congue ac est. Fusce porta consequat leo. Proin feugiat at felis vel consectetur. Ut tempus ipsum sit amet congue posuere. Nulla varius rutrum quam. Donec sed purus luctus, faucibus velit id, ultrices sapien. Cras diam purus, tincidunt eget tristique ut, egestas quis nulla. Curabitur vel iaculis lectus. Nunc nulla urna, ultrices et eleifend in, accumsan ut erat. In ut ante leo. Aenean a lacinia nisl, sit amet ullamcorper dolor. Maecenas blandit, tortor ut scelerisque congue, velit diam volutpat metus, sed vestibulum eros justo ut nulla. Etiam nec ipsum non enim luctus porta in in massa. Cras arcu urna, malesuada ut tellus ut, pellentesque mollis risus.Morbi vel tortor imperdiet arcu auctor mattis sit amet eu nisi. Nulla gravida urna vel nisl egestas varius. Aliquam posuere ante quis malesuada dignissim. Mauris ultrices tristique eros, a dignissim nisl iaculis nec. Praesent dapibus tincidunt mauris nec tempor. Curabitur et consequat nisi. Quisque viverra egestas risus, ut sodales enim blandit at. Mauris quis odio nulla. Cras euismod turpis magna, in facilisis diam congue non. Mauris faucibus nisl a orci dictum, et tempus mi cursus.
-
-Etiam elementum tristique lacus, sit amet eleifend nibh eleifend sed \footnote{My footnote goes blah blah blah! \dots}. Maecenas dapibu augue ut urna malesuada, non tempor nibh mollis. Donec sed sem sollicitudin, convallis velit aliquam, tincidunt diam. In eu venenatis lorem. Aliquam non augue porttitor tellus faucibus porta et nec ante. Proin sodales, libero vitae commodo sodales, dolor nisi cursus magna, non tincidunt ipsum nibh eget purus. Nam rutrum tincidunt arcu, tincidunt vulputate mi sagittis id. Proin et nisi nec orci tincidunt auctor et porta elit. Praesent eu dolor ac magna cursus euismod. Integer non dictum nunc.
-
-
-\begin{landscape}
-
-\section*{Subplots}
-I can cite Wall-E (see Fig.~\ref{fig:WallE}) and Minions in despicable me (Fig.~\ref{fig:Minnion}) or I can cite the whole figure as Fig.~\ref{fig:animations}
-
+En la siguiente sección se formaliza el problema de aprendizaje por refuerzo como
+un problema de control óptimo para procesos de decisión de Markov (MDP por sus siglas en inglés) incompletos.
 
 \begin{figure}
-  \centering
-  \begin{subfigure}[b]{0.3\textwidth}
-    \includegraphics[width=\textwidth]{TomandJerry}
-    \caption{Tom and Jerry}
-    \label{fig:TomJerry}   
-  \end{subfigure}             
-  \begin{subfigure}[b]{0.3\textwidth}
-    \includegraphics[width=\textwidth]{WallE}
-    \caption{Wall-E}
-    \label{fig:WallE}
-  \end{subfigure}             
-  \begin{subfigure}[b]{0.3\textwidth}
-    \includegraphics[width=\textwidth]{minion}
-    \caption{Minions}
-    \label{fig:Minnion}
-  \end{subfigure}
-  \caption{Best Animations}
-  \label{fig:animations}
+    \centering
+    \includegraphics[scale=0.25]{Chapter2/Figs/agend_interaction.png}
+    \caption{La idea general del RL es que un agente interactúa con un ambiente para
+    aprender a partir de experiencias. Cada paso en el tiempo, el agente se encuentra
+    en cierto estado $s\in \mathcal{S}$ y toma la acción $a \in \mathcal{A}$. Como
+    resultado, el estado del mundo cambia y recibe una recompensa $r$.}
 \end{figure}
 
+\subsection{Procesos de decisión de Markov}
 
-\end{landscape}
+
+Los procesos de decisión de Markov (MDP) son un marco de trabajo para
+definir el problema de aprender
+mediante interacciones para 
+alcanzar una meta. El tomador de 
+decisiones es llamado \textit{agente}.
+El mundo con el que interactúa que
+abarca todo fuera del agente se 
+conoce como \textit{ambiente}.
+Estos dos elementos
+interactúan continuamente, el agente
+selecciona \textit{acciones} y
+el ambiente responde a estas 
+acciones presentando nuevas 
+estados al agente. Además,
+el ambiente envía una recompensas,
+las cuales son valores numéricos 
+que el agente busca maximizar con
+el paso del tiempo mediante la 
+selección de sus acciones.
+
+Formalmente, un MDP es una tupla $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma>$ tal que
+
+\begin{itemize}
+    \item $\mathcal{S}$ es el conjunto de estados, donde $s_t$ denota el estado $s\in \mathcal{S}$ al tiempo $t$.
+    \item $\mathcal{A}$ es el conjunto de acciones, donde $a_t \in \mathcal{A}$
+    denota la acción realizada en un estado $s$ en el tiempo $t$.
+    \item $\mathcal{P}_{ss'}^{a}: \mathcal{S}\times \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]$ es una función de probabilidad de transición de pasar del estado $s \in \mathcal{S}$ a $s' \in \mathcal{S}$ cuando se toma la acción $a$.% en el tiempo $t$.
+    \item $\mathcal{R}_{ss'}^{a}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ es al función de recompensa inmediata que el agente recibe depués de pasar del $s$ a $s'$.
+    \item $\gamma \in [0,1]$ es el factor de descuento que sirve para
+    calcular el retorno esperado con descuento.
+\end{itemize}
+% Además de estos elementos, uno puede identificar otros subelementos en un sistema de aprendizaje por refuerzo: una \textit{política}, una \textit{función de valor}, y a veces un \textit{modelo} del ambiente.
+
+% %  
+% % Whereas the reward signal indicates what is good in an immediate sense, a value
+% % function specifies what is good in the long run. Roughly speaking, the value of a state is the total amount of reward an agent can expect to accumulate over the future, starting from that state.
+
+% % Es la recompensa total que un agente puedeesperar acumular empezando en un estados(V(s)) oen un estado haciendo una acona(Q(s,a))
+
+% % Aprendizaje por refuerzo aprende las funciones de valor o lapolıtica mientras interactua con el ambient
+
+% % element of some reinforcement learning systems is a model of
+% % the environment. This is something that mimics the behavior of the environment, or more generally, that allows inferences to be made about how the environment will behave.
+
+Dado un estado $s_t \in \mathcal{S}$ y un
+acción $a_t$, el agente pasa a un nuevo
+estado $s_{t+1}$ y recibe una recompensa
+$r_{t+1}$.
+% Una política $\pi$ es una función de los estados percibidos del ambiente a acciones que se toman cuando se está en esos estados ($\pi : \mathcal{S} \rightarrow \mathcal{A}$).
+% El problema fundamental en los MDP es
+% encontrar una política óptima; esto es, 
+% aquella que maximiza la recompensa esperada por el agente a largo plazo.
+En RL, la meta del agente está formalizada
+en términos de la señal de recompensa que
+envía el ambiente al agente. En cada paso $t$, la recompensa es un número real $r_t \in \mathbb{R}$. La meta de un agente
+es maximizar la recompensa total recibida.
+Esto significa, que no solo se maximiza la recompensa inmediata sino la recompensa acumulada a largo plazo.
+
+En general, se busca maximizar el \textit{retorno
+esperado}, donde el retorno, denotado por $R_t$, se define como alguna función de la secuencia de recompensas. 
+El \textit{retorno esperado con descuento} es la suma acumulada de recompensas futuras. El factor de descuento $\gamma$
+define que tantas recompensas en el 
+futuro son consideradas. Si $\gamma = 0$
+solo la recompensa inmediata es
+tomada en cuenta.
+
+\[
+R_t = r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \gamma^3 r_{t+4} + \dots = 
+\sum_{t = 0}^\infty \gamma_{k} r_{t+k+1}
+\]
+
+Si se tiene un punto terminal se llaman tareas \textit{episódicas}, si no se tiene se conocen como tareas \textit{continuas}.
+
+% \subsection{Política y funciones de valor}
+
+Una política, denotada por $\pi(s, a)$, describe una manera de actuar. Es una función que mapea un estado $s$ y una acción $a$ a la probabilidad de tomar esa acción en ese estado.
+Por lo tanto para un estado dado, 
+$\sum_a \pi (s, a) = 1$. El problema fundamental en los MDP es encontrar una política óptima $\pi^*$, es decir, aquella que maximiza la recompensa que espera recibir el agente a largo plazo.
+A veces es escrita como $\pi^*(s) = a$, el cual es un mapeo de estado a las acciones óptimas en esos estados.
+
+Para aprender la política óptima, se utilizan las \textit{funciones de valor}. Existen dos tipos de funciones de valor: la \textit{ función de valor de estado} $V(s)$ y la \textit{función de valor de acción} $Q(s, a)$.
+
+La función de valor de estado describe el valor de un estado al seguir una política. Es el retorno esperado partiendo del estado $s$, actuando de acuerdo
+a la política $\pi$
+
+\begin{equation}\label{eq:state-value-func}
+V^\pi(s) = \mathbb{E}_\pi[R_t | s_t = s].    
+\end{equation}
+
+
+La función de valor no necesariamente es la misma para dos políticas diferentes
+en un mismo ambiente. Esto es porque el valor del estado
+cambia dependiendo en el comportamiento del agente, ya que la manera de actuar
+en un estado en particular afecta cuánta recompensa se espera recibir.
+La razón de usar el valor esperado  es porque existe aleatoriedad en lo que
+sucede después de llegar a un estado. Se puede contar con una política estocástica, lo que significa que se necesitan combinar los resultados de 
+todas las acciones que se toman. Además, la función de transición puede ser estocástica, lo cual implica cierta incertidumbre de llegar a cualquier 
+estado.
+
+La otra función de valor que se utiliza es la función de valor de acción.
+La función de valor de acción define el valor de 
+tomar una acción en algún estado cuando se sigue cierta política. Es el
+retorno esperado dado un estado y acción bajo la política $\pi$
+
+\begin{equation}\label{eq:action-value-func}
+Q^\pi (s,a) = \mathbb{E}[R_t | s_t = s, a_t = a].    
+\end{equation}
+
+Las funciones de valor óptimas se definen como
+\[
+V^*(s) = \max_{\pi} V^\pi(s) \text{ y } Q^*(s, a) = \max_{\pi} Q^\pi (s,a).
+\]
+
+
+Las funciones anteriores pueden ser expresadas mediante las ecuaciones de optimalidad de Bellman \cite{bellman1966dynamic}.
+A continuación se muestra la obtención de las ecuaciones
+de Bellman.
+Las funciones $\mathcal{P}_{ss'}^a$ y $\mathcal{R}_{ss'}^a$ son la probabilidad de transición y la recompensa esperada, respectivamente. La primera se define como
+$\mathcal{P}_{ss'}^a = p(s_{t+1} = s' | s_t = s, a_t = a)$,
+y la segunda como
+$\mathcal{R}_{ss'}^a = \mathbb{E}[r_{t+1} = s' | s_t = s, a_t = a]$.
+
+Usando la función de retorno esperado con descuento, se puede
+reescribir la ecuación \ref{eq:state-value-func} como
+
+\[
+V^\pi(s) = \mathbb{E}_\pi[r_{t+1} + \gamma r_{t+2} + \dots | s_t = s] = \mathbb{E}_{\pi}[\sum_{t = 0}^\infty \gamma_{k} r_{t+k+1} | s_t =s].
+\]
+
+
+Si se deja fuera de la suma la primera recompensa, se tiene
+\[
+V^\pi(s) = \mathbb{E}_\pi[r_{t+1} + \sum_{t = 0}^\infty \gamma_{k} r_{t+k+2} | s_t =s].
+\]
+
+El valor esperado describe el retorno esperado que se obtiene si se parte del estado $s$ siguiendo la política $\pi$.
+El valor esperado puede ser escrito explícitamente mediante la suma de todas
+las acciones posible y todos los posible estados, por lo tanto se tienen las siguientes ecuaciones
+
+\[
+\begin{split}
+\mathrm{E}_\pi[r_{t+1}| s_t=s] &= \sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a\mathcal{R}_{ss'}^a,\\
+\mathbb{E}_\pi[\sum_{t = 0}^\infty \gamma_{k} r_{t+k+2} | s_t =s] &=
+\sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a \gamma \mathbb{E}_\pi[\sum_{t = 0}^\infty \gamma_{k} r_{t+k+2} | s_{t+1} = s']
+\end{split}.
+\]
+
+Con las ecuaciones anteriores se puede reescribir $V^\pi(s)$ de la
+siguiente forma
+\[
+V^\pi(s) = \sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a [\mathcal{R}_{ss'}^a +
+\gamma \mathbb{E}_\pi[\sum_{t = 0}^\infty \gamma_{k} r_{t+k+2} | s_{t+1} = s']].
+\]
+
+La última parte de la ecuación tiene
+la misma forma que la ecuación \ref{eq:state-value-func}, por lo tanto, sustituyéndola, se tiene
+
+\begin{equation}\label{eq:bellman-state-val}
+    V^\pi(s) = \sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a [\mathcal{R}_{ss'}^a + \gamma V^\pi(s')].
+\end{equation}
+
+La ecuación de Bellman para la función de valor de acción se deriva de la misma manera.
+
+\begin{equation}\label{eq:bellman-acion-val}
+    Q^\pi(s, a) = \sum_{s'}\mathcal{P}_{ss'}^a [\mathcal{R}_{ss'}^a + \gamma \pi(s',a')Q^\pi(s', a')].
+\end{equation}
+
+Las ecuaciones de Bellman permiten expresar valores de estados como
+valores de otros estados, es decir, si se conoce el valor de $s_{t+1}$,
+facilmente se puede calcular $s_t$. A partir de las ecuaciones \ref{eq:bellman-state-val} y \ref{eq:bellman-acion-val} los valores óptimos de
+las funciones de valor quedan como sigue
+
+\[
+V^*(s) = \max_{a}\sum_{s'}\mathcal{P}_{ss'}^a[\mathcal{R}_{ss'}^a + \gamma V^*(s')]
+\]
+y 
+\[
+Q^*(s,a) = \sum_{s'}\mathcal{P}_{ss'}^a[\mathcal{R}_{ss'}^a + \gamma \max_{a'}Q^*(s',a')].
+\]
+
+Un MDP busca la solución a las ecuaciones de Bellman, lo que equivale a encontrar
+la política óptima. Si $\mathcal{P}$ y $\mathcal{R}$ son conocidas, i.e., el
+modelo es conocido un MDP se puede resolver mediante programación dinámica o
+programación lineal. En caso contrario, cuando el modelo no es conocido,
+se utiliza aprendizaje por refuerzo.
+% Una política $\pi$ es una función de los estados percibidos del ambiente a acciones que se toman cuando se está en esos estados ($\pi : \mathcal{S} \rightarrow A$). 
+% Whereas the reward signal indicates what is good in an immediate sense, a value
+% function specifies what is good in the long run. Roughly speaking, the value of a state is the total amount of reward an agent can expect to accumulate over the future, starting from that state.
+
+\subsection{Método Monte Carlo}
+
+El método Monte Carlo es un enfoque que busca resolver problemas
+de aprendizaje por refuerzo con tareas episódicas, donde 
+no existe un modelo del ambiente. 
+Es un método iterativo y converge a la política
+al incrementar el número de episodios.
+
+Existe una tabla $Q$ que almacena el valor de acción para cada posible
+par de estado-acción. El valor es el promedio sobre
+todos los retornos, que han sido obtenidos durante todos los episodios. 
+Un elemento de la tabla es actualizado cada vez que un par estado-acción
+es visitado por el agente. La ecuación de actualización se muestra en la 
+siguiente ecuación, donde $N(s_t, a_t)$ es el número de visitas al 
+par estado-acción $(s_t, a_t)$.
+
+\[
+Q(s_t, a_t) = Q(s_t, a_t) + \frac{1}{N(s_t, a_t)} (R_t - Q(s_t, a_t)).
+\]
+
+Los diferentes retornos pueden 
+ser ponderados por un peso $\alpha$.
+En vez de tomar el promedio
+verdadero, retornos recientes pueden tener un peso mayor o menor
+
+\begin{equation}\label{eq:montecarlo-update}
+\begin{split}
+Q(s_t, a_t) &= Q(s_t, a_t) + \alpha(R_t - Q(s_t, a_t))\\
+&= (1-\alpha)Q(s_t, a_t) + \alpha R_t.
+\end{split}
+\end{equation}
+
+El método Monte Carlo itera sobre episodios. Durante el paso de evaluación, el 
+agente actúa de acuerdo a la política $\pi$ de un episodio. Cuando el 
+episodio se termina, el agente recolecta una secuencia de experiencia $s_1,a_1,r_q,s_2, \dots, s_t$ y puede actualizar la tabla $Q$ de acuerdo
+con ésta.
+Para cada par estado-acción en la secuencia, se obtiene el retorno 
+esperado $R_t$ y se actualiza el elemento correspondiente en la table $Q$ 
+de acuerdo con la ecuación \ref{eq:montecarlo-update}.
+Durante el paso de mejora,  la
+política $\pi$ se actualiza de acuerdo a la tabla $Q$. En la siguiente iteración,
+el paso de evaluación se realiza con la política nueva que sea obtiene de la
+actualización.
+
+Normalmente, la política de actualización básica es una política voraz. El agente
+siempre elige la acción con el máximo valor de acción. Sin embargo, explotar la acciones vorazmente con el conocimiento actual puede conducir a que el
+agente quede atascado en una política no óptima. Para evitar 
+este caso, acciones explorativas deben tomarse en cuenta de vez en cuando.
+Una política es llamada $\epsilon$-greedy, si la mejor acción actual se toma 
+con una probabilidad de $1-\epsilon$ y una acción aleatoria se toma con una 
+probabilidad $\epsilon$. La ecuación de la política $\epsilon$-greedy
+se puede definir de la siguiente manera
+
+\[
+\pi(s,a) = 
+   \begin{cases} 
+      1 - \epsilon + \epsilon/|\mathcal{A}| & \mbox{si } a= 
+      \argmax_{a \in \mathcal{A}} 
+      Q(s,a)   \\
+      \epsilon / |\mathcal{A}| & \mbox{ en otro caso }
+   \end{cases}
+\]
+
+$\epsilon$ es un valor entre 0 y 1 y pondera la relación entre
+exploración y explotación.
+
+\subsection{Métodos de diferencias temporales}
+
+La ventaja de los método de diferencias temporales (TD por sus siglas en inglés)
+es que se pueden aplicar tareas de aprendizaje por refuerzo en línea y continuas.
+La política se actualiza cada paso de tiempo $t$ por lo que no se necesitan
+episodios completos. Además, no se requiere ningún modelo del ambiente. 
+
+En los métodos TD, el retorno esperado verdadero $R_t$ no está disponible
+y es aproximado con TD-target. El TD-target se determina con la suma
+de la recompensa inmediata y el valor esperando con descuento del 
+siguiente estado $r_{t+1} + \gamma V(s_{t+1})$. 
+
+\RestyleAlgo{boxruled}
+\begin{algorithm}[!hbt]
+	\caption{Algoritmo general de los métodos TD}
+	\label{alg:TD-algo}
+	
+	
+	\SetAlgoLined\DontPrintSemicolon
+    \SetAlgoHangIndent{0.5em}
+	%\scriptsize
+	\SetAlFnt{\large} 
+    \SetKwData{patterns}{\textit{PS}}
+	\SetKwInOut{Input}{Entrada}
+	
+	\Input{La política $\pi$ a ser evaluada, $\alpha \in (0,1]$.}
+	\BlankLine
+	
+    Inicializar arbitrariamente $V(s)$, para todo $s\in \mathcal{S}$ excepto donde $V(terminal) = 0$\;
+	Repetir por cada episodio:\;
+	\hspace{0.5cm}Inicializar $s_t$\;
+	\hspace{0.5cm}Repetir por cada paso del episodio:\;
+	\hspace{1cm}$a_t \leftarrow$ acción dada por $\pi$ para $s_t$\;
+	\hspace{1cm}Tomar acción $a_t$, observar $r_{t+1}$, $s_{t+1}$\;
+	\hspace{1cm}$V(s_t) \leftarrow V(s_t) + \alpha\underbrace{[\underbrace{r_{t+1} + \gamma V(s_{t+1})}_{TD-target} - V(s_t)]}_{TD-error}$\;
+    \hspace{1cm}$s_t \leftarrow s_{t+1}$\;
+    \hspace{0.5cm}hasta que $s_t$ sea terminal o inválido\;
+\end{algorithm}
+
+% \subsection{Aprendizaje por refuerzo profundo}
+% \subsubsection{Deep Q Network}
+
+El algoritmo $Q$-learning \cite{watkins1992q} es un método de control TD fuera de política, es decir,
+la política $\pi$ no se utiliza para actualizar la tabla $Q$. 
+La regla de actualización del $Q$-learning está dada por 
+
+\[
+Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha[r_{t+1} + \gamma \max_a Q(s_{t+1}, a) - Q(s_t, a_t)]
+\]
+
+\RestyleAlgo{boxruled}
+\begin{algorithm}[!hbt]
+	\caption{Algoritmo $Q$-learning}
+	\label{alg:q-algo}
+	
+	
+	\SetAlgoLined\DontPrintSemicolon
+    \SetAlgoHangIndent{0.5em}
+	%\scriptsize
+	\SetAlFnt{\large} 
+    \SetKwData{patterns}{\textit{PS}}
+	\SetKwInOut{Input}{Entrada}
+	
+	\Input{$\alpha \in (0,1]$, $\epsilon \in (0, 1]$}
+	\BlankLine
+	
+    Inicializar arbitrariamente $Q(s,a)$, para todo $s\in \mathcal{S}$ excepto donde $Q(terminal, \cdot) = 0$\;
+	Repetir por cada episodio:\;
+	\hspace{0.5cm}Inicializar $s_t$\;
+	\hspace{0.5cm}Repetir por cada paso del episodio:\;
+	\hspace{1cm}Elegir $a_t$ usando una política derivada de $Q$ (e.g., $\epsilon$-greedy)\;
+	\hspace{1cm}Tomar acción $a_t$, observar $r_{t+1}$, $s_{t+1}$\;
+	\hspace{1cm}$Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha [r_{t+1} + \gamma \max_a Q(s_{t+1}, a) - Q(s_t, a_t)]$\;
+    \hspace{1cm}$s_t \leftarrow s_{t+1}$\;
+    \hspace{0.5cm}hasta que $s_t$ sea terminal o inválido\;
+\end{algorithm}
+
+
+\section{Causalidad}
+
+
+En este trabajo se sigue la interpretación de causalidad  
+\textit{intervencionista} según como la han descrito en \cite{woodward2005making}\cite{spirtes2000causation}\cite{pearl_2009}.
+De acuerdo con \cite{spirtes2000causation} se entiende a la causalidad 
+como una relación entre eventos, \textit{algo sucede y causa que algo más suceda}. Cada causa es un evento específico y cada efecto es una evento
+en particular. Asumimos que esta relación es \textit{transitiva}, \textit{irreflexiva} y \textit{antisimétrica}. Informalmente, esto es 
+\begin{enumerate}
+    \item Si $A$ es una causa de $B$ y $B$ es una causa de $C$, entonces
+    $A$ es también una causa de $C$.
+    \item Un evento $A$ no puede causarse a sí mismo.
+    \item Si $A$ es una causa de $B$, entonces $B$ no es causa de $A$.
+\end{enumerate}
+
+
+De acuerdo con \cite{pearl2018bookofwhy} existen tres niveles
+de razonamiento causal: \textit{observar}, \textit{intervenir}
+e \textit{imaginar}.
+En el primer nivel se encuentran las 
+relaciones asociativas, donde se detectan regularidades
+en el ambiente a partir de observaciones pasivas de los datos.
+El segundo nivel, intervenir, implica predecir los 
+efectos de alteraciones intencionales del ambiente
+y elegir entre estas alteraciones  para producir una
+salida deseada. En el tercer nivel se encuentra
+el razonamiento \textit{contrafactual} donde la restrospección
+e imaginación permite responde preguntas como ¿por qué?
+y ¿qué hubiera pasado si una intervención se hubiera hecho 
+en vez de otra?.
+La parte central del razonamiento causal se encuentra en el segundo
+y tercer nivel, donde se puede observar qué pasa después de que 
+alguna variable ha sido manipulada o intervenida y donde se puede
+preguntar qué hubiera pasado si cierta intervención se hubiera 
+hecho de otra forma.
+
+Las relaciones asociativas están basadas en correlaciones
+entre eventos o patrones de ocurrencia encontrados en los
+datos \cite{pearl2018bookofwhy}. Mientras que las relaciones
+causales están basadas en patrones de causa-efecto,
+los cuales resultan de mecanismos arraigados a la naturaleza
+de los eventos observados y que pueden se obtenidos de 
+manipulaciones \cite{sep-causal-models}.
+
+Numerosas técnicas han sido desarrolladas para representar
+sistemas de relaciones causales y para inferir 
+relaciones causales a partir de probabilidades. 
+
+\subsection{Estructura y modelo causal}
+
+Supóngase un conjunto de variables $\mathcal{V}$ que incluyen a $A$ y $X$. 
+Se dice que $A$ es causa directa de $X$ con respecto a $\mathcal{V}$
+solo en caso de que $A$ sea un miembro de algún conjunto 
+$\mathcal{A} \subseteq \mathcal{V} - \{X\}$ tal que 
+
+\begin{itemize}
+    \item las variables en $\mathcal{A}$ son causas de $X$,
+    \item si las variables en $\mathcal{A}$ llegaran a ocurrir,
+    causarían $X$ sin importar si los elementos de $\mathcal{V} - \{X \cup \mathcal{A}\}$ ocurrieran o no,
+    \item ningún subconjunto propio de $\mathcal{A}$ satisface
+    1) y 2).
+\end{itemize}
+
+Una estructura causal es un par ordenado $<\mathcal{V}, E>$, donde
+$\mathcal{V}$ es un conjunto de variables y $E$ es un conjunto
+de pares ordenados de $\mathcal{V}$, donde $<X, Y> \in E$ si
+y sólo si $X$ es causa directa de $Y$ con respecto a $V$\cite{spirtes2000causation}.
+
+Una estructura causal se puede representar como un grafo
+dirigido $D = <\mathcal{V},E>$ que representa una estructura causal suficiente $C$ (i.e., que todas las causas de las variables están dentro del conjunto de variables de $C$), donde los vértices de $D$ denotan las variables en $C$ y existe una
+arista dirigida de $A$ a $B$ en $D$ si y sólo si $A$ es
+una causa directa de $B$.
+A un grafo acíclico dirigido que representa una estructura causal se le llama \textit{grafo causal}.
+
+Por otra parte, de acuerdo con \cite{pearl_2009}, la estructura causal $D$ de un conjunto de variables $\mathcal{V}$ es un grafo acíclico dirigido (DAG por sus siglas en inglés) en el cual cada nodo corresponde a un elemento distinto de $\mathcal{V}$ y cada arista define una relación funcional directa entre las
+variables correspondientes. 
+
+
+Se consideran tres condiciones que conectan probabilidades con
+grafos causales: \textit{la condición causal de Markov}, \textit{la condición de minimalidad} y la condición
+de \textit{fidelidad}.
+
+\begin{itemize}
+    \item \textit{Condición de Markov}. Una variable $V$ o nodo
+    en $D$ es independiente de cualquier otra variable $A$ tal que
+    $A$ no es ni una causa o efecto de $V$ dadas las causas de $V$.
+    \item \textit{Condición de minimalidad}. Ningún subgrafo propio de $D$ satisface la condición causal de Markov.
+    \item \textit{Condición de fidelidad}. La condición causal de Markov contiene todas las condiciones de independencia expresadas en el grafo $D$.
+\end{itemize}
+% Markov Causality: an eventV(or node inG) is independent of every other eventAsuchthatAisn’t either a cause nor an effect ofVgiven the causes ofV.•Causal Minimality: No proper sub-graph ofGsatisfies the Markov Causality condition.•Causal Faithfulness: The Markov Causal condition contains all of the conditional inde-pendence statements expressed by the DAGG
+
+
+
+De manera general un modelo causal de acuerdo con \cite{pearl_2009}, se define como un par $\mathcal{M} = <D, \Theta_D>$ donde $D$
+es una estructura causal 
+$D$ y un conjunto de 
+parámetros $\Theta_D$ compatibles con $D$. Los 
+parámetros $\Theta_D$ asignan una función $x_i = f_i (pa_i, u_i)$ a cada $X_i \in\mathcal{V}$
+y una medida de  probabilidad  $P(u_i)$ para cada $u_i$, donde $PA_i$ son 
+los padres de $X_i$ en $D$ y cada $U_i$ es una perturbación aleatoria distribuida
+de acuerdo a $P(u_i)$, independiente de todas las otras $u$.
+% \begin{itemize}
+%     \item Definición de causalidad.
+%     \item El por qué de los modelos causales, ventajas sobre enfoques asociativos
+%     \item Escalera de la causalidad
+%     \item Definición de causalidad según Pearl y  Spirtes
+    
+%     \item Conexión entre grafos y probabilidades
+%     \item Modelos gráficos causales
+%     \item Intervenciones y efectos 
+%     \item Obtención de DAG
+% \end{itemize}
+% he termcausalityisdefined in terms of common language and then the mathematical machinery required to modelcausality is provided. In this way, causality becomes defined as whatis modeled by causalmodels, which are themselves defined as to model causality. This apparent circularity is deeplystudied by Woodward (2003). 
+
+
+% We adopt themanipulationistintepretation of Causality as described in Woodward (2003).According to the definition from Spirtes et al. (2000), causality is defined as astochasticrelation betweenevents. The intuition is that some event (or events)causesanother event tooccurr according to some underlying mechanis
+
+
+% Definition 2.1.Let (Ω,F,P) a finite probability space, and consider a binary relation→⊆F × Fwhich is:•Transitive: IfA→BandB→Cfor anyA, B, C∈ FthenA→C.•Irreflexive: For allA∈ Fit doesn’t hold thatA→A.•Antisymmetric: ForA, B∈ Fsuch thatA6=BifA→Bthen it doesn’t hold thatB→A.We will say thatAisa causeofB(or thatAcausesB,Ais the cause andBis the effect) ifA→B. It is important to note that an event may have more than one cause, and that notnecesarily each one of this causes is sufficient to produce the effe0ct
+
+% The causal relations contained in→can be summarized in a graphG= (V, E) in the followingway: IfA→Bthen the graph must contain a nodeA∈VrepresentingA, a nodeB∈VrepresentingBand a directed edgee∈Econnecting the respective nodes in the direction ofthe causal relation
+
+\subsection{Intervenciones y efectos causales}
+
+La probabilidad condicional $P(Y=y| X=x)$ da la probabilidad de que $Y$ tome el valor $y$, dado que se \textit{observó} que $X$  tomo el valor $x$. 
+Sin embargo, a menudo es de interés predecir el valor de $Y$ que resultará
+si se interviene al fijar el valor de $X$ a un valor $x$ en particular. Esto
+se denota como $P(Y=y| do(X=x))$ \cite{pearl_2009}.
+De aquí surge la pregunta, ¿cuál es la diferencia entre observar e intervenir o
+manipular? Cuando simplemente se observa el valor que una variable toma, se está aprendiendo acerca del valor de la 
+variable cuando está es causada de la manera normal, así como se está representada en el modelo causal.
+La información sobre el valor de la variable también provee
+datos sobre sus causas y sobre otros efectos de esas causas.
+Sin embargo, cuando se hacen \textit{intervenciones},
+se sobre escribe la estructura causal normal, forzando a una
+variable a tomar el valor que que podría no haber tomado 
+si el sistema se quedara sin modificaciones.
+El valor de la variable está determinado completamente por 
+la intervención, sobre escribir la influencia causal de otras variables. Gráficamente, se puede representar el
+efecto de esta intervención eliminando las aristas 
+dirigidas a las variables que se desean intervenir. Tal
+intervención a veces es descrita como ``romper'' esas aristas \cite{sep-causal-models}.
+Un modelo causal puede ser usado para predecir
+los efectos de tales intervenciones. 
+
+
+Dados dos conjuntos de variables disjuntos, $X$ y $Y$,
+el efecto causal de $X$ sobre $Y$, denotado como $P(y|do(x))$, es una
+función de $X$ al espacio de distribuciones de probabilidad sobre $Y$. Para 
+cada realización $x$ de $X$, $P(y| do(x))$ da la probabilidad de $Y=y$ 
+inducida al eliminar del modelo todas las ecuaciones que corresponde a las
+variables en $X$ y sustituir $X=x$ en el resto de ecuaciones.
+
+El grafo que corresponde al conjunto de ecuaciones reducido es un
+subgrafo de $D$ en el que todas las aristas dirigidas incidentes en $X$
+han sido podadas. La diferencia $E(Y|do(x'))- E(Y|do(x''))$ a veces 
+se toma como la definición de efecto causal \cite{theoryofcausalities2006}
+donde $x'$ y $x''$ son dos realizaciones diferentes de $X$.
+% Supóngase que se tiene
+% un modelo causal en el cual la distribución de 
+% probabilidad $P$ satisface la condición de Markov en el 
+% grafo causal $D$ sobre el conjunto de variables
+% $\mathcal{V} = \{X_1, X_2,  \dots, X_n\}$.
+
+% . The most useful version of MC for thinking about interventions is MCFactorization (see Section 3.3), which tells us:
+% P(X1,X2,…,Xn)=∏iP(Xi∣PA(Xi))
+
+% Now suppose that we intervene by setting the value of Xk
+% to xk. The post-intervention probability P′
+
+% is the result of altering the factorization as follows:
+% P′(X1,X2,…,Xn)=P′(Xk)×∏i≠kP(Xi∣PA(Xi)),
+
+% where P′(Xk=xk)=1
+% . The conditional probabilities of the form P(Xi∣PA(Xi)) for i≠k remain unchanged by the intervention.
+
+
+\section{Causalidad y aprendizaje por refuerzo}
+
+De acuerdo con algunos trabajos, la relación entre el aprendizaje por refuerzo
+y la causalidad es mucho más estrecha que con otras áreas del
+aprendizaje automático \cite{schlkopf2019causality} \cite{Gershman2017}. Esto debido a que al ejecutar acciones sobre su ambiente, entonces
+estima distribuciones intervencionistas y por lo tanto el aprendizaje por refuerzo es un problema causal. Sin embargo, se ha demostrado que el aprendizaje
+por refuerzo no está formulado de tal forma que se utilicen operaciones
+causales \cite{gonzalezsoto2019reinforcement}.
+Este trabajo, más que intentar construir los fundamentos de una nueva 
+teoría que combine ambas áreas, apunta hacia una perspectiva
+en la que elementos de una auxilien a la otra de tal forma que
+los aproveche y mejore. En particular, en esta investigación
+seguimos la dirección de utilizar información causal para ayudar al 
+aprendizaje de un agente.
+
+Por esta razón, no se presentan conceptos teóricos que unan ambas áreas. 
+En capítulos posteriores se presentan algunas definiciones y notación
+que sirven para entender el método propuesto y que sirven para acotar el
+problema atacado.
