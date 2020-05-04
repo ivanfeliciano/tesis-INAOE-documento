@@ -3,7 +3,7 @@
 %****************************** Second Chapter *********************************
 %*******************************************************************************
 
-\chapter{Marco teórico}
+\chapter{Marco teórico}\label{chapter2}
 
 \graphicspath{{Chapter2/Figs/}}
 
@@ -13,33 +13,33 @@ el aprendizaje por refuerzo y la causalidad.
 Es por eso que se presentan de manera general cada uno
 de estos en las siguientes dos
 secciones.
-La primera sección describe lo que es el aprendizaje
+La Sección \ref{rl-section} describe lo que es el aprendizaje
 por refuerzo, el planteamiento del problema
 como un proceso de decisión de Markov, las ecuaciones
 fundamentales para su solución y algunos métodos para
 resolverlo.
-La segunda sección contiene las ideas que se utilizan
+La Sección \ref{causation-section} contiene las ideas que se utilizan
 con respecto al enfoque de intervencionista de causalidad que se sigue en este trabajo, la definición de causalidad propuesta
 por \cite{spirtes2000causation}, la 
 representación de conocimiento en modelos gráficos 
 causales y la definición de intervenciones en un modelo usando el operador $do(\cdot)$ \cite{pearl_2009}.
 
-\section{Aprendizaje por refuerzo}
+\section{Aprendizaje por refuerzo}\label{rl-section}
 
 El aprendizaje por interacción es una idea esencial que subyace en casi todas la teorías
 de aprendizaje e inteligencia \cite{sutton_barto_2018}.
-Una perspectiva dentro del aprendizaje automático enfocada al aprendizaje dirigido a metas a través de interacciones es el aprendizaje por refuerzo.
+Una perspectiva dentro del \textit{aprendizaje automático} \cite{Goodfellow-et-al-2016} enfocada al aprendizaje dirigido a metas a través de interacciones es el aprendizaje por refuerzo.
 
 El aprendizaje por refuerzo se encarga de aprender el comportamiento de un agente 
 de tal forma que se maximice una señal de recompensa numérica, esto es, a que un
 agente aprenda a mapear estados de su mundo a acciones. Al aprendiz o agente no se le 
 dice qué acciones tomar, en cambio éste debe descubrir cuáles, al intentarlas, producen
-una mayor recompensa. Las dos características que más importantes que diferencian al
+una mayor recompensa. Las dos características más importantes que diferencian al
 aprendizaje por refuerzo de otros paradigmas en el aprendizaje automático son 
 la búsqueda a prueba-y-error y la recompensa retardada.
 
 En la siguiente sección se formaliza el problema de aprendizaje por refuerzo como
-un problema de control óptimo para procesos de decisión de Markov (MDP por sus siglas en inglés) incompletos.
+un problema de control óptimo para procesos de decisión de Markov incompletos (MDP por sus siglas en inglés).
 
 \begin{figure}
     \centering
@@ -58,14 +58,14 @@ definir el problema de aprender
 mediante interacciones para 
 alcanzar una meta. El tomador de 
 decisiones es llamado \textit{agente}.
-El mundo con el que interactúa que
-abarca todo fuera del agente se 
+El agente interactúa con un mundo, que
+abarca todo fuera de éste, y se
 conoce como \textit{ambiente}.
 Estos dos elementos
 interactúan continuamente, el agente
 selecciona \textit{acciones} y
 el ambiente responde a estas 
-acciones presentando nuevas 
+acciones presentando nuevos 
 estados al agente. Además,
 el ambiente envía una recompensas,
 las cuales son valores numéricos 
@@ -98,8 +98,8 @@ Formalmente, un MDP es una tupla $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \math
 % % the environment. This is something that mimics the behavior of the environment, or more generally, that allows inferences to be made about how the environment will behave.
 
 Dado un estado $s_t \in \mathcal{S}$ y un
-acción $a_t$, el agente pasa a un nuevo
-estado $s_{t+1}$ y recibe una recompensa
+acción $a_t\in \mathcal{A}$, el agente pasa a un nuevo
+estado $s_{t+1} \in \mathcal{S}$ y recibe una recompensa
 $r_{t+1}$.
 % Una política $\pi$ es una función de los estados percibidos del ambiente a acciones que se toman cuando se está en esos estados ($\pi : \mathcal{S} \rightarrow \mathcal{A}$).
 % El problema fundamental en los MDP es
@@ -276,10 +276,10 @@ Q(s_t, a_t) &= Q(s_t, a_t) + \alpha(R_t - Q(s_t, a_t))\\
 
 El método Monte Carlo itera sobre episodios. Durante el paso de evaluación, el 
 agente actúa de acuerdo a la política $\pi$ de un episodio. Cuando el 
-episodio se termina, el agente recolecta una secuencia de experiencia $s_1,a_1,r_q,s_2, \dots, s_t$ y puede actualizar la tabla $Q$ de acuerdo
+episodio se termina, el agente recolecta una secuencia de experiencia $s_1, a_1, r_1, s_2, \dots, s_t$ y puede actualizar la tabla $Q$ de acuerdo
 con ésta.
 Para cada par estado-acción en la secuencia, se obtiene el retorno 
-esperado $R_t$ y se actualiza el elemento correspondiente en la table $Q$ 
+esperado $R_t$ y se actualiza el elemento correspondiente en la tabla $Q$ 
 de acuerdo con la ecuación \ref{eq:montecarlo-update}.
 Durante el paso de mejora,  la
 política $\pi$ se actualiza de acuerdo a la tabla $Q$. En la siguiente iteración,
@@ -316,8 +316,7 @@ La política se actualiza cada paso de tiempo $t$ por lo que no se necesitan
 episodios completos. Además, no se requiere ningún modelo del ambiente. 
 
 En los métodos TD, el retorno esperado verdadero $R_t$ no está disponible
-y es aproximado con TD-target. El TD-target se determina con la suma
-de la recompensa inmediata y el valor esperando con descuento del 
+y es aproximado con un valor TD-target. El TD-target se determina con la suma de la recompensa inmediata y el valor esperando con descuento del 
 siguiente estado $r_{t+1} + \gamma V(s_{t+1})$. 
 
 \RestyleAlgo{boxruled}
@@ -386,11 +385,11 @@ Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha[r_{t+1} + \gamma \max_a Q(s_{t+1}, a
 \end{algorithm}
 
 
-\section{Causalidad}
+\section{Causalidad}\label{causation-section}
 
 
 En este trabajo se sigue la interpretación de causalidad  
-\textit{intervencionista} según como la han descrito en \cite{woodward2005making}\cite{spirtes2000causation}\cite{pearl_2009}.
+\textit{intervencionista} según como la han descrito en \cite{woodward2005making, spirtes2000causation, pearl_2009}.
 De acuerdo con \cite{spirtes2000causation} se entiende a la causalidad 
 como una relación entre eventos, \textit{algo sucede y causa que algo más suceda}. Cada causa es un evento específico y cada efecto es una evento
 en particular. Asumimos que esta relación es \textit{transitiva}, \textit{irreflexiva} y \textit{antisimétrica}. Informalmente, esto es 
@@ -452,7 +451,8 @@ $\mathcal{A} \subseteq \mathcal{V} - \{X\}$ tal que
 Una estructura causal es un par ordenado $<\mathcal{V}, E>$, donde
 $\mathcal{V}$ es un conjunto de variables y $E$ es un conjunto
 de pares ordenados de $\mathcal{V}$, donde $<X, Y> \in E$ si
-y sólo si $X$ es causa directa de $Y$ con respecto a $V$\cite{spirtes2000causation}.
+y sólo si $X$ es causa directa de $Y$ con respecto a  
+$V$\cite{spirtes2000causation}.
 
 Una estructura causal se puede representar como un grafo
 dirigido $D = <\mathcal{V},E>$ que representa una estructura causal suficiente $C$ (i.e., que todas las causas de las variables están dentro del conjunto de variables de $C$), donde los vértices de $D$ denotan las variables en $C$ y existe una
@@ -464,9 +464,9 @@ Por otra parte, de acuerdo con \cite{pearl_2009}, la estructura causal $D$ de un
 variables correspondientes. 
 
 
-Se consideran tres condiciones que conectan probabilidades con
-grafos causales: \textit{la condición causal de Markov}, \textit{la condición de minimalidad} y la condición
-de \textit{fidelidad}.
+Hay tres condiciones que conectan probabilidades con
+grafos causales: \textit{la condición causal de Markov}, \textit{la condición de minimalidad} y \textit{la condición
+de fidelidad}.
 
 \begin{itemize}
     \item \textit{Condición de Markov}. Una variable $V$ o nodo
@@ -541,7 +541,7 @@ variables en $X$ y sustituir $X=x$ en el resto de ecuaciones.
 
 El grafo que corresponde al conjunto de ecuaciones reducido es un
 subgrafo de $D$ en el que todas las aristas dirigidas incidentes en $X$
-han sido podadas. La diferencia $E(Y|do(x'))- E(Y|do(x''))$ a veces 
+han sido podadas. La diferencia $\mathbb{E}(Y|do(x'))- \mathbb{E}(Y|do(x''))$ a veces
 se toma como la definición de efecto causal \cite{theoryofcausalities2006}
 donde $x'$ y $x''$ son dos realizaciones diferentes de $X$.
 % Supóngase que se tiene
@@ -569,7 +569,7 @@ De acuerdo con algunos trabajos, la relación entre el aprendizaje por refuerzo
 y la causalidad es mucho más estrecha que con otras áreas del
 aprendizaje automático \cite{schlkopf2019causality} \cite{Gershman2017}. Esto debido a que al ejecutar acciones sobre su ambiente, entonces
 estima distribuciones intervencionistas y por lo tanto el aprendizaje por refuerzo es un problema causal. Sin embargo, se ha demostrado que el aprendizaje
-por refuerzo no está formulado de tal forma que se utilicen operaciones
+por refuerzo no está formulado de tal que se utilicen operaciones
 causales \cite{gonzalezsoto2019reinforcement}.
 Este trabajo, más que intentar construir los fundamentos de una nueva 
 teoría que combine ambas áreas, apunta hacia una perspectiva

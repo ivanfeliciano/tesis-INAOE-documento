@@ -21,12 +21,12 @@ En los casos más interesantes, las acciones no sólo afectan recompensas inmedi
 sino también el siguiente estado y, a través de eso, todas las recompensas ulteriores \cite{sutton_barto_2018}.
 
 Los algoritmos de aprendizaje por refuerzo 
-han mostrado ser efectivos en diversos dominios como en videojuegos \cite{mnih2013playing} \cite{vinyals2019grandmaster}, 
+han mostrado ser efectivos en diversos dominios como en videojuegos \cite{mnih2013playing, vinyals2019grandmaster}, 
 robótica \cite{openai2019solving}
 y atención médica \cite{gottesman2018evaluating}.
 Sin embargo, la mayoría de los  sistemas de aprendizaje por refuerzo actuales sufren de algunas deficiencias. Una de ellas es que no aprovechan procesos de
 alto nivel para 
-explotar patrones más allá de los asociativos \cite{garnelo2016deep}\cite{playingagainstnature2018}. Entre estos procesos de alto nivel se encuentra el \textit{razonamiento causal}. Las técnicas más comunes
+explotar patrones más allá de los asociativos \cite{garnelo2016deep, playingagainstnature2018}. Entre estos procesos de alto nivel se encuentra el \textit{razonamiento causal}. Las técnicas más comunes
 en el aprendizaje por refuerzo ignoran \textit{relaciones causales} entre eventos.
 Se tiene como hipótesis que conocer tales relaciones podría permitir a un agente 
 utilizar este conocimiento extra
@@ -43,7 +43,7 @@ del concepto. Existen muchas formas de definirla según diferentes contextos. La
 parecen ser un buen paradigma para algunas aplicaciones,
 sin embargo, cada una tiene contraejemplos y problemas.
 Entre algunos de los diferentes enfoques 
-están la causalidad para
+están; la causalidad para
 el orden de eventos propuesta por Lamport \cite{lamport2019time} y otras teorías revisadas en
 \cite{holland1986statistics} como la causalidad de Wiener-Granger para
 series de tiempo \cite{granger1969investigating} y la 
@@ -120,7 +120,7 @@ llevar a cabo?}
 
 
 Este razonamiento causal puede hacer 
-que los agentes de RL, o sistemas de Inteligencia Artificial en general, 
+que los agentes de RL, o sistemas de inteligencia artificial en general, 
 sean más eficientes.
 Por ejemplo, un robot que entiende que dejar caer cosas hace que se rompan, no necesitaría tirar cientos de objetos frágiles al suelo para ver qué les sucede.
 
@@ -190,8 +190,7 @@ que incluso un modelo incompleto o incorrecto incrementan el desempeño de un ag
 
 El aprendizaje por refuerzo se ha convertido en los últimos años en una de las áreas
 más investigadas dentro de la inteligencia artificial, psicología y neurociencia \cite{botvinick2019reinforcement}, incluso
-se han generado agentes con
-un desempeño superior al humano en algunas tareas como  al jugar videojuegos \cite{mnih2015human}\cite{starcraft2019deepmind} y juegos de mesa como go y ajedrez \cite{Silver1140}.
+se han generado agentes con un desempeño superior al humano en algunas tareas como  al jugar videojuegos \cite{mnih2015human, starcraft2019deepmind} y juegos de mesa como go y ajedrez \cite{Silver1140}.
 
 El RL se acerca más que otros enfoques al tipo de aprendizaje que los humanos y otros
 animales llevan a cabo y muchos de los principales algoritmos fueron inspirados por 
@@ -301,10 +300,11 @@ Integrar un modelo causal a un agente de RL para guiar sus
     
 \section{Objetivo general}
 El objetivo general de esta investigación
-es acelerar el entrenamiento de un agente de aprendizaje por refuerzo a través de la selección de acciones guiada por un 
+es establecer y validar un modelo computacional que integre 
+un modelo causal a un algoritmo de RL; a través de
+la selección de acciones guiada por un 
 modelo causal en problemas que contienen
-un mecanismo causal subyacente.
-
+un mecanismo causal subyacente; para acelerar el entrenamiento de un agente.
 \section{Objetivos específicos}
 
 Para alcanzar esta meta, se proponen
@@ -324,8 +324,7 @@ los siguientes objetivos:
     \item Implementar algoritmos de RL que consulten un modelo causal para dirigir sus acciones.
     \item Comparar el desempeño de algoritmos
     de RL usando la información del modelo y 
-    sin usarla. Estos algoritmos se prueban en
-    dos tipos de ambientes: 1) simples y discretos y 2) grandes y continuos.
+    sin usarla. 
 \end{itemize}
 
 
@@ -351,8 +350,8 @@ los siguientes objetivos:
 
 El documento del trabajo de investigación está estructurado de la 
 siguiente forma.
-En el capítulo 2 se exponen los fundamentos teóricos de ambas áreas, aprendizaje por refuerzo y causalidad.
-En el capítulo 3 se describen de manera general algunos enfoques
+En el Capítulo \ref{chapter2} se exponen los fundamentos teóricos de ambas áreas, aprendizaje por refuerzo y causalidad.
+En el Capítulo \ref{chapter3} se describen de manera general algunos enfoques
 que se han dado para acotar el espacio de búsqueda en problemas
 de RL y las propuestas para unir el aprendizaje por refuerzo y
 la causalidad.

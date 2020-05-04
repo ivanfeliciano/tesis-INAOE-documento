@@ -1,4 +1,4 @@
-\chapter{Trabajo relacionado}
+\chapter{Trabajo relacionado}\label{chapter3}
 
 % **************************** Define Graphics Path **************************
 \graphicspath{{Chapter3/Figs/}}
@@ -12,13 +12,13 @@ pueden estar relacionados en algunos
 procesos de solución de problemas.
 Por lo tanto, trabajos recientes
 se han enfocado en conectar estos dos
-campos  \cite{Gershman2017, 6-DBLP:journals/midm/YuDLR19}, \cite{6-DBLP:journals/midm/YuDLR19}, \cite{lu2018deconfounding}, \cite{dasgupta2019causal}. La meta de estos trabajos es mostrar que el RL puede ser más robusto y general a través de mecanismos
+campos  \cite{Gershman2017, 6-DBLP:journals/midm/YuDLR19, lu2018deconfounding, dasgupta2019causal}. La meta de estos trabajos es mostrar que el RL puede ser más robusto y general a través de mecanismos
 causales y viceversa.
 Esos trabajos están buscando unir ambos
 campos en un nuevo enfoque conocido como
 \textit{aprendizaje por refuerzo causal}, un paradigma que combina
 ambas perspectivas para resolver problemas que no pueden
-resolverse de manera individual en cada disciplina \cite{CausalRL2019EliasB}, \cite{chaochao_2019}.
+resolverse de manera individual en cada disciplina \cite{CausalRL2019EliasB, chaochao_2019}.
 No obstante, hasta donde sabe el autor, 
 este nuevo enfoque propuesto no ha sido 
 sido formulado de tal forma que sustente de manera formal su conexión.
@@ -58,7 +58,7 @@ estado, acción & recompensa \\ \bottomrule
 
 % consider the problem of learning goodpolicies solely from historical data in which unobserved factors (confounders) affect bothobserved actions and rewards.
 También se han atacado problemas clásicos de RL 
-en configuraciones observacionales donde existen factores de confusión. Los autores en \cite{bareinboim2015bandits} \cite{lu2018deconfounding}
+en configuraciones observacionales donde existen factores de confusión. Los autores en \cite{bareinboim2015bandits, lu2018deconfounding}
 han abordado el manejo de estos factores de confusión (aquellas variables que afectan a la acción y la salida).
 
 La idea de utilizar conocimiento de modelos
@@ -91,7 +91,7 @@ Por medio del uso de un modelo causal, la selección de acciones es guiada, limi
 
 \section{Descubrimiento causal usando aprendizaje por refuerzo}
 
-Por otra parte, se ha mostrado que el razonamiento causal puede surgir a partir del aprendizaje por refuerzo \cite{dasgupta2019causal}, \cite{madumal2019explainable} \cite{bengio2019metatransfer}.
+Por otra parte, se ha mostrado que el razonamiento causal puede surgir a partir del aprendizaje por refuerzo \cite{dasgupta2019causal, madumal2019explainable, bengio2019metatransfer}.
 
 
 En \cite{dasgupta2019causal} la idea general es mostrar que el razonamiento
