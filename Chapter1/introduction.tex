@@ -1,4 +1,4 @@
-\chapter{Introducción}
+\chapter{Introducción}\label{chapter1}
 
 
 
@@ -26,9 +26,10 @@ robótica \cite{openai2019solving}
 y atención médica \cite{gottesman2018evaluating}.
 Sin embargo, la mayoría de los  sistemas de aprendizaje por refuerzo actuales sufren de algunas deficiencias. Una de ellas es que no aprovechan procesos de
 alto nivel para 
-explotar patrones más allá de los asociativos \cite{garnelo2016deep, playingagainstnature2018}. Entre estos procesos de alto nivel se encuentra el \textit{razonamiento causal}. Las técnicas más comunes
+explotar patrones más allá de los asociativos \cite{garnelo2016deep, playingagainstnature2018}. Entre estos procesos de alto nivel se encuentra el \textit{razonamiento causal} \cite{pearl_2009, spirtes2000causation}. Las técnicas más comunes
 en el aprendizaje por refuerzo ignoran \textit{relaciones causales} entre eventos.
-Se tiene como hipótesis que conocer tales relaciones podría permitir a un agente 
+
+Se tiene como hipótesis que conocer relaciones causales entre eventos podría permitir a un agente 
 utilizar este conocimiento extra
 para predecir qué causará realizar cierta acción
 y entonces acelerar su proceso de aprendizaje.
@@ -138,7 +139,7 @@ estructura causal subyacente.
 En general, un agente comienza su búsqueda a ciegas,
 mediante interacciones a prueba y error.
 Sin embargo, éste puede, a través de intervenciones
-en un modelo causal, hacer consultas del tipo: ¿Qué si hago ...? Estas intervenciones sobre variables 
+en un modelo causal, hacer consultas del tipo: \textit{¿Qué tal si hago ...?} Estas intervenciones sobre variables 
 que describen a las acciones permiten usar al modelo
 como ``oráculo'' para no realizar acciones que lleven
 a estados no deseados o para no evitar la acción que
@@ -171,19 +172,21 @@ que una política condicionada a una
 meta (aprendida mediante aprendizaje por imitación) generalice para instancias de 
 un problema no vistas, respectivamente.
 Sin embargo, a diferencia de estos trabajos,
-se propone que el modelo causal sea suponga 
-aprendido para hacer
-frente a problemas con ambientes discretos 
-y continuos. 
-Guiando, ya sea la selección de acciones
-para la inmediata actualización de la política en el primer caso, o para saber qué experiencias \cite{mnih2013playing} guardar en el segundo caso.
+en esta investigación 
+se propone que el modelo causal se suponga 
+aprendido y se ataquen problemas con ambientes discretos 
+y continuos. El modelo permite una selección de acciones 
+guiada para la inmediata actualización de la política
+o para guardar experiencias.
 
 
+{\color{magenta}
 Los resultados de la prueba de concepto presentada en este trabajo, 
-muestran las ventajas de usar un modelo causal durante el entrenamiento de
-un agente. Entre ellas están: alcanzar una recompensa mayor en un menor tiempo y
-que incluso un modelo incompleto o incorrecto incrementan el desempeño de un agente.
-
+muestran las ventajas de usar un modelo causal durante el entrenamiento de un agente. Entre ellas están: 
+\begin{itemize}
+    \item Alcanzar una recompensa mayor en un menor tiempo.
+    \item Un modelo incompleto o incorrecto incrementan el desempeño de un agente.
+\end{itemize}}
 
 \section{Motivación y justificación}
 
@@ -196,26 +199,27 @@ El RL se acerca más que otros enfoques al tipo de aprendizaje que los humanos y
 animales llevan a cabo y muchos de los principales algoritmos fueron inspirados por 
 sistemas de aprendizaje biológicos \cite{sutton_barto_2018}. Sin embargo,
 entre las principales diferencias de estos sistemas 
-están la cantidad de datos y tiempo de entrenamiento
+están, la cantidad de datos y el tiempo de entrenamiento
 requeridos para aprender a realizar una tarea \cite{Silver1140}.
 
 A pesar del éxito del RL, su teoría está basada 
 en relaciones asociativas \cite{playingagainstnature2018}.
-De acuerdo con \cite{pearl2018bookofwhy} existen tres niveles
-de razonamiento causal: \textit{observar}, \textit{intervenir}
+De acuerdo con los tres niveles
+de razonamiento causal definidos por \cite{pearl2018bookofwhy}, las 
+relaciones asociativas se encuentran en el primer nivel.
+Los tres niveles de razonamiento causal corresponden a: \textit{observar}, \textit{intervenir}
 e \textit{imaginar}.
-En el primer nivel se encuentran las 
+En el primer nivel se ubican las 
 relaciones asociativas, donde se detectan regularidades
 en el ambiente a partir de observaciones pasivas de los datos.
 El segundo nivel, intervenir, implica predecir los 
-efectos de alteraciones intencionales del ambiente
+efectos de alteraciones intencionales sobre el ambiente
 y elegir entre estas alteraciones  para producir una
 salida deseada. En el tercer nivel se encuentra
-el razonamiento \textit{contrafactual} donde la restrospección
-e imaginación permite responde preguntas como ¿por qué?
+el razonamiento \textit{contrafactual} donde la retrospección
+e imaginación permite responde preguntas como: ¿por qué?
 y ¿qué hubiera pasado si una intervención se hubiera hecho 
-en vez de otra?.
-
+en vez de otra?
 
 El paradigma por interacción del RL, donde un agente
 no sólo observa sino que también realiza acciones que 
@@ -227,10 +231,21 @@ En específico, un agente de RL puede consultar un modelo
 causal para preguntarse cosas como, ¿qué pasa si hago ...?
 cada vez que selecciona una acción durante su entrenamiento.
 
+Hoy en día, ningún agente inteligente puede contestar 
+preguntas sobre intervenciones que no ha visto antes 
+\cite{pearl2018theoretical}. Por lo tanto, es necesario equipar a
+los algoritmos de aprendizaje con herramientas de razonamiento
+causal para acelerar su aprendizaje y además alcanzar 
+un desempeño al nivel de los humanos.
 Este trabajo explora un marco de trabajo donde un agente
-de aprendizaje por refuerzo acelere su entrenamiento a través
+de aprendizaje por refuerzo acelera su entrenamiento a través
 del uso de un modelo causal, parcial o completo del ambiente
-que habita. 
+que habita. Fuera de los límites de
+esta investigación queda
+crear un agente inteligente que aprende y usa un modelo causal para tomar decisiones en retrospección o que
+planifica y aprende imaginando ambientes hipotéticos.
+Sin embargo, se buscan mostrar algunas de las ventajas de utilizar información extra obtenida de una estructura causal que 
+describe al ambiente que habita un agente de RL.
 
 
 \section{Problemática}
@@ -238,9 +253,9 @@ que habita.
 Un agente de RL debe aprender a mapear los estados
 que percibe a acciones que se deben tomar cuando
 se encuentre en esos estados. Este comportamiento
-se infiere con la interacción a prueba y error con el ambiente. Sin embargo, la única señal que el agente recibe es la recompensa. Es por eso que este proceso puede ser muy lento en tareas donde no hay recompensas inmediatas, donde la mayoría de secuencias
-de decisiones no inteligentes no producen señal de recompensa alguna.
-Para recibir más recompensa, un agente debe intentar acciones que no haya explorado o explotar la experiencia que ya ha obtenido.
+se infiere con la interacción a prueba y error con el ambiente y la única señal que el agente recibe es una recompensa que mide que tan buena fue la acción que llevó a cabo. Es por eso que este proceso puede ser muy lento en tareas donde no hay recompensas inmediatas, donde la mayoría de secuencias
+de decisiones no inteligentes producen una señal de recompensa nula.
+Por lo tanto, para recibir más recompensa, un agente debe intentar acciones que no haya \textit{explorado} o \textit{explotar} la experiencia que ya ha obtenido.
 
 Normalmente, el explorar o explotar se realiza en el 
 paso de la selección de acciones durante el entrenamiento de un agente. Restringir el espacio de búsqueda aprovechando 
@@ -252,7 +267,7 @@ que el agente tenga como conocimiento adicional
 y que le permitan perseguir acciones que lo lleven a
 estados deseados o evitar elegir acciones que lo lleven a 
 estados no deseados. Un modelo causal parece una herramienta adecuada en
-tareas de RL donde elegir una acción pueda representar una intervención en el modelo.
+tareas de RL donde elegir una acción pueda representar una intervención en el modelo o la estructura causal del modelo permita conocer el orden causal de las acciones y estados.
 
 Por otra parte, definir un modelo causal del ambiente no es trivial.
 Las tareas actuales en las que se aplican soluciones 
@@ -261,7 +276,8 @@ que recibe el agente normalmente es de alta dimensionalidad, por
 ejemplo, imágenes. Un modelo causal donde se represente toda
 la información del ambiente con el que interactúa el agente
 es intratable. 
-Por esta razón, el modelo causal puede representar sólo pequeñas partes del mundo del agente.
+Por esta razón, el modelo causal puede representar sólo pequeñas partes del mundo del agente. Además, incluso cuando se trabajen sobre un espacio donde la información sea 
+mucho más manejable, contar con los parámetros de un modelo causal puede ser una tarea muy difícil. Por lo tanto, se necesita una representación que no exceda por mucho complejidad de los problemas de RL pero con información suficiente.
 
 % El problema de cómo representar el conocimiento causal, se representan acciones y estados
 
@@ -281,23 +297,34 @@ Por esta razón, el modelo causal puede representar sólo pequeñas partes del m
 
 % El punto es llegar a decir que quiero guiar la selección de acciones.
 
-\section{Preguntas de investigación}
+\section{\color{blue}Preguntas de investigación}
 
+% Las preguntas de investigación establecen lo que quiero 
+% aprender.
 \begin{enumerate}
-    \item ¿Se puede añadir conocimiento causal al entrenamiento de un agente de RL?
-    \item ¿La reducción del espacio de búsqueda dado por una selección
-    de acciones guiada por el modelo causal disminuye el tiempo de 
-    entrenamiento?
-    \item ¿Es posible aprender el modelo causal durante la interacción del
-    agente con el ambiente?
+    \item ¿Se puede establecer una representación de las relaciones causales
+del ambiente que pueda ser utilizada por un agente en el proceso
+de aprendizaje por refuerzo?
+    % \item ¿Se puede añadir conocimiento causal al entrenamiento de un agente de RL?
+    \item ¿La reducción del espacio de búsqueda dado por una selección de acciones guiada por el modelo causal permite al agente tener un mejor desempeño durante el entrenamiento con respecto a una exploración a ciegas?
+    % \item ¿Es posible aprender el modelo causal durante la interacción del
+    % agente con el ambiente?
 \end{enumerate}
-\section{Hipótesis}
-Integrar un modelo causal a un agente de RL para guiar sus
-    acciones permite reducir su tiempo de entrenamiento. Además, dadas
-    tareas con un ambiente gobernado por un modelo
-    causal y un modelo inicial de creencias e incompleto, es posible  aprender de las interacciones activas del agente con el ambiente
-    para mejorar el modelo supuesto.
-    
+\section{\color{blue}Hipótesis}
+
+% La hipótesis en contraste, son sentencias de respuestas tentativas a esas preguntas
+% Muchos establecen sus ideas sobre respuestas tentativas como
+% parte del proceso de teorizar y analizar datos. Estas son proposiciones.
+% Algunas relaciones causales en un ambiente se pueden capturar por medio
+% de un grafo causal.
+% Integrar esta estructura causal a un agente de RL para guiar sus acciones permite reducir su tiempo de entrenamiento.
+
+
+Dada una tarea gobernada por un modelo causal y una representación
+gráfica de dicho modelo, al integrar este conocimiento causal
+a un agente que realiza aprendizaje por refuerzo, se reduce
+el tiempo de aprendizaje respecto a una exploración a ciegas.
+
 \section{Objetivo general}
 El objetivo general de esta investigación
 es establecer y validar un modelo computacional que integre 
@@ -307,7 +334,7 @@ modelo causal en problemas que contienen
 un mecanismo causal subyacente; para acelerar el entrenamiento de un agente.
 \section{Objetivos específicos}
 
-Para alcanzar esta meta, se proponen
+Para alcanzar la meta de la investigación, se proponen
 los siguientes objetivos:
 
 \begin{itemize}
@@ -345,7 +372,7 @@ los siguientes objetivos:
     ambiente.
 \end{enumerate}
 
-% \section{Resumen}
+
 \section{Estructura del documento}
 
 El documento del trabajo de investigación está estructurado de la 

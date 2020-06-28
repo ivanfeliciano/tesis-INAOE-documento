@@ -1,0 +1,53 @@
+\chapter{Conclusiones}\label{chapter5}
+
+% **************************** Define Graphics Path **************************
+\graphicspath{{Chapter5/Figs/}}
+
+En este trabajo se propuso la integración de un modelo causal en un
+algoritmo de aprendizaje por refuerzo.
+La investigación presenta
+elementos para responder a las preguntas de investigación planteadas en el Capítulo \ref{chapter1}.
+Se ha formalizar el esquema 
+    de interacción entre
+    un modelo causal y un algoritmo de aprendizaje por
+    refuerzo.
+    Además, en el Capítulo \ref{chapter5} se presenta la experimentación que verifica empíricamente
+    la mejora del desempeño de un agente usando diferentes niveles de información (completa, parcial e incorrecta) contenida en el modelo causal. De el análisis de los experimentos 
+    se ha llegado a las siguientes conclusiones:
+    
+\begin{enumerate}
+    \item Aprende más rápido 
+    \item Parece que generaliza pues sin el modelo completo se
+    comporta mejor
+    \item Parece que con el modelo completo ni siquiera es 
+    neesario el RL.
+\end{enumerate}
+\subsection{Trabajo futuro}
+
+Hay una serie de configuraciones experimentales que quedan 
+para medir otros aspectos de los algoritmos. Por ejemplo,
+medir qué tanto influye el peso que se le da a elegir una 
+acción siguiendo el modelo. También sería interesante saber,
+a partir de cuando se podría ignorar al modelo causal durante el entrenamiento. Además,
+se podría medir qué tan bien generaliza un algoritmo
+ejecutando pruebas sobre metas no visitadas durante el entrenamiento
+o modificando algunas relaciones entre las variables del modelo causal.
+
+Dado que la tarea del control de interruptores  permite
+que las observaciones del agente también sean imágenes,
+se propone extender los experimentos a este tipo de configuración
+donde se hace frente a un espacio de estados grande y continuo.
+
+Diferentes problemas permanecen abiertos y fuera del alcance de este trabajo, sin embargo, se espera poder atacar alguno de ellos, por lo tanto se mencionan a continuación.
+
+Sigue abierta la tarea del proceso de aprendizaje del modelo
+causal. De manera general, una propuesta consiste en iniciar con una estructura con pesos que representen 
+una distribución de probabilidad de creencias de que realizar una acción $a$ cause un estado $x$, i.e., $P_{a\rightarrow x}$. Estos pesos (probabilidades) se pueden
+ir actualizando conforme el agente interactúe con el mundo y
+a través de sus respuestas le brinde información del modelo causal que lo gobierna.
+
+
+Por otra parte, también se está intentando atacar tareas más 
+complejas que subsumen los siguientes problemas: 1) las observaciones son imágenes que brindan muy poca información del mundo, 2) debido al problema de la asignación de crédito es difícil saber qué acción a la larga causará un estado deseado, 3) los efectos de una acción en el ambiente puede ser imperceptibles, por lo que es necesario medir el efecto causal de una acción sobre un estado una función similar a una función de valor. En particular, un ejemplo de un ambiente con estas dificultades, es Animal AI \cite{beyret2019animalai}.
+
+

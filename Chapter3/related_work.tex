@@ -16,38 +16,48 @@ campos  \cite{Gershman2017, 6-DBLP:journals/midm/YuDLR19, lu2018deconfounding, d
 causales y viceversa.
 Esos trabajos están buscando unir ambos
 campos en un nuevo enfoque conocido como
-\textit{aprendizaje por refuerzo causal}, un paradigma que combina
+\textit{aprendizaje por refuerzo causal}. Este paradigma combina
 ambas perspectivas para resolver problemas que no pueden
 resolverse de manera individual en cada disciplina \cite{CausalRL2019EliasB, chaochao_2019}.
-No obstante, hasta donde sabe el autor, 
-este nuevo enfoque propuesto no ha sido 
-sido formulado de tal forma que sustente de manera formal su conexión.
+Hasta donde sabe el autor de esta investigación, este nuevo enfoque propuesto no ha sido sido formulado de tal manera que se sustente formalmente.
+Sin embargo, los esfuerzos que se han hecho desde esta perspectiva, han abierto
+nuevos problemas y parece ser el camino correcto para solucionar algunos otros
+que están siendo estudiados.
 % ni el problema de aprendizaje por 
 % refuerzo ni el del enfoque de causalidad en este trabajo, han 
 
 
-En las siguientes dos secciones se presentan las dos direcciones 
-en las que se encuentran trabajando actualmente, la primera con
-un enfoque de usar razonamiento causal en aprendizaje por refuerzo
-y la segunda que busca descubrir relaciones causales utilizando
-aprendizaje por refuerzo.
-La última sección menciona algunos trabajos que buscan guiar la
-selección de acciones en un agente de RL.
+Se pueden dividir el aprendizaje por refuerzo causal
+en dos áreas. La primera busca usar razonamiento causal en aprendizaje por refuerzo y la segunda que tiene como objetivo descubrir relaciones causales utilizando aprendizaje por refuerzo. En las siguientes dos secciones se describen
+algunos trabajos de los enfoques en ambas direcciones. Algunas de las
+propuestas descritas no están del todo alineadas con esta investigación, sin embargo, es un área que recientemente está siendo explorada y los resultados de éstas parecen prometedores.
+Finalmente, la última sección menciona algunas propuesta que, de manera similar a este trabajo, buscan guiar la selección de acciones en un agente de RL. No obstante, estos métodos no utilizan información causal.
+
+% This chapter should include a comparison of your work
+% with closely related efforts. It should demonstrate the principal differences and
+% similarities with respect to (1) the details of the problem, (2) the approach, (3) the
+% results, and possibly (4) the methodology. In particular, when you compare your
+% approach with those of others, it is important that you objectively weigh the advantages
+% and disadvantages. This increases your credibility and that of your study. Further,
+% it will show that you did your homework, and that you know what the state-of-the-art
+% in the area is. This will support and strengthen any claims of originality in your work.
+
+% DEbo hacer una lista de los artículos que más me interesan
+
 
 \section{Razonamiento causal en aprendizaje por refuerzo}
 
 
 Los autores en \cite{Gershman2017}, desde un enfoque psicológico, establecen que
-el modelo usado en los algoritmos de aprendizaje por refuerzo basados en modelo
+el modelo usado en los algoritmos de aprendizaje por refuerzo basados en modelo,
 es causal.
-Ellos establecen algunas relaciones causales fundamentales en el aprendizaje por
-refuerzo. Tomar una acción en un estado causa una recompensa y una 
-transición a un nuevo estado.
-Sin embargo, no se aborda o explica el mecanismo intervencionista de la inferencia causal.
+Ellos describen algunas relaciones causales fundamentales en el aprendizaje por
+refuerzo y se muestran resumidas en la Tabla \ref{table:causal-relationships}. 
 
 \begin{table}[h]
 \centering
 \caption{Relaciones causales en RL según \cite{Gershman2017}.}
+\label{table:causal-relationships}
 \begin{tabular}{@{}ll@{}}
 \toprule
 Causas         & Efecto     \\ \midrule
@@ -56,10 +66,29 @@ estado, acción & recompensa \\ \bottomrule
 \end{tabular}
 \end{table}
 
-% consider the problem of learning goodpolicies solely from historical data in which unobserved factors (confounders) affect bothobserved actions and rewards.
-También se han atacado problemas clásicos de RL 
-en configuraciones observacionales donde existen factores de confusión. Los autores en \cite{bareinboim2015bandits, lu2018deconfounding}
-han abordado el manejo de estos factores de confusión (aquellas variables que afectan a la acción y la salida).
+Tomar una acción en un estado causa una recompensa y una 
+transición a un nuevo estado.
+Sin embargo, a pesar de que esta perspectiva tiene sentido y es natural para un ser humano, no se aborda o explica el mecanismo intervencionista de la inferencia causal. 
+Por otra parte, en esta tesis, más que plantear un algoritmo de RL 
+basado en modelo en términos de causales, se
+busca complementar el aprendizaje por refuerzo con información causal.
+Esta información, a diferencia de lo propuesto por \cite{Gershman2017}, está
+basada en relaciones entre variables de acción y otras que no necesariamente son las observaciones puras de un agente.
+
+El trabajo presentado por \cite{lu2018deconfounding}, formulado para resolver tareas con datos observacionales, tiene una perspectiva similar a \cite{Gershman2017} en cuanto a las relaciones causales en el RL. Los autores
+presentan un grafo causal donde reemplazan a los estados 
+por variables latentes de los estados en un espacio de menor dimensión. Además, añaden factores
+de confusión no observables (aquellas variables que afectan a la acción y la salida). Sin embargo, ya que el objetivo de ese trabajo es manejar los factores de confusión en problemas con datos observacionales algunos elementos causales 
+quedan implícitos. Por ejemplo, los parámetros del modelo causal quedan codificados en aproximadores de funciones y no es claro si los patrones aprendidos tienen una perspectiva más asociativa que causal. En este trabajo de tesis, 
+se ataca un problema más pequeño y sin intentar construir un puente entre el 
+problema completo de RL y la causalidad. Pero se toma la idea de trabajar con
+relaciones causales entre variables de acción y variables que representen 
+estados en un espacio menor.
+
+% % consider the problem of learning goodpolicies solely from historical data in which unobserved factors (confounders) affect bothobserved actions and rewards.
+% También se han atacado problemas clásicos de RL 
+% en configuraciones observacionales donde existen factores de confusión. Los autores en \cite{bareinboim2015bandits, lu2018deconfounding}
+% han abordado el manejo de estos factores de confusión .
 
 La idea de utilizar conocimiento de modelos
 causales para evitar o reducir el aprendizaje a 
@@ -76,13 +105,15 @@ conocimiento causal para tomar decisiones.
 
 
 En \cite{nair2019causal}, se propone
-aprender un grafo causal y
-entrenar una política con ayuda del grafo para generalizar sobre 
+aprender un grafo causal usando aprendizaje supervisado y
+entrenar una política con ayuda del grafo y mediante aprendizaje por imitación, para generalizar sobre 
 configuraciones diferentes de una misma
 tarea.
-Sin embargo, debido a que el enfoque es sobre la generalización, en el algunos casos
-se hace una búsqueda sobre todas las acciones para ver sus efectos.
-
+El ambiente utilizado en ese trabajo es básicamente el mismo que se utiliza en esta
+tesis, salvo por algunas modificaciones. Sin embargo, los problemas a atacar y los enfoques
+de solución son diferentes. Ellos aprenden el grafo con aprendizaje supervisado y
+aprenden una política con aprendizaje por imitación. En esta tesis se supone que
+el modelo causal es dado y que es información extra que sirve como apoyo a un agente de RL.
 
 En general, a diferencia de los trabajos anteriores,
 en esta investigación se busca reducir el espacio de exploración
@@ -91,7 +122,11 @@ Por medio del uso de un modelo causal, la selección de acciones es guiada, limi
 
 \section{Descubrimiento causal usando aprendizaje por refuerzo}
 
-Por otra parte, se ha mostrado que el razonamiento causal puede surgir a partir del aprendizaje por refuerzo \cite{dasgupta2019causal, madumal2019explainable, bengio2019metatransfer}.
+El descubrir la estructura causal entre un conjunto de variables un problema
+fundamental en diferentes ciencias. A pesar de que 
+el alcance de esta tesis no cubre la parte de descubrimiento causal 
+a continuación se mencionan brevemente algunos trabajos 
+que han logrado mostrar que el razonamiento causal puede surgir a partir del aprendizaje por refuerzo \cite{dasgupta2019causal, madumal2019explainable, zhu2019causal}. 
 
 
 En \cite{dasgupta2019causal} la idea general es mostrar que el razonamiento
@@ -110,7 +145,7 @@ de datos observacionales y hacer predicciones contrafactuales.
 La propuesta de los autores en \cite{nair2019causal} consiste en
 aprender mediante aprendizaje supervisado de trayectorias 
 de observación observadas un modelo de inducción causal, que de acuerdo con ellos es un modelo que a partir
-de observaciones como entrada construye un modelo causal.
+de observaciones como entrada construye un grafo causal.
 % ausal reasoning has been an indispensable capability for humans and other in-telligent animals to interact with the physical world. In this work, we propose toendow an artificial agent with the capability of causal reasoning for completinggoal-directed tasks.  We develop learning-based approaches to inducing causalknowledge in the form of directed acyclic graphs, which can be used to contex-tualize a learned goal-conditional policy to perform tasks in novel environmentswith latent causal structures.  We leverage attention mechanisms in our causalinduction model and goal-conditional policy, enabling us to incrementally generatethe causal graph from the agent’s visual observations and to selectively use theinduced graph for determining actions.  Our experiments show that our methodeffectively generalizes towards completing new tasks in novel environments withpreviously unseen causal structures
 
 
@@ -122,11 +157,11 @@ de la información con la que cuenta el agente y existen diversas técnicas para
 Las estrategias de explotación y exploración no 
 son dirigidas y no buscan explícitamente transiciones
 interesantes \cite{mcfarlane2018survey}.
-Usar modelos predictivos parece una manera 
+Sin embargo, usar modelos de predicción parece una manera 
 prometedora para lidiar con este problema \cite{hafner2019dream}.
  
 Una técnica reciente para una exploración 
-guiada sin apoyo de un modelo causal ha sido
+guiada, sin apoyo de un modelo causal, ha sido
 propuesta por \cite{mazumder2019guided}.
 Los autores proponen un nuevo método
 para acelerar el entrenamiento de algoritmos de RL con el uso de una propiedad presente
