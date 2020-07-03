@@ -1,43 +1,8 @@
 % ************************** Thesis Abstract *****************************
 % Use `abstract' as an option in the document class to print only the titlepage and the abstract.
 \begin{abstract}
-Reinforcement learning and Causal Inference are indispensable part of machine learning. However, they are usually treated separately, although that both are directly relevant to problem solving methods.
-One of the challenges that emerge in Reinforcement Learning, is the trade-off between exploration and exploitation. In this work 
-we propose to use causal models to attend the learning 
-process of an agent. The causal models helps to restrict the search space by reducing the actions that an agent can take through interventional queries like: \textit{Would I have achieved my goal if I had drop the passenger off here?}. This simulates common sense that lightens the time it takes the trial and error approach. We attack the classic taxi problem and we show that using causal models in the Q-learning action selection step leads to higher
-and faster jump-start reward and convergence, respectively.
-e
+Reinforcement learning is an indispensable learning by interaction paradigm within machine learning. One of the challenges that emerge in Reinforcement Learning, is the trade-off between exploration and exploitation. To solve this problem, an agent can limit her search space by leveraging properties of her environment o using previous knowledge. Specifically, the agent can exploit the causal relationships of her world. We propose to attend the learning process of an agent in goal-directed tasks where a causal structure is provided. The causal model helps to restrict the search space by reducing the actions that an agent can take through graph queries like check what variables are direct causes of a
+variables of interest. This simulates common sense that lightens the time it takes the trial and error approach. Our main contribution is the framework to represent the causal information and an algorithm to guide action selection by querying the causal graph. We attack a couple of small and simple problems on a discrete and continuous domains, and we show that using extra information from a causal structure in the Q-learning action selection step leads to higher and faster jump-start reward and stability, respectively. Furthermore, it is shown that it is not mandatory to have a completely correct causal structure. Since even using partial and some spurious relationships in the graphs, a better performance is obtained than not using extra information.
 
-e advocate that a good abstract should (1) give a high-level presen-
-tation of the subject area studied, (2) reason about the importance and why it is an
-interesting area worthy to be studied, (3) present a high-level description of the
-approach, and (4) summarise the contribution. An informative abstract should sum-
-marise all the major sections of the report, the key concepts, contributions, and
-conclusions. A typical abstract is about 250–500 words. This is not more than 10–20
-sentences, so you will obviously have to choose your words very carefully in order
-to cover so much information in such a condensed format. You must therefore
-exclude any general and obvious statements; the phrasing should be concentrated
-and compact.
-En este trabajo de investigación el objetivo es 
-acelerar el entrenamiento de un agente de RL
-a través de la selección de acciones guiadas por un 
-modelo causal para completar tareas que tienen una
-estructura causal subyacente.
-En general, un agente comienza su búsqueda a ciegas,
-mediante interacciones a prueba y error.
-Sin embargo, éste puede, a través de intervenciones
-en un modelo causal, hacer consultas del tipo: \textit{¿Qué tal si hago ...?} Estas intervenciones sobre variables 
-que describen a las acciones permiten usar al modelo
-como ``oráculo'' para no realizar acciones que lleven
-a estados no deseados o para no evitar la acción que
-lleve a una meta.
-Se ha probado que la formulación actual del aprendizaje
-por refuerzo no es un problema causal.
-Por lo tanto, es una suposición fuerte 
-decir que todos los problemas 
-en aprendizaje por refuerzo contienen mecanismos causales. 
-Sin embargo, hay tareas en las
-que un experto o incluso el mismo algoritmo puede
-aprender el modelo causal latente.
 
 \end{abstract}

@@ -53,7 +53,7 @@ capaz de aprender cuales son acciones deseables basándose en una recompensa que
     resultado, el estado del mundo cambia y recibe una recompensa $r$.}
 \end{figure}
 
-En la siguientes secciones primero se formaliza el problema de aprendizaje por refuerzo como
+En las siguientes secciones primero se formaliza el problema de aprendizaje por refuerzo como
 un problema de control óptimo para procesos de decisión de Markov incompletos (MDP por sus siglas en inglés) y luego se
 describe el algoritmo \textit{Q-learning}, cuyo desarrollo involucró un gran avance en esta área de la IA  .
 
@@ -93,12 +93,13 @@ Formalmente, un MDP es una tupla $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \math
 \end{itemize}
 
 
-Además de estos componentes, un sistema de aprendizaje por refuerzo subsume otros elementos como: una \textit{política}, una \textit{función de valor} y a veces un \textit{modelo} del ambiente. Una política es una función $\pi$ que mapea estados
+Además de estos componentes, un sistema de aprendizaje por refuerzo subsume otros elementos como: una \textit{política} y una \textit{función de valor}. Una política es una función $\pi$ que mapea estados
 a acciones y que maximiza alguna medida de refuerzo a largo plazo. Mientras que la recompensa expresa lo que es bueno
 de manera inmediata, una función de valor especifica lo que
-es bueno a la larga. Un modelo consiste del conocimiento de la
-función de probabilidad de transición $\mathcal{P}$ y
-de la función de recompensa $\mathcal{R}$.
+es bueno a la larga. 
+%Un modelo consiste del conocimiento de la
+%función de probabilidad de transición $\mathcal{P}$ y
+%de la función de recompensa $\mathcal{R}$.
 El aprendizaje por refuerzo aprende las funciones de valor o la política mientras 
 interactúa con el ambiente.
 % %  
