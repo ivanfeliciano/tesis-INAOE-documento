@@ -1,4 +1,4 @@
-\chapter{Conclusiones}\label{chapter5}
+\chapter{Conclusiones}\label{chapter6}
 
 % **************************** Define Graphics Path **************************
 \graphicspath{{Chapter5/Figs/}}
@@ -6,44 +6,42 @@
 En este trabajo se propuso la integración de un modelo causal en un
 algoritmo de aprendizaje por refuerzo.
 La investigación presenta
-elementos para responder a las preguntas de investigación planteadas en el Capítulo \ref{chapter1}.
-Se ha formalizar el esquema 
-    de interacción entre
-    un modelo causal y un algoritmo de aprendizaje por
-    refuerzo.
+elementos para responder a las preguntas de investigación planteadas en el Capítulo \ref{chapter1}. Un grafo causal entre acciones y estados del mundo de
+un agente permite alcanzar recompensas mayores más rápido, en comparación a no utilizar información adicional.
+Se planteó un algoritmo para la interacción entre un modelo causal
+    y un algoritmo de aprendizaje por refuerzo .
     Además, en el Capítulo \ref{chapter5} se presenta la experimentación que verifica empíricamente
-    la mejora del desempeño de un agente usando diferentes niveles de información (completa, parcial e incorrecta) contenida en el modelo causal. De el análisis de los experimentos 
+    la mejora del desempeño de un agente usando diferentes niveles de información (completa, parcial e incorrecta) contenida en el modelo causal. De acuerdo con los resultados de los experimentos 
     se ha llegado a las siguientes conclusiones:
     
 \begin{enumerate}
-    \item Aprende más rápido 
-    \item Parece que generaliza pues sin el modelo completo se
-    comporta mejor
-    \item Parece que con el modelo completo ni siquiera es 
-    neesario el RL.
+    \item Tener el modelo causal completo parece resolver la tarea. Surge la 
+    duda de si el aprendizaje por refuerzo todavía es necesario.
+    \item Proveer a un agente con un grafo que conserva pocas relaciones
+    causales verdaderas no afecta tan drásticamente el desempeño del agente, pues 
+    continúa teniendo un comportamiento mejor que sin guiar su selección de acciones.
+    \item Reducir la probabilidad de consultar el grafo causal en un etapa 
+    temprana de entrenamiento, es decir, dar más peso a la explotación que a la exploración, parece no afectar el desempeño del agente demasiado. Esto podría
+    ser porque con la poca exploración guiada que han ejecutado los algoritmos,
+    ya han sesgado su comportamiento.
 \end{enumerate}
-\subsection{Trabajo futuro}
 
-Metas más complicadas
-Estructuras en cadena causal
+\section{Trabajo futuro}
 
-Hay una serie de configuraciones experimentales que quedan 
-para medir otros aspectos de los algoritmos. Por ejemplo,
-medir qué tanto influye el peso que se le da a elegir una 
-acción siguiendo el modelo. También sería interesante saber,
-a partir de cuando se podría ignorar al modelo causal durante el entrenamiento. Además,
-se podría medir qué tan bien generaliza un algoritmo
-ejecutando pruebas sobre metas no visitadas durante el entrenamiento
-o modificando algunas relaciones entre las variables del modelo causal.
+Diferentes tareas y problemas permanecen abiertos y fuera del alcance de este trabajo. Algunos de ellos con respecto a los escenarios experimentales atacados  y otros que se han encontrado durante la investigación. A continuación, se 
+mencionan algunos tareas y problemas pendientes.
 
-Dado que la tarea del control de interruptores  permite
-que las observaciones del agente también sean imágenes,
-se propone extender los experimentos a este tipo de configuración
-donde se hace frente a un espacio de estados grande y continuo.
+Con respecto a los problemas atacados en el trabajo,
+varios experimentos y análisis quedan pendientes. Entre ellos, 
+establecer cuándo se considera resuelta una tarea, por ejemplo, 
+definir una recompensa óptima por episodio y 
+calcular quién tiene la racha más larga. Con esta información 
+se podrían realizar pruebas estadísticas. Otro escenario que sería interesante
+explorar es aquel donde en la estructuras con caminos causales con más de dos aristas. Por ejemplo, para el problema de los interruptores, se pueden
+tener escenarios donde sea necesario mover un interruptor ``maestro'' para
+poder mover los otros interruptores.
 
-Diferentes problemas permanecen abiertos y fuera del alcance de este trabajo, sin embargo, se espera poder atacar alguno de ellos, por lo tanto se mencionan a continuación.
-
-Sigue abierta la tarea del proceso de aprendizaje del modelo
+Por otro lado, sigue abierta la tarea del proceso de aprendizaje del modelo
 causal. De manera general, una propuesta consiste en iniciar con una estructura con pesos que representen 
 una distribución de probabilidad de creencias de que realizar una acción $a$ cause un estado $x$, i.e., $P_{a\rightarrow x}$. Estos pesos (probabilidades) se pueden
 ir actualizando conforme el agente interactúe con el mundo y
@@ -51,6 +49,6 @@ a través de sus respuestas le brinde información del modelo causal que lo gobi
 
 
 Por otra parte, también se está intentando atacar tareas más 
-complejas que subsumen los siguientes problemas: 1) las observaciones son imágenes que brindan muy poca información del mundo, 2) debido al problema de la asignación de crédito es difícil saber qué acción a la larga causará un estado deseado, 3) los efectos de una acción en el ambiente puede ser imperceptibles, por lo que es necesario medir el efecto causal de una acción sobre un estado una función similar a una función de valor. En particular, un ejemplo de un ambiente con estas dificultades, es Animal AI \cite{beyret2019animalai}.
+complejas que subsumen los siguientes problemas: 1) debido al problema de la asignación de crédito es difícil saber qué acción a la larga causará un estado deseado, 2) los efectos de una acción en el ambiente puede ser imperceptibles, por lo que es necesario medir el efecto causal de una acción sobre un estado una función similar a una función de valor. En particular, un ejemplo de un ambiente con estas dificultades, es Animal AI \cite{beyret2019animalai}.
 
 

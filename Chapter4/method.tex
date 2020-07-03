@@ -100,7 +100,6 @@ en la estructura causal $\mathcal{D}$.
     \item Los elementos de $\mathcal{X}$ son variables con valores binarios, $\{0,1\}$. Esto se puede ver como que la variable $x\in \mathcal{X}$
     está prendida o apagada, es verdadera o falsa o se cumple o no se cumple.
     \item En tareas donde los estados son continuos, el agente de RL cuenta con la función $\phi$ que mapea los estados a variables de alto nivel.
-    \item {\color{magenta}Añadir esa suposición de que mis transiciones en estados de alto nivel es inmediata.}
 \end{enumerate}
 
 
@@ -153,8 +152,8 @@ logra obtener información sobre alguna de las variables interés, es decir,
 ésta se encuentra en el grafo y además tiene al menos un predecesor
 se regresa una acción aleatoria que es causa directa de esa variable $x_i$.
 En caso de que no se haya información suficiente, la política regresa una acción aleatoria,
-es decir, realiza un exploración a ciegas. Para evitar que el orden en que
-se obtienen las variables de interés y en el que se obtienen las causas de 
+es decir, realiza un exploración a ciegas. Para evitar que el  en que
+se obtienen las variables de interés y el orden en que se obtienen las causas de 
 cada variable de interés, se hace un barajado sobre éstas.
 
 \begin{algorithm}[H]
@@ -193,7 +192,7 @@ A Joi se le puede dotar de cierto conocimiento previo de la configuración
 del cableado de la casa, tal que le ayude a descifrar las correspondencias entre
 interruptores de luz y los focos de las habitaciones. 
  A Joi le gusta aprender mediante prueba
- y error. Además, el robot 
+ y error y recibir una señal de recompensa positiva o negativa de acuerdo a su comportamiento. Además, el robot 
  necesita repetir muchas veces la misma acción para aprender
  qué provocará realizarla. Por lo tanto, si Joi conoce los efectos de algunas de sus acciones (mover los interruptores), puede reducir sus intentos para
  resolver las conexiones entre interruptores y los focos. 

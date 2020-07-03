@@ -198,9 +198,15 @@
 % \usepackage[linesnumbered,lined,commentsnumbered]{algorithm2e}
 % \usepackage{algorithmic}
 %Mis paquetes
+\usepackage[spanish]{babel}
 \usepackage[final]{pdfpages}
-\usepackage{algorithm,algorithmic}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{mwe}
 
+\newlength{\tempdima}
+\newcommand{\rowname}[1]% #1 = text
+{\rotatebox{90}{\makebox[\tempdima][c]{\textbf{#1}}}}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
 
-\DeclareMathOperator*{\argmax}{arg\,máx}
-\DeclareMathOperator*{\argmin}{arg\,mín}
