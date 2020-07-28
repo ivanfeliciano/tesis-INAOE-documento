@@ -156,7 +156,7 @@ es decir, realiza un exploración a ciegas. Para evitar que el  en que
 se obtienen las variables de interés y el orden en que se obtienen las causas de 
 cada variable de interés, se hace un barajado sobre éstas.
 
-\begin{algorithm}[H]
+\begin{mialgoritmo}[H]
   \caption{Selección de acciones guiada por una estructura causal \label{alg:guided-action-selection}}
   \begin{algorithmic}[1]
   \setstretch{1}
@@ -177,7 +177,7 @@ cada variable de interés, se hace un barajado sobre éstas.
     \ENDFOR
     \RETURN Acción aleatoria $a$.
   \end{algorithmic}
-\end{algorithm}
+\end{mialgoritmo}
 
 
 \section{Ejemplo: Problema de los interruptores de luz}\label{section:switches-example}
@@ -206,7 +206,8 @@ prenda o apague la luz de la cocina.
  
  \begin{itemize}
      \item El espacio de estados $\mathcal{S}$, es el conjunto de
-     posibles observaciones de la casa desde una vista cenital.
+     posibles observaciones de la casa desde una vista cenital como en la Figura
+   \ref{fig:obs-switches}.
      \begin{figure}[H]
          \centering
          \includegraphics[scale=0.17]{Chapter4/Figs/example_obs.png}
@@ -218,10 +219,14 @@ prenda o apague la luz de la cocina.
      \item El conjunto de variables de alto nivel $\mathcal{X} = \{x_1, x_2, \dots, x_N\}$ contiene
      a las variables que describen el estado de cada foco en la casa. Por ejemplo, $x_i = 1$ establece que el foco $i$ está prendido.
      \item El grafo causal $\mathcal{D} = <\mathcal{A'}, \mathcal{X'}>$, donde
-     $\mathcal{A'} \subseteq \mathcal{A}$ y $\mathcal{X'} \subseteq \mathcal{X}$, visualmente el grafo se puede representar de la siguiente forma
+     $\mathcal{A'} \subseteq \mathcal{A}$ y $\mathcal{X'} \subseteq \mathcal{X}$, visualmente el grafo se puede representar como en la Figura \ref{fig:dag-example-switches}.
+     
      \begin{figure}[H]
          \centering
          \includegraphics[scale=0.2]{Chapter4/Figs/graph.png}
+        \caption{Una estructura causal posible para $N$ interruptores y $N$ luces
+        con un tipo de conexión uno-a-uno.}
+        \label{fig:dag-example-switches}
      \end{figure}
      \item No se cuenta con la función de transición $\mathcal{P}$, sin embargo,
      se conoce que el interruptor $i$ no necesariamente corresponde al foco $i$.
@@ -246,3 +251,36 @@ prenda o apague la luz de la cocina.
      la política de selección de acciones, 3) si el agente debe explorar, mapea la observación a un vector de variables de alto nivel $\mathbf{x}$, 4) se calculan los diferentes entre los vectores $\mathbf{x}$ y $\mathbf{g}$, 5) se consultan los padres de las variables de interés y se retorna la acción. El entrenamiento continúa su aprendizaje de manera normal.}
      \label{fig:example-switches}
  \end{figure}
+ 
+ \section{Resumen}
+ 
+ 
+% \begin{itemize}
+%     \item \textbf{Descripción del problema y declaración}: Debe 1) presentar
+%     el problema de una manera no ambigua, de dos formas, a un alto
+%     nivel y a detalle; 2) mostrar por qué el problema es importante,
+%     justificar por qué debe ser estudiado. 
+%     Describir el problema implicar declarar la meta, los objetivos y delinear las restricciones y suposiciones que han hecho con respecto al problema.
+%     \item \textbf{Teoría}: preliminares avanzados, i.e., conocimiento existente que el grupo de lectores puede no estar familiarizado pero es necesario para entender tu solución 
+%     \item \textbf{Descripción del método para resolver el problema}:
+%      el enfoque y métodos
+
+En este capítulo se presentó el tipo de tareas que se 
+desean atacar junto con el método propuesto. La propuesta
+integra un modelo causal en un algoritmo de aprendizaje por refuerzo para
+buscar acelerar su aprendizaje.
+Las tareas que se desean atacar, son aquellas que pueden ser 
+planteadas como procesos de decisión de Markov dirigidos por metas.
+La principal característica de este tipo de problemas, que es de interés para este trabajo,
+es el contar con una estructura causal del ambiente en un espacio 
+que puede ser de menor dimensión que el de las observaciones.
+El método propuesto se puede dividir en dos partes, que
+corresponden con las contribuciones de este trabajo:
+
+\begin{enumerate}
+    \item \textit{Una representación de las relaciones causales del mundo del agente.} Para hacer consultas sobre un modelo causal del ambiente, se utiliza la estructura causal $\mathcal{D}$, la cual tiene como vértices las variables de estado y de acción.
+    \item  \textit{Un esquema de interacción entre un algoritmo de aprendizaje por refuerzo
+    y un modelo causal}. Se introduce un algoritmo basado en la política de selección
+    de acciones $\epsilon$ greedy, el cual guía la elección de acciones de acuerdo
+    a las conexiones en el grafo $\mathcal{D}$.
+\end{enumerate}

@@ -1124,9 +1124,28 @@ wish to left align your text}
   \setsinglecolumn
   \chapter*{\centering \Large Abstract}
   \thispagestyle{empty}
+
 \fi
 }
 
+
+\newenvironment{resumen} {
+\ifPHD@abstract
+% Separate abstract as per Student Registry guidelines
+  \thispagestyle{empty}
+  \setsinglecolumn
+  \begin{center}
+    { \Large {\bfseries {\@title}} \par}
+    {{\large \vspace*{1em} \@author} \par}
+  \end{center}
+\else
+% Normal abstract in the thesis
+  \cleardoublepage
+  \setsinglecolumn
+  \chapter*{\centering \Large Resumen}
+  \thispagestyle{empty}
+\fi
+}
 
 % ******************** To compute empty space in title page *******************
 % Boxes below are used to space different contents on the title page
@@ -1266,3 +1285,8 @@ wish to left align your text}
 }
 }
 
+
+\newenvironment{mialgoritmo}[1][htb]{%
+    \floatname{algorithm}{Algoritmo}% Update algorithm name
+   \begin{algorithm}[#1]%
+  }{\end{algorithm}}

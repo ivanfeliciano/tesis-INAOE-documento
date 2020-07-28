@@ -6,12 +6,12 @@
 En este trabajo se propuso la integración de un modelo causal en un
 algoritmo de aprendizaje por refuerzo.
 La investigación presenta
-elementos para responder a las preguntas de investigación planteadas en el Capítulo \ref{chapter1}. Un grafo causal entre acciones y estados del mundo de
-un agente permite alcanzar recompensas mayores más rápido, en comparación a no utilizar información adicional.
-Se planteó un algoritmo para la interacción entre un modelo causal
-    y un algoritmo de aprendizaje por refuerzo .
-    Además, en el Capítulo \ref{chapter5} se presenta la experimentación que verifica empíricamente
-    la mejora del desempeño de un agente usando diferentes niveles de información (completa, parcial e incorrecta) contenida en el modelo causal. De acuerdo con los resultados de los experimentos 
+elementos para responder a las preguntas de investigación planteadas en el capítulo \ref{chapter1}. Entre las principales contribuciones están: 1) la representación de las relaciones causales presentes en el ambiente, en un grafo causal entre acciones y estados del mundo, y 2) un esquema de interacción entre la estructura causal y el algoritmo Q-learning. 
+% De acuerdo con los experimentos se verifica empíricamente
+% la mejora del desempeño de un agente usando diferentes niveles de información
+% en la estructura causal (completa y parcialmente incorrecta).
+Además, en el capítulo \ref{chapter5} se presenta la experimentación que verifica empíricamente
+    la mejora del desempeño de un agente usando diferentes niveles de información (completa y parcialmente incorrecta) contenida en el modelo causal. De acuerdo con los resultados de los experimentos 
     se ha llegado a las siguientes conclusiones:
     
 \begin{enumerate}
@@ -39,7 +39,9 @@ calcular quién tiene la racha más larga. Con esta información
 se podrían realizar pruebas estadísticas. Otro escenario que sería interesante
 explorar es aquel donde en la estructuras con caminos causales con más de dos aristas. Por ejemplo, para el problema de los interruptores, se pueden
 tener escenarios donde sea necesario mover un interruptor ``maestro'' para
-poder mover los otros interruptores.
+poder mover los otros interruptores. Además, queda abierto el problema
+de las estructuras uno-a-uno y el comportamiento anormal, en comparación
+a las otras configuraciones, de sus curvas de recompensa.
 
 Por otro lado, sigue abierta la tarea del proceso de aprendizaje del modelo
 causal. De manera general, una propuesta consiste en iniciar con una estructura con pesos que representen 

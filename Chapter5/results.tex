@@ -8,20 +8,25 @@ En este capítulo se describe la experimentación y lo resultados obtenidos
 que muestran la mejora en el desempeño de un agente que aprende
 con y sin información adicional de un grafo causal.
 Para probar el concepto propuesto se atacan dos problemas: la tarea de clásica del taxi \cite{Dietterich:2000:HRL:1622262.1622268} y la de los
-interruptores de luz, descrita en el Capítulo \ref{chapter4}.
+interruptores de luz, descrita en el capítulo \ref{chapter4}.
 En resumen, los experimentos consisten en integrar el grafo $\mathcal{D}$ a la política $\epsilon$ greedy
 en el algoritmo $Q$-learning \cite{watkins1992q}.
 En la política $\epsilon$-greedy en vez de mantener fijo a $\epsilon$, se propone empezar motivando al agente a explorar y usar
 el modelo causal e ir disminuyendo $\epsilon$ para dar más peso a la explotación.
 Se comparan cuatro algoritmos, \textit{Q-learning sin información
 adicional}, \textit{Q-learning con una estructural causal completa}, \textit{Q-learning con una estructura parcial} y un \textit{Q-learning con una estructura incorrecta}.
-Cada uno de los algoritmos se ejecuta en una versión determinista y 
-otra estocástica del ambiente. 
+Dependiendo de la configuración experimental, cada uno de los algoritmos se ejecuta en una versión determinista y otra estocástica del ambiente. 
 En las siguientes secciones se describen a detalle los experimentos realizados y los resultados. Todo el software desarrollado está 
 disponible en \url{https://github.com/ivanfeliciano/causal_rl/}.
 
 
 \section{Problema del taxi}
+
+En esta sección se muestran los experimentos y resultados del método propuesto para el problema clásico del taxi \cite{Dietterich:2000:HRL:1622262.1622268}.
+Se hacen un par de experimentos sobre dos configuraciones del ambiente diferentes,
+una determinista y otra estocástica. De acuerdo con los resultados, 
+el algoritmo usando un grafo causal como ``oráculo'' para seleccionar sus acciones
+tiene un mejor desempeño en los dos tipos de ambientes.
 
 \subsection{Descripción de la tarea}
 
@@ -129,6 +134,16 @@ conexiones entre acciones y estados que no se están tomando en cuenta.
   \label{fig:results-taxi}
 \end{figure}
 \section{Problema de los interruptores de luz}
+
+En esta sección se muestran los experimentos y resultados del método propuesto para
+el problema de los interruptores de luz descrito en el capítulo \ref{chapter4}.
+A diferencia del ambiente del taxi, este problema cuanta 
+con diferentes variaciones. Por ejemplo,
+diferente tipos de conexiones en la estructura subyacente del problema, el tamaño de dicha estructura, etc.
+En general, de acuerdo con los experimentos, el algoritmo usando un grafo causal como ``oráculo'' para seleccionar sus acciones tiene un mejor desempeño incluso en 
+configuraciones donde las estructuras causales están parcialmente incorrectas o también 
+al disminuir la tasa de consultas al modelo en una parte temprana del aprendizaje.
+
 
 \subsection{Descripción de la tarea}
 Para los experimentos de esta sección se ataca la tarea de control de interruptores de luz propuesta en \cite{nair2019causal} y descrita de manera general en la Sección \ref{section:switches-example}. Un agente tiene el control
@@ -250,14 +265,17 @@ $\epsilon_{\min}$                                                               
 $\epsilon_{\max}$                                                                              & 1.0      \\
 $N$                                                                                            & \{5, 7, 9\} \\
 $H$                                                                                            & \{5, 7, 9\} \\
-$k$                                                                                            & \{200, 10000, 200000\}\\
+$k$                                                                                            & \{200, 5000, 10000, 20000\}\\
 $M$                                                                                            & 10       \\
 \begin{tabular}[c]{@{}l@{}}Probabilidad de\\ transición en ambientes\\ estocástico\end{tabular} & 0.75      \\ \hline
 \end{tabular}
 \end{table}
 
 \newpage
-\subsection{Variando el porcentaje de modificación del grafo causal}
+\subsection{Variando el porcentaje de modificación del grafo causal}\label{exp1}
+
+Se realizan una serie de experimentos donde se busca mostrar el comportamiento 
+del método propuesto sobre subgrafos obtenidos del grafo causal verdadero. Estos subgrafos son generados a partir del $\mathcal{D}$, alterándolo a diferentes niveles.
 
 \subsubsection{Configuración experimental}
 
@@ -274,8 +292,7 @@ $M$                                                                             
     \end{itemize}
     \item Se examina sobre los tres tipos de estructuras posibles: uno-a-uno, 
     causa común y efecto común. 
-    \item Se prueba sobre un mundo determinista y estocástico. En el último,
-    la probabilidad de que una acción lleve al estado deseado es de $0.75$.
+    \item Se prueba sobre un mundo determinista.
     
     \item La tasa de exploración está dada por un $\delta = 0.5$
 \end{itemize}
@@ -291,13 +308,13 @@ afecta negativamente el desempeño del algoritmo de RL.
 Dado que la información del modelo causal solo guía la selección
 de acciones durante la exploración, entonces un grafo con escasos
 datos correctos sigue siendo mejor que una búsqueda aleatoria. En el
-peor caso el algoritmo se comportaría como el método sin información adicional.
+peor caso, el algoritmo se comportaría como el método sin información adicional.
 
 
 \subsubsection{Resultados}
 
-En las Figuras \ref{fig:low-mod-det}, \ref{fig:low-mod-sto}, \ref{fig:med-mod-det}, y \ref{fig:high-mod-det} se puede ver que los algoritmos que utilizan conocimiento del grafo inician con una recompensa mayor y se estabilizan más rápido que el algoritmo Q-learning
-sin información adicional en ambientes con transiciones deterministas y estocásticas. Para el caso donde $p_{mod} = 25$, los algoritmos con información incompleta e incorrecta parecen 
+En las Figuras \ref{fig:low-mod-det}, \ref{fig:med-mod-det}, y \ref{fig:high-mod-det} se puede ver que los algoritmos que utilizan conocimiento del grafo inician con una recompensa mayor y se estabilizan más rápido que el algoritmo Q-learning
+sin información adicional en ambientes con transiciones deterministas. Para el caso donde $p_{mod} = 25$, los algoritmos con información incompleta e incorrecta parecen 
 comportarse de manera muy similar. Esto puede ser debido 
 a que la tasa de alteración del grafo es muy baja y  a que $N$ no toma
 valores muy grandes, por lo que hay muy poca diferencia entre el grafo incompleto y el incorrecto. 
@@ -307,10 +324,8 @@ con información incompleta e incorrecta se
 va moviendo en dirección a la curva del algoritmo
 Q-learning sin información extra.
 Finalmente, para $p_{mod} = 75$,  a pesar de haber modificado el grafo 
-causal en un porcentaje bastante alto, la poca información que queda y es correcta sigue siendo suficiente para alcanzar una recompensa mayor mucho más rápido.
-También se puede ver que la variación de la 
-recompensa en las estructuras uno-a-uno
-es mucho menor que en los otros dos tipos, esto debido a que en esas estructuras la acciones afectan de manera independiente los efectos.
+causal en un porcentaje bastante alto, la poca información que queda y es correcta sigue siendo suficiente para alcanzar una recompensa mayor mucho más rápido, donde al menos es más notable para las estructuras de tipo causa común y de efecto común.
+
 
 \begin{figure}
 \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
@@ -331,31 +346,31 @@ es mucho menor que en los otros dos tipos, esto debido a que en esas estructuras
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_9_many_to_one_20000_deterministic_eps_partition_50.pdf}
 
 \end{tabular}
-\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 10000 (para $N = 5, 7$) y 20000 (para $N = 9$) episodios.}
 \label{fig:low-mod-det}
 \end{figure}
 
-\begin{figure}
-\settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
-\centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
-&\textbf{Uno-a-uno} & \textbf{Causa común} & \textbf{Efecto común} \\
-\rowname{$N = 5$}&
-\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_5_one_to_one_10000_stochastic_eps_partition_50.pdf}&
-\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_5_one_to_many_10000_stochastic_eps_partition_50.pdf}&
-\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_5_many_to_one_10000_stochastic_eps_partition_50.pdf}\\
-\rowname{$N=7$}&
-\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_7_one_to_one_10000_stochastic_eps_partition_50.pdf}&
-\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_7_one_to_many_10000_stochastic_eps_partition_50.pdf}&
-\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_7_many_to_one_10000_stochastic_eps_partition_50.pdf}\\
-\rowname{$N = 9$}&
-\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_9_one_to_one_20000_stochastic_eps_partition_50.pdf}&
-\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_9_one_to_many_20000_stochastic_eps_partition_50.pdf}&
-\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_9_many_to_one_20000_stochastic_eps_partition_50.pdf}
+% \begin{figure}
+% \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
+% \centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
+% &\textbf{Uno-a-uno} & \textbf{Causa común} & \textbf{Efecto común} \\
+% \rowname{$N = 5$}&
+% \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_5_one_to_one_10000_stochastic_eps_partition_50.pdf}&
+% \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_5_one_to_many_10000_stochastic_eps_partition_50.pdf}&
+% \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_5_many_to_one_10000_stochastic_eps_partition_50.pdf}\\
+% \rowname{$N=7$}&
+% \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_7_one_to_one_10000_stochastic_eps_partition_50.pdf}&
+% \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_7_one_to_many_10000_stochastic_eps_partition_50.pdf}&
+% \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_7_many_to_one_10000_stochastic_eps_partition_50.pdf}\\
+% \rowname{$N = 9$}&
+% \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_9_one_to_one_20000_stochastic_eps_partition_50.pdf}&
+% \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_9_one_to_many_20000_stochastic_eps_partition_50.pdf}&
+% \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/low/comparison_10_9_many_to_one_20000_stochastic_eps_partition_50.pdf}
 
-\end{tabular}
-\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
-\label{fig:low-mod-sto}
-\end{figure}
+% \end{tabular}
+% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 000 episodios con 000 episodios.}
+% \label{fig:low-mod-sto}
+% \end{figure}
 
 
 \begin{figure}
@@ -376,7 +391,7 @@ es mucho menor que en los otros dos tipos, esto debido a que en esas estructuras
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/medium/comparison_10_9_many_to_one_20000_deterministic_eps_partition_50.pdf}
 
 \end{tabular}
-\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 50 \%$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 50 \%$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada)para 10 experimentos con 10000 (para $N = 5, 7$) y 20000 (para $N = 9$) episodios.}
 \label{fig:med-mod-det}
 \end{figure}
 
@@ -398,7 +413,7 @@ es mucho menor que en los otros dos tipos, esto debido a que en esas estructuras
 % \includegraphics[width=.32\linewidth]{example-image-c}
 
 % \end{tabular}
-% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 50 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 50 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 000 episodios con 000 episodios.}
 % \label{fig:med-mod-sto}
 % \end{figure}
 
@@ -421,7 +436,7 @@ es mucho menor que en los otros dos tipos, esto debido a que en esas estructuras
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp1/high/comparison_10_9_many_to_one_20000_deterministic_eps_partition_50.pdf}
 
 \end{tabular}
-\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 10000 (para $N = 5, 7$) y 20000 (para $N = 9$) episodios.}
 \label{fig:high-mod-det}
 \end{figure}
 
@@ -443,7 +458,7 @@ es mucho menor que en los otros dos tipos, esto debido a que en esas estructuras
 % \includegraphics[width=.32\linewidth]{example-image-c}
 
 % \end{tabular}
-% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 000 episodios con 000 episodios.}
 % \label{fig:high-mod-sto}
 % \end{figure}
 
@@ -452,6 +467,14 @@ es mucho menor que en los otros dos tipos, esto debido a que en esas estructuras
 
 \subsection{Explotar o seguir explorando}\label{subsection:exp-epsilon}
 
+En esta sección se muestran los experimentos para comparar
+el desempeño de los algoritmos con dos valores diferentes para
+el factor que controla la tasa de decremento de $\epsilon$. El primer valor 
+es bajo, para dejar de dar peso a la exploración después del primer
+cuarto de entrenamiento y el segundo es alto, para llegar a una máxima probabilidad
+de explotación en el último cuarto del aprendizaje.
+
+\subsubsection{Configuración experimental}
 
 \begin{itemize}
     \item El espacio de estados es discreto, es decir, el agente puede
@@ -468,7 +491,8 @@ es mucho menor que en los otros dos tipos, esto debido a que en esas estructuras
     \end{itemize}
     \item Se examina sobre los tres tipos de estructuras posibles: uno-a-uno, 
     causa común y efecto común. 
-    \item Se prueba sobre un mundo determinista.
+    \item Se prueba sobre un mundo determinista y estocástico.
+    \item Dado que en la sección \ref{exp1}, $\delta=0.5$, este valor se deja fuera para estos experimentos.
 \end{itemize}
 
 \subsubsection{Objetivo}
@@ -480,20 +504,20 @@ de los algoritmos.
 
 La información del grafo causal no afecta negativamente 
 el aprendizaje de la función de valor $Q$. Por lo tanto, incluso si se disminuyen las consultas al modelo de manera temprana en el entrenamiento, la información provista habrá
-ayudado al aprendizaje de la función.
+ayudado al aprendizaje de la función de valor.
 
 \subsubsection{Resultados}
 
 En las Figuras \ref{fig:low-epsilon-det} y \ref{fig:high-epsilon-det} se puede ver que los algoritmos que utilizan conocimiento del grafo inician con una recompensa mayor y se estabilizan más rápido que el algoritmo Q-learning
-sin información adicional en ambientes con transiciones deterministas. 
+sin información adicional en ambientes con transiciones deterministas y estocásticas.
 De acuerdo con los resultados parece que 
 entre mayor sea $\delta$ más tarda en estabilizarse
-el algoritmo de aprendizaje sin información que lo auxilie. Esto es de esperarse, ya que se sigue explorando durante más tiempo. Sin embargo,
-también se puede notar que estimula a dejar
-la exploración de manera temprana, no implica que después
-de dejarla, el algoritmo converge inmediatamente. Por otro lado, 
-la recompensa, en los algoritmos que se guían por el grafo, se desestabiliza
-el intervalo en el que se encuentra la transición a dejar de dar peso a 
+el algoritmo de aprendizaje sin información que lo auxilie. Esto es de esperarse, ya que se sigue explorando durante más tiempo. 
+% Sin embargo,
+% también se puede notar que estimula a dejar
+% la exploración de manera temprana, no implica que después
+% de dejarla, el algoritmo converge inmediatamente. 
+Por otro lado, para las estructuras uno-a-uno, la recompensa en los algoritmos que se guían por el grafo, se desestabiliza el intervalo en el que se encuentra la transición a dejar de dar peso a
 la exploración. Pero, una vez fuera de esa ``zona de transición'' los
 algoritmos se recuperan y tienden a estar por encima del algoritmo sin datos 
 extra.
@@ -516,8 +540,30 @@ extra.
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_9_one_to_many_10000_deterministic_eps_partition_25.pdf}&
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_9_many_to_one_10000_deterministic_eps_partition_25.pdf}
 \end{tabular}
-\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$  y $\delta = 0.25$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$  y $\delta = 0.25$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 5000 (para $N = 5, 7$) y 10000 (para $N = 9$) episodios.}
 \label{fig:low-epsilon-det}
+\end{figure}
+
+
+\begin{figure}
+\settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
+\centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
+&\textbf{Uno-a-uno} & \textbf{Causa común} & \textbf{Efecto común} \\
+\rowname{$N = 5$}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_5_one_to_one_5000_stochastic_eps_partition_25.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_5_one_to_many_5000_stochastic_eps_partition_25.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_5_many_to_one_5000_stochastic_eps_partition_25.pdf}\\
+\rowname{$N=7$}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_7_one_to_one_5000_stochastic_eps_partition_25.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_7_one_to_many_5000_stochastic_eps_partition_25.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_7_many_to_one_5000_stochastic_eps_partition_25.pdf}\\
+\rowname{$N = 9$}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_9_one_to_one_10000_stochastic_eps_partition_25.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_9_one_to_many_10000_stochastic_eps_partition_25.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/low/comparison_10_9_many_to_one_10000_stochastic_eps_partition_25.pdf}
+\end{tabular}
+\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$  y $\delta = 0.25$ en un ambiente con transiciones estocásticas. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada)  para 10 experimentos con 5000 (para $N = 5, 7$) y 10000 (para $N = 9$) episodios.}
+\label{fig:low-epsilon-sto}
 \end{figure}
 
 % \begin{figure}
@@ -538,7 +584,7 @@ extra.
 % \includegraphics[width=.32\linewidth]{example-image-c}
 
 % \end{tabular}
-% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 000 episodios con 000 episodios.}
 % \label{fig:low-epsilon-sto}
 % \end{figure}
 
@@ -547,20 +593,41 @@ extra.
 \centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
 &\textbf{Uno-a-uno} & \textbf{Causa común} & \textbf{Efecto común} \\
 \rowname{$N = 5$}&
-\includegraphics[width=.32\linewidth]{example-image-a}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_5_one_to_one_5000_stochastic_eps_partition_75.pdf}&
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_5_one_to_many_5000_deterministic_eps_partition_75.pdf}&
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_5_many_to_one_5000_deterministic_eps_partition_75.pdf}\\
 \rowname{$N=7$}&
-\includegraphics[width=.32\linewidth]{example-image-a}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_7_one_to_one_5000_stochastic_eps_partition_75.pdf}&
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_7_one_to_many_5000_deterministic_eps_partition_75.pdf}&
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_7_many_to_one_5000_deterministic_eps_partition_75.pdf}\\
 \rowname{$N = 9$}&
-\includegraphics[width=.32\linewidth]{example-image-a}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_9_one_to_one_10000_stochastic_eps_partition_75.pdf}&
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_9_one_to_many_10000_deterministic_eps_partition_75.pdf}&
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_9_many_to_one_10000_deterministic_eps_partition_75.pdf}
 \end{tabular}
-\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$ y $\delta = 0.75$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$ y $\delta = 0.75$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada)  para 10 experimentos con 5000 (para $N = 5, 7$) y 10000 (para $N = 9$) episodios.}
 \label{fig:high-epsilon-det}
+\end{figure}
+
+\begin{figure}
+\settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
+\centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
+&\textbf{Uno-a-uno} & \textbf{Causa común} & \textbf{Efecto común} \\
+\rowname{$N = 5$}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_5_one_to_one_5000_stochastic_eps_partition_75.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_5_one_to_many_5000_stochastic_eps_partition_75.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_5_many_to_one_5000_stochastic_eps_partition_75.pdf}\\
+\rowname{$N=7$}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_7_one_to_one_5000_stochastic_eps_partition_75.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_7_one_to_many_5000_stochastic_eps_partition_75.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_7_many_to_one_5000_stochastic_eps_partition_75.pdf}\\
+\rowname{$N = 9$}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_9_one_to_one_10000_stochastic_eps_partition_75.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_9_one_to_many_10000_stochastic_eps_partition_75.pdf}&
+\includegraphics[width=.32\linewidth]{Chapter5/Figs/exp2/high/comparison_10_9_many_to_one_10000_stochastic_eps_partition_75.pdf}
+\end{tabular}
+\caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 25 \%$ y $\delta = 0.75$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 5000 (para $N = 5, 7$) y 10000 (para $N = 9$) episodios.}
+\label{fig:high-epsilon-sto}
 \end{figure}
 
 % \begin{figure}
@@ -581,7 +648,7 @@ extra.
 % \includegraphics[width=.32\linewidth]{example-image-c}
 
 % \end{tabular}
-% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 000 episodios con 000 episodios.}
 % \label{fig:med-epsilon-sto}
 % \end{figure}
 
@@ -603,13 +670,19 @@ extra.
 % \includegraphics[width=.32\linewidth]{example-image-c}
 
 % \end{tabular}
-% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+% \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente estocástico. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 000 episodios con 000 episodios.}
 % \label{fig:high-epsilon-sto}
 % \end{figure}
 
 \newpage
 
 \subsection{Utilizando observaciones visuales del ambiente}
+
+Este último experimento es sobre una configuración donde el agente 
+tiene acceso a imágenes como observaciones. A diferencia de las
+configuraciones experimentales anteriores, aquí se tiene un solo conjunto
+de resultados sobre un ambiente continuo y determinista. Sin embargo, 
+se pueden muestra que los alcances del método propuesto son prometedores.
 
 \subsubsection{Configuración experimental}
 
@@ -667,7 +740,7 @@ De acuerdo con la Figura \ref{fig:dqn-results} los algoritmos que utilizan conoc
 sin información adicional en ambientes con transiciones deterministas. A pesar de que 
 el número de episodios
 es menor que en el caso 
-discreto, parecen mantenerse los mismo resultados 
+discreto, parecen mantenerse los mismos resultados 
 que en la configuración de un ambiente con observaciones
 discretas.
 
@@ -689,7 +762,7 @@ discretas.
 \includegraphics[width=.32\linewidth]{Chapter5/Figs/dqn_plots/comparison_dqn_20_9_many_to_one_200_det.png}
 
 \end{tabular}
-\caption{Comparación del desempeño para los 4 algoritmos con $p_{mod} = 25 \%$ y $\delta = 75$ en un ambiente determinista y continuo. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos.}
+\caption{Comparación del desempeño para los 4 algoritmos con $p_{mod} = 25 \%$ y $\delta = 75$ en un ambiente determinista y continuo. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 200 episodios}
 \label{fig:dqn-results}
 \end{figure}
 
@@ -699,9 +772,15 @@ discretas.
 Se presentó una extensión de la política de selección
 de acciones durante el entrenamiento de un agente tal que utilice la información de una estructura causal. La intuición de que una exploración
 guiada es mejor que una búsqueda a ciegas se cumple de acuerdo 
-con los experimentos. De la experimentación, se puede ver que incluso tener muy poca información correcta de la estructura causal $\mathcal{D}$ es mejor que
-un método que se basa en una exploración aleatoria. También, reducir el número 
-de consultas al grafo y motivar la explotación, no afecta de manera nociva el
+con los experimentos. Sin embargo, hay un comportamiento anormal
+para las estructuras uno-a-uno del problema de los interruptores de luz.
+Al parecer, para estos problemas, existe un intervalo en el que parece 
+ajustarse el aprendizaje de acuerdo con la transición de una mayor a una menor exploración. Sin embargo, conforme se estabilizan los algoritmos, el método con información del grafo mantiene una desempeño mejor. También, si se aumenta el 
+número de episodios, como en los experimentos de la sección \ref{exp1}
+parece perderse ese comportamiento donde las curvas de recompensa se intersecan.
+
+En general, de la experimentación de la sección \ref{exp1}, se puede ver que incluso tener muy poca información correcta de la estructura causal $\mathcal{D}$ es mejor que un método que se basa en una exploración aleatoria. También, de acuerdo con
+la configuración experimental de la sección \ref{subsection:exp-epsilon}, con excepción de las estructureas uno-a-uno, reducir el número de consultas al grafo y motivar la explotación, no afecta de manera nociva el
 aprendizaje de la política.
 
 Puesto que lo presentado es una prueba de concepto, los problemas atacados
