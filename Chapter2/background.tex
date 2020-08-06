@@ -41,12 +41,12 @@ agente aprenda a mapear estados de su mundo a acciones. Al aprendiz o agente no 
 dice qué acciones tomar, en cambio éste debe descubrir cuáles, al intentarlas, producen
 una mayor recompensa. Las dos características más importantes que diferencían al
 aprendizaje por refuerzo de otros paradigmas en el aprendizaje automático son 
-la búsqueda a prueba-y-error y la recompensa retrasada. Donde que la recompensa sea retrasada significa que el agente debe ser 
+la búsqueda a prueba-y-error y la recompensa retrasada. Que la recompensa sea retrasada significa que el agente debe ser 
 capaz de aprender cuales son acciones deseables basándose en una recompensa que puede ocurrir muy en el futuro.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.3]{Chapter2/Figs/agend_interaction.png}
+    \includegraphics[scale=0.4]{Chapter2/Figs/agend_interaction.png}
     \caption{La idea general del RL es que un agente interactúa con un ambiente para
     aprender a partir de experiencias. Cada paso en el tiempo, el agente se encuentra
     en cierto estado $s\in \mathcal{S}$ y toma la acción $a \in \mathcal{A}$. Como
@@ -83,7 +83,7 @@ selección de sus acciones.
 Formalmente, un MDP es una tupla $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma>$ tal que
 
 \begin{itemize}
-    \item $\mathcal{S}$ es el conjunto de estados, donde $s_t$ denota el estado $s\in \mathcal{S}$ al tiempo $t$.
+    \item $\mathcal{S}$ es el conjunto de estados, donde $s_t$ denota el estado $s\in \mathcal{S}$ en el tiempo $t$.
     \item $\mathcal{A}$ es el conjunto de acciones, donde $a_t \in \mathcal{A}$
     denota la acción realizada en un estado $s$ en el tiempo $t$.
     \item $\mathcal{P}_{ss'}^{a}: \mathcal{S}\times \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]$ (también denotada por $\mathcal{P}$) es una función de probabilidad de transición de pasar del estado $s \in \mathcal{S}$ a $s' \in \mathcal{S}$ cuando se toma la acción $a$.% en el tiempo $t$.
@@ -128,7 +128,7 @@ Esto significa, que no solo se maximiza la recompensa inmediata sino la recompen
 
 En general, se busca maximizar el \textit{retorno
 esperado}, donde el retorno, denotado por $R_t$, se define como alguna función de la secuencia de recompensas. 
-El \textit{retorno esperado con descuento} es la suma acumulada de recompensas futuras. El factor de descuento $\gamma$
+El \textit{retorno esperado con descuento} es la suma acumulada de recompensas descontadas. El factor de descuento $\gamma$
 define que tantas recompensas en el 
 futuro son consideradas. Si $\gamma = 0$
 solo la recompensa inmediata es
@@ -146,9 +146,9 @@ Si se tiene un punto terminal se llaman tareas \textit{episódicas}, si no se ti
 Una política, denotada por $\pi(s, a)$, describe una manera de actuar. Es una función que mapea un estado $s$ y una acción $a$ a la probabilidad de tomar esa acción en ese estado.
 Por lo tanto para un estado dado, 
 $\sum_a \pi (s, a) = 1$. El problema fundamental en los MDP es encontrar una política óptima $\pi^*$, es decir, aquella que maximiza la recompensa que espera recibir el agente a largo plazo.
-A veces es escrita como $\pi^*(s) = a$, el cual es un mapeo de estado a las acciones óptimas en esos estados.
+A veces es escrita como $\pi^*(s) = a$, el cual es un mapeo de estados a las acciones óptimas en esos estados.
 
-Para aprender la política óptima, se utilizan las \textit{funciones de valor}. Existen dos tipos de funciones de valor: la \textit{ función de valor de estado},
+Para aprender la política óptima, se utilizan las \textit{funciones de valor}. Existen dos tipos de funciones de valor: la \textit{función de valor de estado},
 denotada por $V(s)$, y la \textit{función de valor de acción}, expresada como $Q(s, a)$.
 
 La función de valor de estado describe el valor de un estado al seguir una política. Es el retorno esperado partiendo del estado $s$, actuando de acuerdo
@@ -160,7 +160,7 @@ V^\pi(s) = \mathbb{E}_\pi[R_t | s_t = s].
 
 
 La función de valor no necesariamente es la misma para dos políticas diferentes
-en un mismo ambiente. Esto es porque el valor del estado
+en un mismo ambiente.  El valor del estado
 cambia dependiendo del comportamiento del agente, ya que la manera de actuar
 en un estado en particular afecta cuánta recompensa se espera recibir.
 La razón de usar el valor esperado  es porque existe aleatoriedad en lo que
@@ -250,10 +250,7 @@ Q^*(s,a) = \sum_{s'}\mathcal{P}_{ss'}^a[\mathcal{R}_{ss'}^a + \gamma \max_{a'}Q^
 \]
 
 Un MDP busca la solución a las ecuaciones de Bellman, lo que equivale a encontrar
-la política óptima. Si $\mathcal{P}$ y $\mathcal{R}$ son conocidas, i.e., el
-modelo es conocido un MDP se puede resolver mediante programación dinámica o
-programación lineal. En caso contrario, cuando el modelo no es conocido,
-se utiliza aprendizaje por refuerzo.
+la política óptima. Si $\mathcal{P}$ y $\mathcal{R}$ son conocidas, i.e., se cuenta con el \textit{modelo} de un MDP, se puede resolver mediante programación dinámica o programación lineal. En caso contrario, cuando el modelo no es conocido, se utiliza aprendizaje por refuerzo.
 % Una política $\pi$ es una función de los estados percibidos del ambiente a acciones que se toman cuando se está en esos estados ($\pi : \mathcal{S} \rightarrow A$). 
 % Whereas the reward signal indicates what is good in an immediate sense, a value
 % function specifies what is good in the long run. Roughly speaking, the value of a state is the total amount of reward an agent can expect to accumulate over the future, starting from that state.
@@ -311,7 +308,7 @@ con una probabilidad de $1-\epsilon$ y una acción aleatoria se toma con una
 probabilidad $\epsilon$. La ecuación de la política $\epsilon$-greedy
 se puede definir de la siguiente manera
 
-\[
+\begin{equation}\label{eq:epsilongreedy}
 \pi(s,a) = 
    \begin{cases} 
       1 - \epsilon + \frac{\epsilon}{|\mathcal{A}|} & \mbox{si } a= 
@@ -319,7 +316,7 @@ se puede definir de la siguiente manera
       Q(s,a)   \\
       \frac{\epsilon}{|\mathcal{A}|} & \mbox{ en otro caso }
    \end{cases}
-\]
+\end{equation}
 
 $\epsilon$ es un valor entre 0 y 1 y pondera la relación entre
 exploración y explotación.
@@ -341,7 +338,7 @@ episodios completos (como en programación dinámica). Además, no se requiere n
 
 En los métodos TD, el retorno esperado verdadero $R_t$ no está disponible
 y es aproximado con un valor TD-target. El TD-target se determina con la suma de la recompensa inmediata y el valor esperando con descuento del 
-siguiente estado $r_{t+1} + \gamma V(s_{t+1})$. 
+siguiente estado $r_{t+1} + \gamma V(s_{t+1})$. El error que mide la diferencia entre el valor del estado $s_t$ ($V(s_t)$) y el estimado $r_{t+1} + \gamma V(s_{t+1})$ se llama TD-error.
 
 \begin{mialgoritmo}[H]
   	\caption{Algoritmo general de los métodos TD}
@@ -405,12 +402,12 @@ Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha[r_{t+1} + \gamma \max_a Q(s_{t+1}, a
 
 En general, el algoritmo Q-learning consiste de de los siguientes pasos:
 1) se inicializa la tabla $Q$ que mapea los estados a valores de las acciones,
-2) en un paso de tiempo $t$ del episodio el agente interactúa con su ambiente al realizar una acción $a_t$ (de acuerdo a lo que le diga su política $\epsilon$ greedy) y obtiene una señal de recompensa $r_{t+1}$ y una observación $s_{t+1}$, y finalmente 3) actualiza los valores
-correspondientes de la tabla $Q$ usando la ecuación $\ref{eq:q-learning-update}$. El método
+2) en un paso de tiempo $t$ del episodio el agente interactúa con su ambiente al realizar una acción $a_t$ de acuerdo con una política $\epsilon$-greedy (ecuación \ref{eq:epsilongreedy}) y obtiene una señal de recompensa $r_{t+1}$ y una observación $s_{t+1}$, y finalmente 3) actualiza los valores
+correspondientes de la tabla $Q$ usando la ecuación \ref{eq:q-learning-update}. El método
 se explica a detalle en el Algoritmo \ref{alg:q-algo}.
 
 \begin{mialgoritmo}[H]
-  	\caption{Algoritmo $Q$-learning}
+  	\caption{$Q$-learning}
 	\label{alg:q-algo}
   \begin{algorithmic}[1]
   \setstretch{1}
@@ -472,7 +469,7 @@ se explora en esta sección es usando una red neuronal profunda \cite{lapan_2020
 Los autores en \cite{mnih2013playing} adaptaron el método Q-learning 
 para que éste aproveche el uso de redes neuronales profundas como aproximadores
 de funciones no lineales y un \textit{búfer de repetición} para estabilizar 
-el aprendizaje. Este método es conocido como Q-learning profundo o Red Q profunda (DQN por sus siglas en inglés).
+el aprendizaje. Este método es conocido como Q-learning profundo o red Q profunda (DQN por sus siglas en inglés).
 La primera versión del algoritmo DQN fue aplicada al dominio de los videojuegos de Atari \cite{bellemare2013arcade}. De manera muy general, la red profunda recibe como entrada un conjunto de fotogramas a escala de grises de un videojuego, que son procesados por varias capas convolucionales para
 extraer características del espacio y tiempo. El último mapa de características
 de las capas convolucionales es procesado por varias capas completamente conectadas, que codifican los efectos de las acciones.
@@ -493,13 +490,13 @@ oscilantes de los valores Q, la red de la política usa la red objetivo fija.
 Durante el entrenamiento, los pesos de la red objetivo son actualizados 
 para coincidir con la red de la política después de un número establecido de pasos.
 
-De manera general, el algoritmo DQN tiene los siguientes pasos: 1) se inicializan los parámetros para las redes neuronales $Q(s, a)$ y $\hat{Q}(s, a)$ con pesos aleatorios y 
+De manera general, el algoritmo DQN tiene los siguientes pasos: 1) se inicializan los parámetros para las redes neuronales $Q(s, a)$ y la red objetivo $\hat{Q}(s, a)$ con pesos aleatorios y 
 un búfer de experiencias $D$ vacío con un tamaño máximo igual a $N$, 2) se selecciona
-una acción aleatoria de acuerdo con la política $\epsilon$ greedy y se observa
+una acción aleatoria de acuerdo con la política $\epsilon$-greedy y se observa
 la recompensa $r_t$ y el siguiente estado $s_{t+1}$, 3) se almacena la tupla
 de transición $(s_t, a_t, r_t, s_{t+1})$ en el búfer de experiencias, 4)
 se obtiene un lote de transiciones muestreado de forma aleatoria del búfer, 5)
-para cada tupla de transición $j$ se calcula $y_j$, 6) se calcula la pérdida con los
+para cada tupla de transición $j$ se calcula $y_j$ usando $\hat{Q}$, 6) se calcula la pérdida con los
 valores $y_j$ y usando la función $Q$, 7) se actualiza $Q$ usando el algoritmo de descenso
 de gradiente estocástico minimizando la pérdida, y finalmente 8) después de algunos $C$
 pasos de tiempo se copian los parámetros de la función de valor $Q$ a la objetivo $\hat{Q}$.
@@ -509,13 +506,13 @@ pasos de tiempo se copian los parámetros de la función de valor $Q$ a la objet
 	\label{alg:dqn-algo}
   \begin{algorithmic}[1]
   \setstretch{1}
-  \STATE Inicializar búfer de experiencias $D$ a una capacidad $N$.
+  \STATE Inicializar búfer de experiencias $D$ con capacidad $N$.
   \STATE Inicializar la función de valor de acción $Q$ con pesos aleatorios $\theta$.
   \STATE Inicializar la función de valor de acción objetivo $\hat{Q}$ con pesos $\theta^- = \theta$.
   
   \FOR{$episodio = 1, \dots, M$}
     \STATE Inicializar secuencia $s_1 = {x_1}$ y preprocesar secuencia $\phi_1 = \phi(s_1)$.
-    \FOR{$t = 0, \dots, T$}
+    \FOR{$t = 1, \dots, T$}
     \STATE Elegir $a_t$ usando una política $\epsilon$-greedy.
     \STATE Tomar acción $a_t$, observar recompensa $r_{t}$ e imagen $x_{t+1}$.
     \STATE Asignar $s_{t+1} =  s_t, a_t, x_{t+1}$ y preprocesar $\phi_{t+1} = \phi(s_{t+1})$.
@@ -627,12 +624,12 @@ siguiendo el marco de trabajo de los \textit{modelos gráficos causales} propues
 De acuerdo con \cite{spirtes2000causation} se entiende a la causalidad 
 como una relación entre eventos: \textit{algo sucede y causa que algo más suceda}. Cada causa es un evento específico y cada efecto es una evento
 en particular. Asumimos que esta relación es \textit{transitiva}, \textit{irreflexiva} y \textit{antisimétrica}. Esto es 
-\begin{enumerate}
+\begin{itemize}
     \item Si $A$ es una causa de $B$ y $B$ es una causa de $C$, entonces
-    $A$ es también una causa de $C$.
+    $A$ es también una causa de $C$,
     \item Un evento $A$ no puede causarse a sí mismo.
     \item Si $A$ es una causa de $B$, entonces $B$ no es causa de $A$.
-\end{enumerate}
+\end{itemize}
 
 \subsection{Estructura y modelo causal}
 
@@ -641,13 +638,13 @@ Se dice que $A$ es causa directa de $X$ con respecto a $\mathcal{V}$
 solo en caso de que $A$ sea un miembro de algún conjunto 
 $\mathcal{A} \subseteq \mathcal{V} - \{X\}$ tal que 
 
-\begin{itemize}
-    \item las variables en $\mathcal{A}$ son causas de $X$,
-    \item si las variables en $\mathcal{A}$ llegaran a ocurrir,
-    causarían $X$ sin importar si los elementos de $\mathcal{V} - \{X \cup \mathcal{A}\}$ ocurrieran o no,
-    \item ningún subconjunto propio de $\mathcal{A}$ satisface
+\begin{enumerate}
+    \item Las variables en $\mathcal{A}$ son causas de $X$.
+    \item Si las variables en $\mathcal{A}$ llegaran a ocurrir,
+    causarían $X$ sin importar si los elementos de $\mathcal{V} - \{X \cup \mathcal{A}\}$ ocurrieran o no.
+    \item Ningún subconjunto propio de $\mathcal{A}$ satisface
     1) y 2).
-\end{itemize}
+\end{enumerate}
 
 Una \textit{estructura causal} es un par ordenado $<\mathcal{V}, E>$, donde
 $\mathcal{V}$ es un conjunto de variables y $E$ es un conjunto
@@ -672,8 +669,7 @@ de fidelidad} \cite{gonzalez-soto, spirtes2000causation}.
 
 \begin{itemize}
     \item \textit{Condición de Markov}. Una variable $V$ o nodo
-    en $D$ es independiente de cualquier otra variable $A$ tal que
-    $A$ no es ni una causa o efecto de $V$ dadas las causas de $V$.
+    en $D$ es independiente de cualquier otra variable $A$ dadas las causas de $V$, tal que $A$ no es ni una causa o efecto de $V$ .
     \item \textit{Condición de minimalidad}. Ningún subgrafo propio de $D$ satisface la condición causal de Markov.
     \item \textit{Condición de fidelidad}. La condición causal de Markov contiene todas las condiciones de independencia expresadas en el grafo $D$.
 \end{itemize}
@@ -699,7 +695,7 @@ $P(A)$ y $P(H|A, E)$.
 \begin{figure}
     \centering
     \includegraphics[scale=0.35]{Chapter2/Figs/example-dag.png}
-    \caption{Ejemplo de un grafo causal $\mathcal{D}$.}
+    \caption{Ejemplo de un grafo causal $\mathcal{D}$ que representa el efecto del ejercicio $E$ sobre la salud $C$ y de la edad $A$ sobre ambos.}
     \label{fig:dag-causal}
 \end{figure}
 % \begin{itemize}
@@ -755,8 +751,8 @@ en la distribución creada por la intervención $do(X = x)$.
 % datos sobre sus causas y sobre otros efectos de esas causas.
 
 Cuando se hacen \textit{intervenciones},
-se sobrescribe la estructura causal normal, forzando a una
-variable a tomar el valor que que podría no haber tomado 
+se sobrescribe la estructura causal normal. Se obliga a una
+variable a tomar el valor que no podría haber tomado 
 si el sistema se quedara sin modificaciones.
 Gráficamente, se puede representar el
 efecto de esta intervención eliminando las aristas 
@@ -812,7 +808,7 @@ De acuerdo con algunos trabajos, la relación entre el aprendizaje por refuerzo
 y la causalidad es mucho más estrecha que con otras áreas del
 aprendizaje automático \cite{schlkopf2019causality} \cite{Gershman2017}. Esto debido a que al ejecutar acciones sobre su ambiente, entonces
 estima distribuciones intervencionistas y por lo tanto el aprendizaje por refuerzo es un problema causal. Sin embargo, se ha demostrado que el aprendizaje
-por refuerzo no está formulado de tal que se utilicen operaciones
+por refuerzo no está formulado tal que se utilicen operaciones
 causales \cite{gonzalezsoto2019reinforcement}.
 En este documento, más que intentar construir los fundamentos de una nueva 
 teoría que combine ambas áreas, se apunta hacia una perspectiva
