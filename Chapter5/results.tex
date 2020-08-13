@@ -23,17 +23,17 @@ disponible en \url{https://github.com/ivanfeliciano/causal_rl/}.
 \section{Problema del taxi}
 
 En esta sección se muestran los experimentos y resultados del método propuesto para el problema clásico del taxi \cite{Dietterich:2000:HRL:1622262.1622268}.
-Se hacen un par de experimentos sobre dos configuraciones del ambiente diferentes,
+Se realiza un par de experimentos sobre dos configuraciones del ambiente diferentes,
 una determinista y otra estocástica. De acuerdo con los resultados, 
 el algoritmo usando un grafo causal como ``oráculo'' para seleccionar sus acciones
-tiene un mejor desempeño en los dos tipos de ambientes.
+tiene un mejor desempeño en el ambiente determinista pero no hay una diferencia estadísticamente significativa en el ambiente estocástico.
 
 \subsection{Descripción de la tarea}
 
 El primer problema a resolver es la tarea clásica del taxi \cite{Dietterich:2000:HRL:1622262.1622268}.
 La Figura \ref{fig:taxi} muestra gráficamente el problema.
 Existen cuatro posiciones en el mundo marcadas como R, B, G, y Y. 
-La tarea es episódica. En cada episodio, 
+La tarea es episódica y en cada episodio, 
 el taxi comienza en un cuadro aleatoriamente elegido. 
 Existe un pasajero en una de la cuatro posiciones (también elegida
 aleatoriamente), y el pasajero desea ser transportado a una de las
@@ -63,8 +63,7 @@ El espacio de estados $\mathcal{S}$ tiene como elementos
 El conjunto $\mathcal{X}$ contiene 4 variables que traducen las tuplas con las posiciones del taxi y del pasajero en variables binarias. $x_1$
 es la variable que dice si el taxi está en la misma posición que el
 pasajero, $x_2$ es la variable que denota si el pasajero es llevado dentro del taxi, $x_3$ describe si el taxi está en la posición destino,
-y $x_4$ es la variable que representa al estado de que el pasajero es entregado correctamente. Es una tarea relativamente simple y $x_1 \neq x_3$, por lo tanto las metas son $\mathcal{G} = \{\mathbf{g_1}, \mathbf{g_2}\}$, donde $\mathbf{g_1} = [1, 1, 0 , 0]$ y $\mathbf{g_2} = [0,1,1,1]$. El primer vector se puede ver como el sub objetivo de 
-llevar subir al pasajero al taxi y el segundo vector es la meta general, 
+y $x_4$ es la variable que representa al estado de que el pasajero es entregado correctamente. Es una tarea relativamente simple y $x_1 \neq x_3$, por lo tanto las metas son $\mathcal{G} = \{\mathbf{g_1}, \mathbf{g_2}\}$, donde $\mathbf{g_1} = [1, 1, 0 , 0]$ y $\mathbf{g_2} = [0,1,1,1]$. El primer vector se puede ver como el sub objetivo de que el pasajero aborda el taxi y el segundo vector es la meta general, 
 entregar al pasajero en su destino.
 El grafo causal $\mathcal{D}$ entre las variables de acción y los estados se puede 
 ver en la Figura \ref{fig:cm-taxi}. Para este problema, los efectos
@@ -75,7 +74,7 @@ el pasajero.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.3]{Chapter5/Figs/causal_structure_taxi.png}
+    \includegraphics[scale=0.35]{Chapter5/Figs/causal_structure_taxi.png}
     \caption{Propuesta de una estructura causal para la tarea del taxi.}
     \label{fig:cm-taxi}
 \end{figure}
@@ -103,9 +102,9 @@ $\alpha$                                                                        
 $\gamma$                                                                                       & 0.95     \\
 $\epsilon_{\min}$                                                                              & 0.1      \\
 $\epsilon_{\max}$                                                                              & 1.0      \\
-$m$                                                                                            & -0.0045 \\
-$k$                                                                                            & 5000     \\
-$M$                                                                                            & 10       \\
+$m$                                                                                            & -0.3e-04 \\
+$k$                                                                                            & 1000     \\
+$M$                                                                                            & 25       \\
 \begin{tabular}[c]{@{}l@{}}Probabilidad de\\ transición en ambiente\\ estocástico\end{tabular} & 0.7      \\ \hline
 \end{tabular}
 \end{table}
@@ -117,29 +116,51 @@ para ambas configuraciones del ambiente (determinista y estocástico) donde
 los valores de los parámetros se describen en el Cuadro \ref{tab:tax-params}.
 La recompensa promedio por episodio para el método propuesto y para el algoritmo
 original Q-learning están en color naranja y azul, respectivamente. 
-Los resultados muestran que el algoritmo Q-learning guiado por el grafo da un salto inicial alto y mantiene una recompensa promedio mucho mayor que la versión sin información adicional. Esto era esperado, ya que 
-no inicia una exploración a ciegas. Por otra parte, para el caso 
-del ambiente estocástico, parecen comportarse de manera similar después de los
-primeros 1000 episodios. Esto se puede deber a que tal vez la información del 
-grafo no ayuda los suficiente, ya que a pesar de que tal vez existen
-conexiones entre acciones y estados que no se están tomando en cuenta.
-
+Los resultados muestran que el algoritmo Q-learning guiado por el grafo da un salto inicial alto y mantiene una recompensa promedio mucho mayor hasta que ambos métodos convergen. Esto es esperado, ya que
+no inicia una exploración a ciegas. En ambas versiones del ambiente, los algoritmos parecen comportarse de manera similar a partir del episodio 400.
 
 \begin{figure}[H]
   \centering
-  \subfloat[Ambiente determinista.]{\includegraphics[width=0.5\textwidth]{Chapter5/Figs/taxiDet500010.pdf}\label{fig:taxi-rew-det}}
+  \subfloat[Ambiente determinista.]{\includegraphics[width=0.45\textwidth]{Chapter5/Figs/taxi_env_comparison_det_1000_25_eps_30000.pdf}\label{fig:taxi-rew-det}}
   \hfill
-  \subfloat[Ambiente estocástico.]{\includegraphics[width=0.5\textwidth]{Chapter5/Figs/taxiSto500010.pdf}\label{fig:taxi-rew-sto}}
-  \caption{Comparación del desempeño para los dos algoritmos en 5000 episodios. La región sombreada es la desviación estándar para 10 experimentos.}
+  \subfloat[Ambiente estocástico.]{\includegraphics[width=0.45\textwidth]{Chapter5/Figs/taxi_env_comparison_sto_1000_25_eps_30000.pdf}\label{fig:taxi-rew-sto}}
+  \caption{Comparación del desempeño para los dos algoritmos en 1000 episodios. La región sombreada es la desviación estándar para 50 experimentos.}
   \label{fig:results-taxi}
 \end{figure}
+
+La tarea para el ambiente determinista se considera resuelta cuando se obtiene una recompensa promedio de 9.7 durante 100 episodios consecutivos. Sin embargo, para fines de este experimentos se propone relajar este parámetro a un valor de 0 para el caso determinista y -30 para la versión estocástica del ambiente. En el Cuadro \ref{tab:resultados-taxi} se muestran los resultados del número de episodios, promedio sobre $M$ experimentos,
+que tarda cada algoritmo en alcanzar la recompensa óptima propuesta durante una racha de más de 100 episodios. Entre menor sea el número de episodios en alcanzar la racha denota que un algoritmo aprendió más rápido.
+
+De acuerdo con los resultados del Cuadro \ref{tab:resultados-taxi}, el algoritmo que alcanza la recompensa óptima antes, es el método Q-learning con la información causal. Sin embargo, con el fin de validar los resultados se utiliza la prueba de Welch como se sugiere en \cite{colas2019hitchhikers}. La hipótesis nula $h_0$ corresponde a que el número de episodios en alcanzar la recompensa óptima durante más de 100 episodios seguidos es igual para ambos algoritmos. Para el caso del ambiente determinista la hipótesis es rechazada con $p < 0.05$. Sin embargo, para el caso del ambiente estocástico se falla al rechazar $h_0$ ya que $p > 0.05$. Por lo tanto, a pesar de que los resultados en el Cuando 
+\ref{tab:resultados-taxi} indican un mejor comportamiento para el algoritmo con la estructura causal auxiliando la selección de acciones, no hay diferencia estadísticamente significativa en la versión estocástica del ambiente.
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[!h]
+\centering
+\caption{Resultados del número de episodios promedio y la desviación estándar en alcanzar una recompensa > 0 con una racha > 100 y > -30 con una racha > 100 para los ambientes determinista y estocástico, respectivamente.}
+\label{tab:resultados-taxi}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Algoritmo & \begin{tabular}[c]{@{}l@{}}Ambiente determinista.\\ Número de episodios\end{tabular} & \begin{tabular}[c]{@{}l@{}}Ambiente estocástico.\\ Número de episodios\end{tabular} \\ \midrule
+Q-learning & $632 \pm 69$ & $496 \pm 247$ \\
+\begin{tabular}[c]{@{}l@{}}Q-learning +\\ estructura causal\end{tabular} & $\mathbf{589 \pm 106}$ & $476 \pm 232$ \\ \bottomrule
+\end{tabular}
+\end{table}
+
+Los resultados obtenidos son intuitivos, esto es, comenzar una exploración a ciegas es 
+peor que conocer un poco del mundo por eso el valor de recompensa inicial mayor del algoritmo propuesto. 
+% Por otro lado, ambos algoritmos se comportan de manera similar después de unos cientos de episodios.
+Por otro lado, la información del mundo con el que cuenta el agente es muy limitada. En realidad solo se cuenta con la información de lo que provocan dos de las seis acciones posibles. Esto puede ser la razón por la que la diferencia entre los algoritmos 
+en un ambiente estocástico no es significativa. Tener un modelo pequeño sumando un ambiente donde no siempre intentar una acción te lleva a un estado deseado conduce a un paso de exploración más. Esto por lo tanto, provoca que ambos algoritmos sean muy parecidos.
+ 
 \section{Problema de los interruptores de luz}
 
 En esta sección se muestran los experimentos y resultados del método propuesto para
 el problema de los interruptores de luz descrito en el capítulo \ref{chapter4}.
-A diferencia del ambiente del taxi, este problema cuanta 
+A diferencia del ambiente del taxi, este problema cuenta 
 con diferentes variaciones. Por ejemplo,
-diferente tipos de conexiones en la estructura subyacente del problema, el tamaño de dicha estructura, etc.
+diferentes tipos de conexiones en la estructura subyacente del problema, el tamaño de dicha estructura, etc.
 En general, de acuerdo con los experimentos, el algoritmo usando un grafo causal como ``oráculo'' para seleccionar sus acciones tiene un mejor desempeño incluso en 
 configuraciones donde las estructuras causales están parcialmente incorrectas o también 
 al disminuir la tasa de consultas al modelo en una parte temprana del aprendizaje.
@@ -242,9 +263,8 @@ termina más rápido la exploración.
 % tasa de decremento para que éste se más rápido.
 
 %Los experimentos se llevan a cabo en dos versiones del ambiente, una discreta y otra estocástica. 
-Son tres los experimentos que se realizan. El primer experimento tiene 
-como objetivo mostrar el comportamiento de modificar a
-diferentes porcentajes la estructura causal $\mathcal{D}$ para obtener $\mathcal{D'}$ y $\mathcal{D}''$. El segundo experimento es con respecto a cambiar la tasa de decremento
+De manera general se realizan tres tipos de experimentos. El primer experimento tiene 
+como objetivo medir el desempeño al modificar la estructura causal $\mathcal{D}$ a diferentes porcentajes para obtener $\mathcal{D'}$ y $\mathcal{D}''$. El segundo experimento es con respecto a cambiar la tasa de decremento
 de $\epsilon$ para llegar más rápido o lento a explotar 
 más constantemente. El tercer experimento, es probar
 el algoritmo cuando no se tienen las variables
@@ -271,10 +291,9 @@ $M$                                                                             
 \end{tabular}
 \end{table}
 
-\newpage
 \subsection{Variando el porcentaje de modificación del grafo causal}\label{exp1}
 
-Se realizan una serie de experimentos donde se busca mostrar el comportamiento 
+Se realiza una serie de experimentos donde se busca mostrar el comportamiento 
 del método propuesto sobre subgrafos obtenidos del grafo causal verdadero. Estos subgrafos son generados a partir del $\mathcal{D}$, alterándolo a diferentes niveles.
 
 \subsubsection{Configuración experimental}
@@ -284,7 +303,7 @@ del método propuesto sobre subgrafos obtenidos del grafo causal verdadero. Esto
     obtener las variables $\mathcal{X}$ directamente del ambiente.
     \item Se prueba modificando el grafo $\mathcal{D}$ para obtener a los
     grafos $\mathcal{D'}$ y $\mathcal{D''}$ en tres niveles. El porcentaje de nivel de cambio se representa con el parámetro $p_{mod}$.
-    Para cada nivel, el subgrafo $\mathcal{D'}$ se genera al remover $p_{mod}$ de las aristas en el grafo $\mathcal{D}$. Para producir $\mathcal{D''}$ se elimina $p_{mod}$ de las aristas y después, de la mitad de conexiones perdidas, se crean nuevas diferentes a las iniciales.
+    Para cada nivel, el subgrafo $\mathcal{D'}$ se genera al remover un porcentaje $p_{mod}$ de las aristas en el grafo $\mathcal{D}$. Para producir $\mathcal{D''}$ se elimina $p_{mod}$ de las aristas y después, de la mitad de conexiones perdidas, se crean nuevas diferentes a las iniciales.
     \begin{itemize}
         \item Nivel bajo de modificación, $p_{mod} = 25 \%$.
         \item Nivel medio de modificación. $p_{mod} = 50 \%$.
@@ -292,9 +311,9 @@ del método propuesto sobre subgrafos obtenidos del grafo causal verdadero. Esto
     \end{itemize}
     \item Se examina sobre los tres tipos de estructuras posibles: uno-a-uno, 
     causa común y efecto común. 
-    \item Se prueba sobre un mundo determinista.
+    \item Se prueba sobre ambientes deterministas y estocásticos.
     
-    \item La tasa de exploración está dada por un $\delta = 0.5$
+    \item La tasa de exploración está dada por un $\delta = 0.5$ lo que indica que aproximadamente a mitad del entrenamiento la probabilidad de exploración alcanza su máximo valor.
 \end{itemize}
 
 \subsubsection{Objetivo}
@@ -439,6 +458,33 @@ causal en un porcentaje bastante alto, la poca información que queda y es corre
 \caption{Comparación del desempeño para los 4 algoritmos con un nivel de alteración $p_{mod} = 75 \%$ en un ambiente determinista. Las gráficas muestran la medida $average$ y la desviación estándar (región sombreada) para 10 experimentos con 10000 (para $N = 5, 7$) y 20000 (para $N = 9$) episodios.}
 \label{fig:high-mod-det}
 \end{figure}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+\begin{table}[]
+\centering
+\caption{}
+\label{tab:my-table}
+\begin{tabular}{@{}cllll@{}}
+\toprule
+\multicolumn{1}{l}{\multirow{2}{*}{$N$}} & \multirow{2}{*}{Algoritmo} & \multicolumn{3}{l}{\begin{tabular}[c]{@{}l@{}}Recompensa promedio durante los últimos $E$\\ episodios de entrenamiento\end{tabular}} \\ \cmidrule(l){3-5} 
+\multicolumn{1}{l}{} &  & Uno a uno & Causa común & Efecto común \\ \midrule
+\multirow{4}{*}{5} & Q-learning &  &  &  \\
+ & Q-learning + $\mathcal{D}$ &  &  &  \\
+ & Q-learning + $\mathcal{D'}$ &  &  &  \\
+ & Q-learning + $\mathcal{D''}$ &  &  &  \\ \midrule
+\multirow{4}{*}{7} & Q-learning &  &  &  \\
+ & Q-learning + $\mathcal{D}$ &  &  &  \\
+ & Q-learning + $\mathcal{D'}$ &  &  &  \\
+ & Q-learning + $\mathcal{D''}$ &  &  &  \\ \midrule
+\multirow{4}{*}{9} & Q-learning &  &  &  \\
+ & Q-learning + $\mathcal{D}$ &  &  &  \\
+ & Q-learning + $\mathcal{D'}$ &  &  &  \\
+ & Q-learning + $\mathcal{D''}$ &  &  &  \\ \bottomrule
+\end{tabular}
+\end{table}
 
 % \begin{figure}
 % \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
