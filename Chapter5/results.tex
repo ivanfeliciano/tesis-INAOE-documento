@@ -291,63 +291,11 @@ $M$                                                                             
 \end{tabular}
 \end{table}
 
-\newpage
-%\input{Chapter5/pmod_exp}
+\clearpage
+\input{Chapter5/pmod_exp}
+\clearpage
 \input{Chapter5/delta_exp}
-% \input{Chapter5/dnq_exp}
-\newpage
-\section{Discusión}
-
-Se presentó una extensión de la política de selección
-de acciones durante el entrenamiento de un agente tal que utilice la información de una estructura causal. La intuición de que una exploración
-guiada es mejor que una búsqueda a ciegas se cumple de acuerdo 
-con los experimentos. Sin embargo, hay un comportamiento anormal
-para las estructuras uno-a-uno del problema de los interruptores de luz.
-Al parecer, para estos problemas, existe un intervalo en el que parece 
-ajustarse el aprendizaje de acuerdo con la transición de una mayor a una menor exploración. Sin embargo, conforme se estabilizan los algoritmos, el método con información del grafo mantiene una desempeño mejor. También, si se aumenta el 
-número de episodios, como en los experimentos de la sección \ref{exp1}
-parece perderse ese comportamiento donde las curvas de recompensa se intersecan.
-
-En general, de la experimentación de la sección \ref{exp1}, se puede ver que incluso tener muy poca información correcta de la estructura causal $\mathcal{D}$ es mejor que un método que se basa en una exploración aleatoria. También, de acuerdo con
-la configuración experimental de la sección \ref{subsection:exp-epsilon}, con excepción de las estructureas uno-a-uno, reducir el número de consultas al grafo y motivar la explotación, no afecta de manera nociva el
-aprendizaje de la política.
-
-Puesto que lo presentado es una prueba de concepto, los problemas atacados
-son pequeños y relativamente simples. Sin embargo, conducen a la búsqueda
-de problemas que puedan ponerse en el contexto de procesos de decisión
-con una estructura causal subyacente que se brinde o aprenda previamente.
-
-% \begin{itemize}
-
-%     \item Incluir toda la información necesaria para que el estudio
-%     pueda ser repetido.
-%     \item El propósito principal del reporte es diseminar los hallazgos o resultados.
-%     \item Tus hallazgos deben ser descritos con mucho detalle para que el lector los juzgue.
-%     \item Además debe haber suficiente detalle para hacer posible
-%     transferir cualquier solución a algún otro lugar.
-% \end{itemize}    
-
-
-% \subsection{Esquemas de comparación}
-% \subsubsection{Q-learning}
-% \subsubsection{Q-learning con estructura causal completa}
-% \subsubsection{Q-learning con estructura causal incompleta}
-% \subsubsection{Q-learning con estructura causal incorrecta}
-% \subsection{Parámetros y medidas de desempeño}
-
-% \section{Resultados}
-% \subsection{Ambiente con estados discretos}
-% \subsubsection{Experimento 1 - Cambios en el porcentaje de la completitud de $D$}
-% \subsubsection{Experimento 2 - Cambios en la tasa de consulta del modelo $\epsilon$}
-% \subsubsection{Experimento 3 - Transferencia de conocimiento}
-% \subsection{Ambiente con estados continuos}
-% \subsubsection{Experimento 1 - Cambios en el porcentaje de la completitud de $D$}
-% \subsubsection{Experimento 2 - Cambios en la tasa de consulta del modelo $\epsilon$}
-% \subsubsection{Experimento 3 - Transferencia de conocimiento}
-
-% \subsection{Q-learning}
-% \subsection{Q-learning con estructura causal completa}
-% \subsection{Q-learning con estructura causal incompleta}
-% \subsection{Q-learning con estructura causal incorrecta}
-
-
+\clearpage
+\input{Chapter5/dnq_exp}
+\clearpage
+\input{Chapter5/discussion}

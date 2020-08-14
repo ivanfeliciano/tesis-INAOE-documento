@@ -24,19 +24,20 @@ Además, en el capítulo \ref{chapter5} se presenta la experimentación que veri
     temprana de entrenamiento, es decir, dar más peso a la explotación que a la exploración, parece no afectar el desempeño del agente demasiado. Esto podría
     ser porque con la poca exploración guiada que han ejecutado los algoritmos,
     ya han sesgado su comportamiento.
+    
+    \item El comportamiento utilizando observaciones de alta dimensión para entrenar a un agente y ayudándolo con un modelo en una dimensión mucho menor y con variables que representan al estado del ambiente den un alto nivel mantiene las mismas características que trabajar en un espacio de menor dimensión directamente.
 \end{enumerate}
 
 \section{Trabajo futuro}
 
-Diferentes tareas y problemas permanecen abiertos y fuera del alcance de este trabajo. Algunos de ellos con respecto a los escenarios experimentales atacados  y otros que se han encontrado durante la investigación. A continuación, se 
+Diferentes tareas y problemas permanecen abiertos y fuera del alcance de este trabajo. Algunos de ellos con respecto al nivel de formalización de las ideas presentadas, a los escenarios experimentales atacados  y otros que se han encontrado durante la investigación. A continuación, se 
 mencionan algunos tareas y problemas pendientes.
 
 Con respecto a los problemas atacados en el trabajo,
 varios experimentos y análisis quedan pendientes. Entre ellos, 
 establecer cuándo se considera resuelta una tarea, por ejemplo, 
 definir una recompensa óptima por episodio y 
-calcular quién tiene la racha más larga. Con esta información 
-se podrían realizar pruebas estadísticas. Otro escenario que sería interesante
+calcular quién tiene la racha más larga.  Otro escenario que sería interesante
 explorar es aquel donde en la estructuras con caminos causales con más de dos aristas. Por ejemplo, para el problema de los interruptores, se pueden
 tener escenarios donde sea necesario mover un interruptor ``maestro'' para
 poder mover los otros interruptores. Además, queda abierto el problema
@@ -48,7 +49,6 @@ causal. De manera general, una propuesta consiste en iniciar con una estructura 
 una distribución de probabilidad de creencias de que realizar una acción $a$ cause un estado $x$, i.e., $P_{a\rightarrow x}$. Estos pesos (probabilidades) se pueden
 ir actualizando conforme el agente interactúe con el mundo y
 a través de sus respuestas le brinde información del modelo causal que lo gobierna.
-
 
 Por otra parte, también se está intentando atacar tareas más 
 complejas que subsumen los siguientes problemas: 1) debido al problema de la asignación de crédito es difícil saber qué acción a la larga causará un estado deseado, 2) los efectos de una acción en el ambiente puede ser imperceptibles, por lo que es necesario medir el efecto causal de una acción sobre un estado una función similar a una función de valor. En particular, un ejemplo de un ambiente con estas dificultades, es Animal AI \cite{beyret2019animalai}.
