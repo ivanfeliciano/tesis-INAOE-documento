@@ -49,7 +49,7 @@ una tupla $<\mathcal{S}, \mathcal{A}, \mathcal{X},
     que define relaciones entre
     los conjuntos $\mathcal{A}$ y $\mathcal{X}$, 
     \item $\mathcal{P}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]
-     $ es la función de probabilidad de transición de pasar de estado a otro dada una acción. 
+     $ es la función de probabilidad de transición de pasar de un estado a otro dada una acción. 
     \item $\mathcal{G}$ es el espacio de metas, donde cada uno de sus elementos es un vector $\mathbf{g} = [x_1, \dots, x_N]$ y $x_i \in \mathcal{X}$
     con $i \in \{1, \dots, N\}$,
     \item $r : \mathcal{S} \times \mathcal{A} \times \mathcal{G} \rightarrow \mathbb{R}$ es una función
@@ -58,7 +58,7 @@ de recompensa, donde $r(s, a, \mathbf{g})$ produce la recompensa inmediata condi
 \item $\phi : \mathcal{S} \rightarrow \mathcal{X}$ es una función que mapea el espacio de estados al de macro-variables.
 \end{itemize}
 
-En un MDP condicionado a metas el objetivo es aprender una 
+En un MDP condicionado a metas, el objetivo es aprender una 
 política óptima condicionada a una meta $\pi^*_g: \mathcal{S} \times \mathcal{G} \rightarrow \mathcal{A}$ que maximice el retorno esperado $R = \sum_{k}^{\infty}\gamma^{k} r(s_k, a_k, g)$.
 
 Un agente de RL que cuente con información adicional que lo vuelva 
@@ -71,7 +71,7 @@ estados deseados o evitar elegir acciones que lo lleven a
 estados no deseados.
 
 No obstante, definir un modelo causal del ambiente no es una tarea simple.
-Las problemas actuales en las que se aplican soluciones 
+Los problemas actuales en las que se aplican soluciones 
 basadas en RL tienen como características que la información
 que recibe el agente normalmente es de alta dimensionalidad, por 
 ejemplo, imágenes. Un modelo causal donde se represente toda
@@ -107,8 +107,8 @@ en la estructura causal $\mathcal{D}$.
 
 Normalmente, la exploración del agente se lleva a cabo en el paso de la selección de acciones
 durante su aprendizaje. Por esta razón,
-se propone una variante de la política $\epsilon$-greedy en la que además de las opciones de ejecutar
-una acción aleatoria o aquella opción que parece ser mejor hasta ese momento, también se puede elegir consultar el modelo causal. 
+se propone una variante de la política $\epsilon$-greedy, en la que además de las opciones de ejecutar
+una acción aleatoria o aquella opción que parece ser mejor hasta ese momento, también se puede elegir consultar el modelo causal.  En este trabajo,   el sistema propuesto sólo es incorporado en la política $\epsilon$-greedy. Sin embargo, es posible utilizar el método en otros esquemas de selección de acciones, principalmente para problemas donde el control no es continuo.
 
 Hay dos tipos de consultas que interesa realizar 
 sobre la estructura causal: 1)¿qué tal sí hago esta acción?
@@ -120,10 +120,12 @@ a la pregunta 2). Por ahora, este trabajo se limita a hacer consultas del tipo 2
 simplemente obtener las causas de una variable $x$ para intentar una acción que
 sea padre de la variable de interés y evitar aquellas que no sean causa de ésta.
 
-El método propuesto puede trabajar con varios algoritmos
- de RL que utilicen una política $\epsilon$-greedy 
- durante su entrenamiento para elegir sus acciones. En
- este trabajo, se incorpora en el algoritmo Q-learning \cite{watkins1992q}. El proceso de entrenamiento 
+El método propuesto 
+% puede trabajar con varios algoritmos
+%  de RL que utilicen una política $\epsilon$-greedy 
+%  durante su entrenamiento para elegir sus acciones. En
+%  este trabajo, 
+ se incorpora en el algoritmo Q-learning \cite{watkins1992q}. El proceso de entrenamiento 
  del algoritmo Q-learning se mantiene idéntico salvo por
  la selección de acciones guiada.
 
@@ -132,29 +134,77 @@ de selección de acciones modificando la política
 $\epsilon$-greedy.
 El algoritmo recibe como entrada lo siguiente: la estructura causal $\mathcal{D}$, un vector que describe a la meta $\mathbf{g} = [g_1, \dots, g_N]$ donde $g_i \in \mathcal{X}$ y una observación $s \in \mathcal{S}$ del ambiente. La selección de acción se describe a continuación. 
 
-Con probabilidad $1-\epsilon$ se elige la mejor acción. Para el algoritmo Q-learning la mejor acción está dada por aquella acción que da el mayor valor para la función de valor de acción, $\argmax_a Q(s, a)$.
+Con probabilidad $1-\epsilon$ se elige la mejor acción. Para el algoritmo Q-learning la mejor acción está dada por aquella acción que da el mayor valor para la función de valor de acción, esto se denota como $\argmax_a Q(s, a)$.
 Inicialmente la probabilidad de
 explotar la mejor opción es muy baja, es decir, $\epsilon$ inicia con un valor igual o cercano a 1.
 Si no se eligió la mejor acción de acuerdo con $Q$, entonces se consulta la estructura causal.
 
 Debido a que la estructura causal está en términos de variables de alto nivel,
-entonces, es necesario convertir la observación $s$ a un vector de macro variables $\mathbf{x} = [x_1, \dots, x_N]$, donde $x_i \in \mathcal{X}$. 
+entonces, se necesita de $\phi$ para  convertir la observación $s$ a un vector de macro variables $\mathbf{x} = [x_1, \dots, x_N]$, donde $x_i \in \mathcal{X}$. En la Figura \ref{fig:obs-to-macro} se muestra un ejemplo de la transformación de una observación $s$, de dos dimensiones, en un vector de tamaño $N$ con variables que describen al estado en un alto nivel.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.25]{Chapter4/Figs/stox.pdf}
+    \caption{La observación $s$ del agente se traduce mediante la función $\phi$ en un vector de variables de alto nivel.}
+    \label{fig:obs-to-macro}
+\end{figure}
+
 Una vez que se
 realiza el mapeo entre el espacio de
-estados y el de variables de alto nivel se obtiene una lista de variables
-de interés, las cuales se consultarán en el grafo causal.
-Por simplicidad, esta lista de variables se obtiene calculando
-qué variables tiene un valor diferente entre el vector meta $\mathbf{g}$
-y el vector de macro variables $\mathbf{x}$.
-Sigue el paso de consulta al grafo causal, que consiste en una
-obtención de padres de cada variable de interés. Si el grafo causal
-logra obtener información sobre alguna de las variables interés, es decir,
-ésta se encuentra en el grafo y además tiene al menos un predecesor
-se regresa una acción aleatoria que es causa directa de esa variable $x_i$.
-En caso de que no se haya información suficiente, la política regresa una acción aleatoria,
-es decir, realiza un exploración a ciegas. Para evitar que el  en que
-se obtienen las variables de interés y el orden en que se obtienen las causas de 
-cada variable de interés, se hace un barajado sobre éstas.
+estados y el de macro variables, se obtiene una lista  $E$ de variables de interés, las cuales se consultarán en el grafo causal.
+Por simplicidad, la lista $E$ se obtiene a través de una función $f$ que calcula cuáles variables tienen un valor diferente entre el vector meta $\mathbf{g}$
+y el vector de macro variables $\mathbf{x}$. Se puede suponer que $\mathbf{x} \neq \mathbf{g}$, sin embargo, dado que los ambientes son dinámicos, no se puede asegurar que la configuración inicial de un ambiente no sea igual a la que se desea llegar. 
+
+A menudo, la meta final de una tarea en RL está compuesta de submetas. Por lo tanto, la lista $E$ puede guardarse en un estructura de datos tal que sus elementos estén ordenados por una función de prioridad, por ejemplo, de acuerdo con el orden topológico de $\mathcal{D}$. Con esto, los elementos con mayor prioridad pueden ser las variables que llevan a cumplir submetas necesarias para alcanzar la meta final.
+En la Figura \ref{fig:e-list} se describe un ejemplo de cómo se produce la lista $E$ con respecto al grafo de la Figura \ref{fig:example-d}. 
+ 
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.3]{Chapter4/Figs/examplegraph.pdf}
+    \caption{Ejemplo de un grafo causal $\mathcal{D}$. Las flechas con cuerpo curvo y punteado denotan caminos causales (notación arbitraria del autor).}
+    \label{fig:example-d}
+\end{figure} 
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35]{Chapter4/Figs/listofinterest.pdf}
+    \caption{La lista $E$ se obtiene de las variables que tienen valores diferentes entre los vectores $\mathbf{x}$ y $\mathbf{g}$. En este ejemplo, se almacenan la variable $x_i$ en $E$ si $|x_i - x_i' | = 1$ tal que $x_i\in \mathbf{g}$ y $x_i' \in \mathbf{x}$. El orden de $E$ sigue el orden topológico de grafo de la Figura \ref{fig:example-d}.}
+    \label{fig:e-list}
+\end{figure} 
+
+El siguiente paso corresponde a obtener una acción $a \in \mathcal{A}$ para que el agente la lleve a cabo.
+Para esto, se hace un recorrido sobre la lista $E$, donde
+por cada elemento $e \in E$ se hace una consulta al grafo causal. La consulta consiste en la
+obtención de los padres de $e$.  Si $e$ se encuentra en el grafo y además tiene al menos una variable de acción $a$ como predecesor se realiza tal acción.
+Algunos posibles casos de los tipos de conexiones entre las acciones y las variables de interés se pueden ver en la Figura \ref{fig:connection-types}. 
+Las conexiones (a) representan el caso donde una variable de estado $e'$ afecta la acción que se desea tomar.
+El grafo (b) denota el caso donde para llevar a cabo una acción $a$ es necesario realizar antes la acción $a'$. La estructura (c) muestra el caso donde $e$ solo es afectado cuando varias acciones son ejecutadas al mismo tiempo. Finalmente, el caso atacado en este trabajo es (d), donde la acciones son nodos sin padres y además no es necesario llevar a cabo varias acciones al mimo tiempo para cambiar $e$.
+
+% Esta tesis se limita a trabajar en tareas donde las estructuras causales subyacentes solo contienen conexiones del tipo (d) de la Figura \ref{fig:connection-types}.  
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{Chapter4/Figs/connections.pdf}
+    \caption{Algunos casos de las conexiones entre la acción $a \in \mathcal{A}$ y la variable de interés $e \in E$. Esta tesis se enfoca en problemas que contienen solo el  caso más simple (d), donde la acción $a$ no depende de que sucedan otras variables $e'$ ni de otras acciones $a'$ (caso (a) y (b), respectivamente). Además, en este tipo de estructuras, no es necesario llevar a cabo dos acciones $a$ y $a'$ para cambiar el estado de $e$ (caso (c)).}
+    \label{fig:connection-types}
+\end{figure}
+
+% Explicar un poco más esto, como están conectadas estas variables siempre a-x o puede haber algo como a-y-x y el caso de que las causas son independientes entre ellas, tal vez añadir eso en las suposiciones. Como que la x es hija de varias que pasa, tal vez enumerar lo casos
+% Caso 1) es una causa directa y no es de efecto común
+% caso 2) causa directa y es de efecto común
+% caso 3 causa lejana pero no hay más info entonces la ejecuto
+% caso 4) o los caoss deben dividirse si son de efecto común o causa común. Este último es complicado porque hacer algo que afecta a otros elementos que no quiero afectar es un problema. Recalcar que casos atacamos
+% se regresa una acción aleatoria que es causa directa de esa variable $x_i$. 
+
+% Poner ejemplo, imágenes de los casos? Tal vez solo decir cuál de todas las acciones se selecciona. Enfatizar en que las acciones son independientes. Tal vez una imagen de los posibles casos y además del que se ataca en los dominios propuestos.
+
+% En caso de que no haya información suficiente, es decir, no se encontró ninguna acción realizable, la política regresa una acción aleatoria, por lo que el agente realiza un exploración a ciegas. Para evitar que repetir intentar actuar sobre las variables de interés, aunque tal vez esto no es necesario porque se supone que una vez ya intenté tal acción.
+% se obtienen las variables de interés y el orden en que se obtienen las causas de 
+% cada variable de interés, se hace un barajado sobre éstas.
+% Tal vez todo esto está de más, yo creo que sí por eso de que $E$ está en orden aleatorio ya me quito de todo esto
 
 \begin{mialgoritmo}[H]
   \caption{Selección de acciones guiada por una estructura causal \label{alg:guided-action-selection}}
@@ -169,15 +219,76 @@ cada variable de interés, se hace un barajado sobre éstas.
    \ENDIF
   \STATE $\mathbf{x} \leftarrow \phi(s)$ \COMMENT{Mapea las observación $s$ a un vector de variables $\mathbf{x} = [x_1, \dots, x_n]$ donde $x_i \in \mathcal{X}$}
    \STATE $E \leftarrow f(\mathbf{g}, \mathbf{x})$ 
-  \COMMENT{$f$ Obtiene una lista en orden aleatorio de aquellas variables diferentes $g_i \neq x_i$, donde $g_i, x_i \in \mathcal{X}$}
+  \COMMENT{$f$ Obtiene una lista ordenada de aquellas variables diferentes $g_i \neq x_i$, donde $g_i, x_i \in \mathcal{X}$}
     \FOR{$e \in E$}
     \IF{$e \in \mathcal{D}$}
-        \RETURN Una acción padre de $e$, $a \in \mathcal{A}$ seleccionada aleatoriamente.
+        \RETURN Si existe, una acción padre de $e$, $a \in \mathcal{A}$ seleccionada aleatoriamente.
     \ENDIF
     \ENDFOR
     \RETURN Acción aleatoria $a$.
   \end{algorithmic}
 \end{mialgoritmo}
+
+El Algoritmo \ref{alg:guided-action-selection} encaja sin problemas en el algoritmo Q-learning y DQN. En los Algoritmos
+\ref{alg:q-algo-extra-info} y \ref{alg:dqn-algo-causal}, se pueden ver los métodos resultantes al añadir la selección de acciones guiada. Además, se puede notar que no es necesario seguir el esquema de la política $\epsilon-greedy$. Se podría utilizar otro método basado en política, por ejemplo, donde antes de utilizar la política que se está aprendiendo, se consulte el modelo causal.
+
+\begin{mialgoritmo}[H]
+  	\caption{$Q$-learning guiado por conocimiento causal}
+	\label{alg:q-algo-extra-info}
+  \begin{algorithmic}[1]
+  \setstretch{1}
+  \REQUIRE $\alpha \in (0,1]$, $\epsilon \in (0, 1]$.
+  \STATE Inicializar arbitrariamente $Q(s,a)$, para todo $s\in \mathcal{S}$ excepto donde $Q(terminal, \cdot) = 0$.
+  
+  \FOR{$episodio = 1, \dots, M$}
+    \STATE Inicializar $s_0$.
+    \FOR{$t = 0, \dots, T$}
+    \STATE Elegir $a_t$ usando una política derivada de $Q$ (e.g., $\epsilon$-greedy).
+    \STATE Tomar acción $a_t$ y observar $r_{t+1}, s_{t+1}$.
+    \STATE $Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha [r_{t+1} + \gamma \max_a Q(s_{t+1}, a) - Q(s_t, a_t)]$.
+    \STATE $s_t \leftarrow s_{t+1}$.
+    \ENDFOR
+  \ENDFOR
+  \end{algorithmic}
+\end{mialgoritmo}
+
+
+\begin{mialgoritmo}[H]
+  	\caption{DQN guiado por conocimiento causal.}
+	\label{alg:dqn-algo-causal}
+  \begin{algorithmic}[1]
+  \setstretch{1}
+  \STATE Inicializar búfer de experiencias $D$ con capacidad $N$.
+  \STATE Inicializar la función de valor de acción $Q$ con pesos aleatorios $\theta$.
+  \STATE Inicializar la función de valor de acción objetivo $\hat{Q}$ con pesos $\theta^- = \theta$.
+  
+  \FOR{$episodio = 1, \dots, M$}
+    \STATE Inicializar secuencia $s_1 = {x_1}$ y preprocesar secuencia $\phi_1 = \phi(s_1)$.
+    \FOR{$t = 1, \dots, T$}
+    \STATE Elegir $a_t$ usando una política $\epsilon$-greedy.
+    \STATE Tomar acción $a_t$, observar recompensa $r_{t}$ e imagen $x_{t+1}$.
+    \STATE Asignar $s_{t+1} =  s_t, a_t, x_{t+1}$ y preprocesar $\phi_{t+1} = \phi(s_{t+1})$.
+    \STATE Guardar transición $(\phi_t, a_t, r_t, \phi_{t+1})$ en $D$.
+    \STATE De $D$ tomar una muestra aleatoria de un lote de transiciones $(\phi_j, a_j, r_j, \phi_{j+1})$.
+    \STATE Establecer
+	\[
+	 y_j = 
+   \begin{cases} 
+      r_j  & \mbox{si el episodio termina en el paso } j + 1 \\
+      r_j + \gamma \max_{a'}\hat{Q}(\phi_{j+1}, a'; \theta^-) & \mbox{en cualquier otro caso.}
+   \end{cases}
+	\]
+	\STATE Realizar el paso del
+	descenso de gradiente sobre $(y_j -  Q(\phi_j,a_j;\theta))^2$ con respecto a los parámetros de la red $\theta$.
+	\STATE Cada $C$ pasos reiniciar $\hat{Q} = Q$.
+    \ENDFOR
+  \ENDFOR
+  \end{algorithmic}
+\end{mialgoritmo}
+
+En ambos algoritmos \ref{alg:q-algo-extra-info} y  \ref{alg:dqn-algo-causal}, el valor de $\epsilon$ se va actualizando con el paso del tiempo. Para este trabajo se utiliza un  Linear Annealing Policy computes a current threshold value and
+    transfers it to an inner policy which chooses the action. The threshold
+    value is following a linear function decreasing over time. Este valor se puede expresar como Linear annealed: f(x) = ax + b. Donde $m$ es un hiperparámetro que se puede modificar para acelerar alcanzar el mínimo valor de $\epsilon$. En esta tesis se define a m como ...
 
 
 \section{Ejemplo: Problema de los interruptores de luz}\label{section:switches-example}
@@ -232,8 +343,7 @@ prenda o apague la luz de la cocina.
      se conoce que el interruptor $i$ no necesariamente corresponde al foco $i$.
      \item El espacio de metas $\mathcal{G}$ contiene a todas las
      combinaciones posibles de focos prendidos y apagados en la casa.
-     \item La recompensa inmediata $r$ se calculas a través de medir de
-     una medida de diferencia entre la observación y la meta.
+     \item La recompensa inmediata $r$ se calcula a través de medir la diferencia entre la observación y la meta.
  \end{itemize}
  
  Una vez que la tarea se ha descrito como un MDP, es posible que Joi

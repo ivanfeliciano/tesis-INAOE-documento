@@ -169,8 +169,8 @@ que es posible mejorar la identificación de acciones que proporcionan una recom
 el problema del bandido y 
 que una estructura causal permite
 que una política condicionada a una
-meta (aprendida mediante aprendizaje por imitación) generalice para instancias de 
-un problema no vistas, respectivamente.
+meta (aprendida mediante aprendizaje por imitación) generalice para instancias no vistas de 
+un problema, respectivamente.
 Sin embargo, a diferencia de estos trabajos,
 en esta investigación 
 se propone que el modelo causal se suponga 
@@ -183,7 +183,7 @@ Los resultados de la prueba de concepto presentada en este trabajo,
 muestran las ventajas de usar un modelo causal durante el entrenamiento de un agente. Entre ellas están: 
 \begin{itemize}
     \item Alcanzar una recompensa mayor en un menor tiempo.
-    \item Un modelo incompleto o incorrecto incrementan el desempeño de un agente.
+    \item Incluso un modelo incompleto o incorrecto mejoran el desempeño de un agente.
 \end{itemize}
 
 \section{Motivación y justificación}
@@ -253,7 +253,7 @@ que percibe a acciones que se deben tomar cuando
 se encuentre en esos estados. Este comportamiento
 se infiere con la interacción a prueba y error con el ambiente y la única señal que el agente recibe es una recompensa que mide que tan buena fue la acción que llevó a cabo. Es por eso que este proceso puede ser muy lento en tareas donde no hay recompensas inmediatas, donde la mayoría de secuencias
 de decisiones no inteligentes producen una señal de recompensa nula.
-Por lo tanto, para recibir más recompensa, un agente debe intentar acciones que no haya \textit{explorado} o \textit{explotar} la experiencia que ya ha obtenido.
+Por lo tanto, para recibir una mayor recompensa, un agente debe intentar acciones que no haya \textit{explorado} o \textit{explotar} la experiencia que ya ha obtenido.
 
 Normalmente, el explorar o explotar se realiza en el 
 paso de la selección de acciones durante el entrenamiento de un agente. Restringir el espacio de búsqueda aprovechando 
@@ -275,7 +275,7 @@ ejemplo, imágenes. Un modelo causal donde se represente toda
 la información del ambiente con el que interactúa el agente
 es intratable. 
 Por esta razón, el modelo causal puede representar sólo pequeñas partes del mundo del agente. Además, incluso cuando se trabajen sobre un espacio donde la información sea 
-mucho más manejable, contar con los parámetros de un modelo causal puede ser una tarea muy difícil. Por lo tanto, se necesita una representación que no exceda por mucho complejidad de los problemas de RL pero con información suficiente.
+mucho más manejable, contar con los parámetros de un modelo causal puede ser una tarea muy difícil. Por lo tanto, se necesita una representación que no exceda por mucho la complejidad de los problemas de RL pero que proporcione información suficiente para ayudar a resolver la tarea.
 
 % El problema de cómo representar el conocimiento causal, se representan acciones y estados
 

@@ -33,15 +33,15 @@ causales y la definición de intervenciones en un modelo usando el operador $do(
 
 El aprendizaje por interacción es una idea esencial que subyace en casi todas la teorías
 de aprendizaje e inteligencia \cite{sutton_barto_2018}.
-Una perspectiva dentro del \textit{aprendizaje automático} \cite{Goodfellow-et-al-2016} enfocada al aprendizaje dirigido a metas a través de interacciones es el \textit{aprendizaje por refuerzo}.
+Una perspectiva dentro del \textit{aprendizaje computacional} \cite{Goodfellow-et-al-2016} enfocada al aprendizaje dirigido a metas a través de interacciones es el \textit{aprendizaje por refuerzo}.
 
 El aprendizaje por refuerzo se encarga de aprender el comportamiento de un agente 
 de tal forma que se maximice una señal de recompensa numérica, esto es, a que un
 agente aprenda a mapear estados de su mundo a acciones. Al aprendiz o agente no se le 
 dice qué acciones tomar, en cambio éste debe descubrir cuáles, al intentarlas, producen
 una mayor recompensa. Las dos características más importantes que diferencían al
-aprendizaje por refuerzo de otros paradigmas en el aprendizaje automático son 
-la búsqueda a prueba-y-error y la recompensa retrasada. Que la recompensa sea retrasada significa que el agente debe ser 
+aprendizaje por refuerzo de otros paradigmas en el aprendizaje computacional son 
+la búsqueda por prueba-y-error y la recompensa diferida. Que la recompensa sea diferida significa que el agente debe ser 
 capaz de aprender cuales son acciones deseables basándose en una recompensa que puede ocurrir muy en el futuro.
 
 \begin{figure}[h]
@@ -62,7 +62,7 @@ describe el algoritmo \textit{Q-learning}, cuyo desarrollo involucró un gran av
 
 Los procesos de decisión de Markov (MDP) son un marco de trabajo para
 definir el problema de aprender
-mediante interacciones para 
+mediante interacciones como 
 alcanzar una meta. El tomador de 
 decisiones es llamado \textit{agente}.
 El agente interactúa con un mundo, que
@@ -86,8 +86,8 @@ Formalmente, un MDP es una tupla $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \math
     \item $\mathcal{S}$ es el conjunto de estados, donde $s_t$ denota el estado $s\in \mathcal{S}$ en el tiempo $t$.
     \item $\mathcal{A}$ es el conjunto de acciones, donde $a_t \in \mathcal{A}$
     denota la acción realizada en un estado $s$ en el tiempo $t$.
-    \item $\mathcal{P}_{ss'}^{a}: \mathcal{S}\times \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]$ (también denotada por $\mathcal{P}$) es una función de probabilidad de transición de pasar del estado $s \in \mathcal{S}$ a $s' \in \mathcal{S}$ cuando se toma la acción $a$.% en el tiempo $t$.
-    \item $\mathcal{R}_{ss'}^{a}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ (también denotada por $\mathcal{R}$) es la función de recompensa inmediata que el agente recibe depués de pasar del $s$ a $s'$.
+    \item $\mathcal{P}_{ss'}^{a}: \mathcal{S}\times \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]$ (también denotada por $\mathcal{P}$) es una función de probabilidad de transición de pasar del estado $s \in \mathcal{S}$ al estado $s' \in \mathcal{S}$ cuando se toma la acción $a$.% en el tiempo $t$.
+    \item $\mathcal{R}_{ss'}^{a}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ (también denotada por $\mathcal{R}$) es la función de recompensa inmediata que el agente recibe después de pasar de $s$ a $s'$.
     \item $\gamma \in [0,1]$ es el factor de descuento que sirve para
     calcular el retorno esperado con descuento.
 \end{itemize}
@@ -112,7 +112,7 @@ interactúa con el ambiente.
 
 % % element of some reinforcement learning systems is a model of
 % % the environment. This is something that mimics the behavior of the environment, or more generally, that allows inferences to be made about how the environment will behave.
- Un paso en la interacción de un agente con el ambiente se puede ver como que dado un estado $s_t \in \mathcal{S}$ y un
+ Un paso en la interacción de un agente con el ambiente se puede ver como que dado un estado $s_t \in \mathcal{S}$ y una
 acción $a_t\in \mathcal{A}$, el agente pasa a un nuevo
 estado $s_{t+1} \in \mathcal{S}$ y recibe una recompensa
 $r_{t+1}$.
@@ -146,7 +146,7 @@ Si se tiene un punto terminal se llaman tareas \textit{episódicas}, si no se ti
 Una política, denotada por $\pi(s, a)$, describe una manera de actuar. Es una función que mapea un estado $s$ y una acción $a$ a la probabilidad de tomar esa acción en ese estado.
 Por lo tanto para un estado dado, 
 $\sum_a \pi (s, a) = 1$. El problema fundamental en los MDP es encontrar una política óptima $\pi^*$, es decir, aquella que maximiza la recompensa que espera recibir el agente a largo plazo.
-A veces es escrita como $\pi^*(s) = a$, el cual es un mapeo de estados a las acciones óptimas en esos estados.
+A veces es escrita como $\pi^*(s) = a$, la cual es un mapeo de estados a las acciones óptimas en esos estados.
 
 Para aprender la política óptima, se utilizan las \textit{funciones de valor}. Existen dos tipos de funciones de valor: la \textit{función de valor de estado},
 denotada por $V(s)$, y la \textit{función de valor de acción}, expresada como $Q(s, a)$.
@@ -255,71 +255,71 @@ la política óptima. Si $\mathcal{P}$ y $\mathcal{R}$ son conocidas, i.e., se c
 % Whereas the reward signal indicates what is good in an immediate sense, a value
 % function specifies what is good in the long run. Roughly speaking, the value of a state is the total amount of reward an agent can expect to accumulate over the future, starting from that state.
 
-\subsection{Método Monte Carlo}\label{subsection-montecarlo}
+% \subsection{Método Monte Carlo}\label{subsection-montecarlo}
 
-El método Monte Carlo es un enfoque que busca resolver problemas
-de aprendizaje por refuerzo con tareas episódicas, donde 
-no existe un modelo del ambiente. 
-Es un método iterativo y converge a la política
-al incrementar el número de episodios.
+% El método Monte Carlo es un enfoque que busca resolver problemas
+% de aprendizaje por refuerzo con tareas episódicas, donde 
+% no existe un modelo del ambiente. 
+% Es un método iterativo y converge a la política
+% al incrementar el número de episodios.
 
-Existe una tabla $Q$ que almacena el valor de acción para cada posible
-par de estado-acción. El valor es el promedio sobre
-todos los retornos, que han sido obtenidos durante todos los episodios. 
-Un elemento de la tabla es actualizado cada vez que un par estado-acción
-es visitado por el agente. La ecuación de actualización se muestra en la 
-siguiente ecuación, donde $N(s_t, a_t)$ es el número de visitas al 
-par estado-acción $(s_t, a_t)$.
+% Existe una tabla $Q$ que almacena el valor de acción para cada posible
+% par de estado-acción. El valor es el promedio sobre
+% todos los retornos, que han sido obtenidos durante todos los episodios. 
+% Un elemento de la tabla es actualizado cada vez que un par estado-acción
+% es visitado por el agente. La ecuación de actualización se muestra en la 
+% siguiente ecuación, donde $N(s_t, a_t)$ es el número de visitas al 
+% par estado-acción $(s_t, a_t)$.
 
-\[
-Q(s_t, a_t) = Q(s_t, a_t) + \frac{1}{N(s_t, a_t)} (R_t - Q(s_t, a_t)).
-\]
+% \[
+% Q(s_t, a_t) = Q(s_t, a_t) + \frac{1}{N(s_t, a_t)} (R_t - Q(s_t, a_t)).
+% \]
 
-Los diferentes retornos pueden 
-ser ponderados por un peso $\alpha$.
-En vez de tomar el promedio
-verdadero, retornos recientes pueden tener un peso mayor o menor
+% Los diferentes retornos pueden 
+% ser ponderados por un peso $\alpha$.
+% En vez de tomar el promedio
+% verdadero, retornos recientes pueden tener un peso mayor o menor
 
-\begin{equation}\label{eq:montecarlo-update}
-\begin{split}
-Q(s_t, a_t) &= Q(s_t, a_t) + \alpha(R_t - Q(s_t, a_t))\\
-&= (1-\alpha)Q(s_t, a_t) + \alpha R_t.
-\end{split}
-\end{equation}
+% \begin{equation}\label{eq:montecarlo-update}
+% \begin{split}
+% Q(s_t, a_t) &= Q(s_t, a_t) + \alpha(R_t - Q(s_t, a_t))\\
+% &= (1-\alpha)Q(s_t, a_t) + \alpha R_t.
+% \end{split}
+% \end{equation}
 
-El método Monte Carlo itera sobre episodios. Durante el paso de evaluación, el 
-agente actúa de acuerdo a la política $\pi$ de un episodio. Cuando el 
-episodio se termina, el agente recolecta una secuencia de experiencia $s_1, a_1, r_1, s_2, \dots, s_t$ y puede actualizar la tabla $Q$ de acuerdo
-con ésta.
-Para cada par estado-acción en la secuencia, se obtiene el retorno 
-esperado $R_t$ y se actualiza el elemento correspondiente en la tabla $Q$ 
-de acuerdo con la ecuación \ref{eq:montecarlo-update}.
-Durante el paso de mejora,  la
-política $\pi$ se actualiza de acuerdo a la tabla $Q$. En la siguiente iteración,
-el paso de evaluación se realiza con la política nueva que sea obtiene de la
-actualización.
+% El método Monte Carlo itera sobre episodios. Durante el paso de evaluación, el 
+% agente actúa de acuerdo a la política $\pi$ de un episodio. Cuando el 
+% episodio se termina, el agente recolecta una secuencia de experiencia $s_1, a_1, r_1, s_2, \dots, s_t$ y puede actualizar la tabla $Q$ de acuerdo
+% con ésta.
+% Para cada par estado-acción en la secuencia, se obtiene el retorno 
+% esperado $R_t$ y se actualiza el elemento correspondiente en la tabla $Q$ 
+% de acuerdo con la ecuación \ref{eq:montecarlo-update}.
+% Durante el paso de mejora,  la
+% política $\pi$ se actualiza de acuerdo a la tabla $Q$. En la siguiente iteración,
+% el paso de evaluación se realiza con la política nueva que sea obtiene de la
+% actualización.
 
-Normalmente, la política de actualización básica es una política voraz. El agente
-siempre elige la acción con el máximo valor de acción. Sin embargo, explotar la acciones vorazmente con el conocimiento actual puede conducir a que el
-agente quede atascado en una política no óptima. Para evitar 
-este caso, acciones exploratorias deben tomarse en cuenta de vez en cuando.
-Una política es llamada $\epsilon$-greedy, si la mejor acción actual se toma 
-con una probabilidad de $1-\epsilon$ y una acción aleatoria se toma con una 
-probabilidad $\epsilon$. La ecuación de la política $\epsilon$-greedy
-se puede definir de la siguiente manera
+% Normalmente, la política de actualización básica es una política voraz. El agente
+% siempre elige la acción con el máximo valor de acción. Sin embargo, explotar la acciones vorazmente con el conocimiento actual puede conducir a que el
+% agente quede atascado en una política no óptima. Para evitar 
+% este caso, acciones exploratorias deben tomarse en cuenta de vez en cuando.
+% Una política es llamada $\epsilon$-greedy, si la mejor acción actual se toma 
+% con una probabilidad de $1-\epsilon$ y una acción aleatoria se toma con una 
+% probabilidad $\epsilon$. La ecuación de la política $\epsilon$-greedy
+% se puede definir de la siguiente manera
 
-\begin{equation}\label{eq:epsilongreedy}
-\pi(s,a) = 
-   \begin{cases} 
-      1 - \epsilon + \frac{\epsilon}{|\mathcal{A}|} & \mbox{si } a= 
-      \argmax_{a \in \mathcal{A}} 
-      Q(s,a)   \\
-      \frac{\epsilon}{|\mathcal{A}|} & \mbox{ en otro caso }
-   \end{cases}
-\end{equation}
+% \begin{equation}\label{eq:epsilongreedy}
+% \pi(s,a) = 
+%   \begin{cases} 
+%       1 - \epsilon + \frac{\epsilon}{|\mathcal{A}|} & \mbox{si } a= 
+%       \argmax_{a \in \mathcal{A}} 
+%       Q(s,a)   \\
+%       \frac{\epsilon}{|\mathcal{A}|} & \mbox{ en otro caso }
+%   \end{cases}
+% \end{equation}
 
-$\epsilon$ es un valor entre 0 y 1 y pondera la relación entre
-exploración y explotación.
+% $\epsilon$ es un valor entre 0 y 1 y pondera la relación entre
+% exploración y explotación.
 
 \subsection{Métodos de diferencias temporales}
 
@@ -332,13 +332,23 @@ El aprendizaje TD es una combinación de ideas del método Monte Carlo y program
 % al igual que en programación dinámica,
 % las actualizaciones de los métodos TD se basan en otros 
 % estimados aprendidos, sin esperar a una salida final.
-La ventaja de los métodos TD es que se pueden aplicar tareas de aprendizaje por refuerzo en línea y continuas.
+La ventaja de los métodos TD es que se pueden aplicar a tareas de aprendizaje por refuerzo en línea y continuas.
 La política se actualiza cada paso de tiempo $t$ por lo que no se necesitan
-episodios completos (como en programación dinámica). Además, no se requiere ningún modelo del ambiente (igual que en el método Monte Carlo). 
+ episodios completos (como en programación dinámica). Además, no se requiere el modelo del ambiente ni el sistema de recompensas (igual que en el método Monte Carlo).
+%  Mientras que con programación dinámica se necesita conocer la función de transición y el sistema de recompensas el método Monte Carlo es un enfoque que busca resolver problemas
+% de aprendizaje por refuerzo con tareas episódicas, donde 
+% no existe un modelo del ambiente. 
 
-En los métodos TD, el retorno esperado verdadero $R_t$ no está disponible
+% Es un método Monte Carlo es iterativo y converge a la política al incrementar el número de episodios.
+% Existe una tabla $Q$ que almacena el valor de acción para cada posible
+% par de estado-acción. El valor es el promedio sobre
+% todos los retornos, que han sido obtenidos durante todos los episodios. 
+% Un elemento de la tabla es actualizado cada vez que un par estado-acción
+% es visitado por el agente.
+
+En los métodos TD, al igual que en el Monte Carlo, el retorno esperado verdadero $R_t$ no está disponible
 y es aproximado con un valor TD-target. El TD-target se determina con la suma de la recompensa inmediata y el valor esperando con descuento del 
-siguiente estado $r_{t+1} + \gamma V(s_{t+1})$. El error que mide la diferencia entre el valor del estado $s_t$ ($V(s_t)$) y el estimado $r_{t+1} + \gamma V(s_{t+1})$ se llama TD-error.
+siguiente estado $r_{t+1} + \gamma V(s_{t+1})$. El error que mide la diferencia entre el valor del estado $s_t$ ($V(s_t)$) y el estimado $r_{t+1} + \gamma V(s_{t+1})$ se llama TD-error. El Algoritmo \ref{alg:TD-algo} muestra un esquema general para los métodos que siguen la idea de actualizar la función de valor usando el TD-error.
 
 \begin{mialgoritmo}[H]
   	\caption{Algoritmo general de los métodos TD}
@@ -399,6 +409,30 @@ La regla de actualización del $Q$-learning está dada por
 \begin{equation}\label{eq:q-learning-update}
 Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha[r_{t+1} + \gamma \max_a Q(s_{t+1}, a) - Q(s_t, a_t)]
 \end{equation}
+
+
+
+Normalmente, la política para la selección de acciones es una política voraz. El agente
+siempre elige la acción con el máximo valor de acción. Sin embargo, explotar la acciones vorazmente con el conocimiento actual puede conducir a que el
+agente quede atascado en una política no óptima. Para evitar 
+este caso, acciones exploratorias deben tomarse en cuenta de vez en cuando.
+Una política es llamada $\epsilon$-greedy, si la mejor acción actual se toma 
+con una probabilidad de $1-\epsilon$ y una acción aleatoria se toma con una 
+probabilidad $\epsilon$. La ecuación de la política $\epsilon$-greedy
+se puede definir de la siguiente manera
+
+\begin{equation}\label{eq:epsilongreedy}
+\pi(s,a) = 
+  \begin{cases} 
+      1 - \epsilon + \frac{\epsilon}{|\mathcal{A}|} & \mbox{si } a= 
+      \argmax_{a \in \mathcal{A}} 
+      Q(s,a)   \\
+      \frac{\epsilon}{|\mathcal{A}|} & \mbox{ en otro caso }
+  \end{cases}
+\end{equation}
+
+$\epsilon$ es un valor entre 0 y 1 y pondera la relación entre
+exploración y explotación.
 
 En general, el algoritmo Q-learning consiste de de los siguientes pasos:
 1) se inicializa la tabla $Q$ que mapea los estados a valores de las acciones,
@@ -481,8 +515,9 @@ $(s_t, a_t, s_{t+1}, r_{t+1})$, permitiendo que un agente de RL
 tome muestras de éste y entrene sobre datos previamente observados. 
 Esto no solo reduce la cantidad de interacciones necesarias con el ambiente,
 también permite obtener lotes de muestras, reduciendo la varianza de 
-las actualizaciones de aprendizaje. Además, al tomar muestras de una memoria
-muy grande, se rompen las correlaciones temporales que pueden afectar negativamente al algoritmo de RL.
+las actualizaciones de aprendizaje. 
+% Además, al tomar muestras de una memoria
+% muy grande, se rompen las correlaciones temporales que pueden afectar negativamente al algoritmo de RL.
 El segundo método importante es el uso de una red objetivo que inicialmente contiene los pesos de la red que representa la política, sin embargo se mantiene
 fija por un periodo largo de tiempo.
 En vez de tener que calcular el error TD basándose en los estimados
@@ -533,6 +568,9 @@ pasos de tiempo se copian los parámetros de la función de valor $Q$ a la objet
   \ENDFOR
   \end{algorithmic}
 \end{mialgoritmo}
+
+En esta tesis se utilizan los algoritmos Q-learning y DQN con modificaciones para considerar los modelos causales.
+
 
 % \RestyleAlgo{boxruled}
 % \begin{mialgoritmo}[!hbt]
@@ -623,7 +661,7 @@ siguiendo el marco de trabajo de los \textit{modelos gráficos causales} propues
 
 De acuerdo con \cite{spirtes2000causation} se entiende a la causalidad 
 como una relación entre eventos: \textit{algo sucede y causa que algo más suceda}. Cada causa es un evento específico y cada efecto es una evento
-en particular. Asumimos que esta relación es \textit{transitiva}, \textit{irreflexiva} y \textit{antisimétrica}. Esto es 
+en particular. Se supone que esta relación es \textit{transitiva}, \textit{irreflexiva} y \textit{antisimétrica}. Esto es 
 \begin{itemize}
     \item Si $A$ es una causa de $B$ y $B$ es una causa de $C$, entonces
     $A$ es también una causa de $C$,
@@ -680,8 +718,8 @@ es una estructura causal
 $D$ y un conjunto de 
 parámetros $\Theta_D$ compatibles con $D$. Los 
 parámetros $\Theta_D$ asignan una función $x_i = f_i (pa_i, u_i)$ a cada $X_i \in\mathcal{V}$
-y una medida de  probabilidad  $P(u_i)$ para cada $u_i$, donde $PA_i$ son 
-los padres de $X_i$ en $D$ y cada $U_i$ es una perturbación aleatoria distribuida
+y una medida de  probabilidad  $P(u_i)$ para cada $u_i$, donde $pa_i$ son 
+los padres de $X_i$ en $D$ y cada $u_i$ es una perturbación aleatoria distribuida
 de acuerdo a $P(u_i)$, independiente de todas las otras $u$.
 
 
@@ -690,7 +728,7 @@ estructura causal donde la variable $E$ representa las horas de
 ejercicio en una semana, $C$ la salud cardiaca y $A$ la edad en
 años. Los parámetros para el modelo causal que corresponde al 
 grafo pueden ser las distribuciones de probabilidad $P(E|A)$,
-$P(A)$ y $P(H|A, E)$.
+$P(A)$ y $P(C|A, E)$.
 
 \begin{figure}
     \centering
@@ -774,7 +812,7 @@ Siguiendo el ejemplo de la Figura \ref{fig:dag-causal}, se puede intervenir
 el modelo para calcular el efecto causal de las horas
 de ejercicio sobre la salud del corazón. El efecto causal de $E=e$ puede 
 verse como la distribución $P(C | do(E=e))$ sobre el grafo sin la arista
-dirigida $A \rightarrow E$ (Figura \ref{fig:dag-intervention}) y sin alterar los otros parámetros ($P(A), P(H|E, A)$).
+dirigida $A \rightarrow E$ (Figura \ref{fig:dag-intervention}) y sin alterar los otros parámetros ($P(A), P(C|E, A)$).
 
 \begin{figure}
     \centering
