@@ -33,8 +33,9 @@ afecta negativamente el desempeño del algoritmo de RL.
 
 Dado que la información del modelo causal solo guía la selección
 de acciones durante la exploración, entonces un grafo con escasos
-datos correctos sigue siendo mejor que una búsqueda aleatoria. En el
-peor caso, el algoritmo se comportaría como el método sin información adicional.
+datos correctos sigue siendo mejor que una búsqueda aleatoria. 
+% En el
+% peor caso, el algoritmo se comportaría como el método sin información adicional.
 
 
 \subsubsection{Resultados}
@@ -68,7 +69,7 @@ puede obtener una muestra de tamaño $E$ para cada algoritmo
 y hacer una prueba estadística para mostrar que existe una diferencia entre ellos. Principalmente, es de interés saber si los algoritmos que utilizan información extra son superiores 
 al algoritmo Q-learning usando una exploración a prueba y error. 
 
-En los Cuadros \ref{tab:pmo-one-to-one}, \ref{tab:pmo-one-to-many} y \ref{tab:pmo-many-to-one} se muestran
+En las tablas \ref{tab:pmo-one-to-one}, \ref{tab:pmo-one-to-many} y \ref{tab:pmo-many-to-one} se muestran
 los promedios de las recompensas durante los últimos $E$ episodios. En casi todos las tareas el algoritmo Q-learning usando el grafo causal completo tiene una recompensa mayor que en los otros métodos. En general, todos los métodos que utilizan el grafo ya sea incorrecto o incompleto superan al método clásico de Q-learning. Se utiliza la prueba de Welch con $p < 0.05$ para encontrar diferencias estadísticamente significativas como se sugiere en \cite{colas2019hitchhikers}. Las pruebas solo se realizan comparando los resultados del algoritmo simple Q-learning con cada uno de los otros métodos. Los resultados de las pruebas indican que sí existe una diferencia estadística en el desempeño de los algoritmos, excluyendo algunos casos donde se obtiene un valor $p\geq 0.05$ (marcados por $\dagger$ en las tablas). Dichos casos aparecen en los experimentos donde las alteración del grafo $\mathcal{D}$ es un porcentaje $p_{mod} = 75$ y además se agregan relaciones espurias. Esto es de esperarse ya que entre más se modifica el grafo correcto se aproxima la búsqueda de acciones a una exploración aleatoria.
 \newpage
 

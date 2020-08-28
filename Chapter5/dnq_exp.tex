@@ -35,7 +35,7 @@ configuraciones experimentales anteriores, aquí se fijan todos los parámetros 
 \end{itemize}    
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.6]{Chapter5/Figs/multilabel_classifier.pdf}
+    \includegraphics[scale=0.7]{Chapter5/Figs/multilabel_classifier.pdf}
     \caption{Arquitectura del clasificador multi etiqueta, $\phi$, que
     mapea observaciones visuales a un conjunto de variables
     de alto nivel.}
@@ -49,9 +49,7 @@ de ayudar en el aprendizaje como en los casos discretos.
 
 \subsubsection{Hipótesis}
 
-Si se cuenta con información de las observaciones
-en un espacio más pequeño, pero donde se codifiquen
-los estados en alto nivel, se puede apoyar 
+Incluso sin la observación directa de las macro variables, es decir, a través de un mapeo $\mathcal{S} \rightarrow \mathcal{X}$, se puede apoyar 
 al algoritmo de aprendizaje a alcanzar una recompensa
 mayor en menos tiempo.
 
@@ -65,7 +63,7 @@ de entrenamiento sobre los $M$ experimentos.
 % Con esto, se 
 % obtiene una muestra de tamaño $E$ para cada algoritmo
 % y se realiza la prueba estadística de Welch. La prueba estadística se realiza comparando los algoritmos que utilizan alguna estructura causal y el algoritmo Q-learning usando una exploración a prueba y error para saber si los primeros son superiores significativamente sobre el segundo. 
-En los Cuadros \ref{tab:dqn-one-to-one}, \ref{tab:dqn-one-to-many} y \ref{tab:dqn-many-to-one} se muestran
+En las tablas \ref{tab:dqn-one-to-one}, \ref{tab:dqn-one-to-many} y \ref{tab:dqn-many-to-one} se muestran
 los promedios de las recompensas durante los últimos 20 episodios para los 10 experimentos.
 De igual manera que en las curvas de aprendizaje se puede notar que en la mayoría de tareas el algoritmo DQN que utiliza grafo causal completo tiene una recompensa mayor que en los otros métodos. Además, en general los métodos que utilizan el grafo ya sea incorrecto o incompleto superan al método clásico de Q-learning. De acuerdo con la prueba de Welch con $p < 0.05$ existe una diferencia estadística en el desempeño de los algoritmos, excepto por algunos casos (marcados por $\dagger$ en las tablas). Estas excepciones surgen en tareas que involucran una estructura uno a uno pero la diferencia parece ser más signicativa conforme $N$ aumenta.
 

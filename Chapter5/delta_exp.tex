@@ -65,7 +65,7 @@ de entrenamiento sobre los $M$ experimentos. Con esto, se
 puede obtener una muestra de tamaño $E$ para cada algoritmo
 y hacer una prueba estadística para mostrar que existe una diferencia entre ellos. La prueba estadística se realiza comparando los algoritmos que utilizan información extra versus el algoritmo Q-learning usando una exploración a prueba y error para saber si los primeros son superiores significativamente sobre el segundo. 
 
-En los Cuadros \ref{tab:delta-one-to-one}, \ref{tab:delta-one-to-many} y \ref{tab:delta-many-to-one} se muestran
+En las tablas \ref{tab:delta-one-to-one}, \ref{tab:delta-one-to-many} y \ref{tab:delta-many-to-one} se muestran
 los promedios de las recompensas durante los últimos $E$ episodios. 
 De igual manera que en las curvas de aprendizaje se puede notar que en la mayoría de tareas el algoritmo Q-learning usando el grafo causal completo tiene una recompensa mayor que en los otros métodos. Además, en general los métodos que utilizan el grafo ya sea incorrecto o incompleto superan al método clásico de Q-learning. Para validar estos resultados se usa la prueba de Welch con $p < 0.05$ para encontrar diferencias estadísticamente significativas. 
 Los resultados de las pruebas refuerzan lo concluido a partir de las gráficas. Existe una diferencia estadística en el desempeño de los algoritmos, excepto por algunos casos (marcados por $\dagger$ en las tablas). Estos últimos corresponden

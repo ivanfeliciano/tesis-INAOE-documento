@@ -9,7 +9,7 @@ que muestran la mejora en el desempeño de un agente que aprende
 con y sin información adicional de un grafo causal.
 Para probar el concepto propuesto se atacan dos problemas: la tarea de clásica del taxi \cite{Dietterich:2000:HRL:1622262.1622268} y la de los
 interruptores de luz, descrita en el capítulo \ref{chapter4}.
-En resumen, los experimentos consisten en integrar el grafo $\mathcal{D}$ a la política $\epsilon$ greedy
+En resumen, los experimentos consisten en integrar el grafo $\mathcal{D}$ a la política $\epsilon$-greedy
 en el algoritmo $Q$-learning \cite{watkins1992q}.
 En la política $\epsilon$-greedy en vez de mantener fijo a $\epsilon$, se propone empezar motivando al agente a explorar y usar
 el modelo causal e ir disminuyendo $\epsilon$ para dar más peso a la explotación.
@@ -86,26 +86,25 @@ Debido a la poca información que ofrece el grafo $\mathcal{D}$ y al tamaño de 
 tanto, sólo se comparan dos algoritmos,
 el algoritmo Q-learning con y sin la estructura causal.
 Además, los dos algoritmos se prueban sobre dos versiones del ambiente, una determinista
-y otra estocástica. Los valores de los parámetros para los experimentos se muestran en el Cuadro \ref{tab:tax-params}. Se ejecutan $M$ experimentos y cada experimento consiste de ejecutar cada algoritmo $k$ de episodios. La medida
-de desempeño es la recompensa promedio por episodio. El valor de $\epsilon$ se va decrementando en cada paso de tiempo de entrenamiento $t$ de forma lineal ($\epsilon = \max(\epsilon_{\min}, mt + \epsilon_{\max})$, $m < 0$ y representa la tasa de decremento)
-con respecto al
-número de episodios, por lo que se fomenta la exploración y el uso del modelo causal al principio y posteriormente se explota la información de $Q$.
+y otra estocástica. Los valores de los parámetros para los experimentos se muestran en la tabla \ref{tab:tax-params}. Se fija una tasa de aprendizaje $\alpha$ para dar más peso al TD-error. Se ejecutan $M$ experimentos y cada experimento consiste de ejecutar cada algoritmo $k$ de episodios.  El valor de $\epsilon$  se va actualizando con respecto a la regla $\epsilon = \max(\epsilon_{\min}, \epsilon_{\max} - \frac{|\epsilon_{\max} - \epsilon_{\min}|}{H \times k \times \delta} \times t)$. Donde, de acuerdo con las especificaciones del ambiente de \cite{gym2016brockman} $H = 200$. Además, se opta por que se alcance el mínimo valor de $\epsilon_{\min}$ después del primer cuarto del ciclo de entrenamiento, haciendo $\delta = 0.25$. Para el caso donde se hace frente a un ambiente estocástico, la probabilidad de ejecutar la acción que se seleccionó es $p_a = 0.7$ mientras que la probabilidad de realizar cualquiera de las otras acciones se distribuye uniformemente sobre el complemento. Finalmente, como medida
+de desempeño se usa la recompensa promedio por episodio.
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\caption{Parámetros para las versiones del algoritmo Q-learning.}
+\caption{Parámetros para los algoritmo Q-learning y Q-learning con la estructura causal.}
 \label{tab:tax-params}
 \begin{tabular}{ll}
 \hline
 Parámetro                                                                                      & Valor    \\ \hline
-$\alpha$                                                                                       & 0.8      \\
-$\gamma$                                                                                       & 0.95     \\
-$\epsilon_{\min}$                                                                              & 0.1      \\
-$\epsilon_{\max}$                                                                              & 1.0      \\
-$m$                                                                                            & -0.3e-04 \\
+$\alpha$                                                                                       & $0.8$      \\
+$\gamma$                                                                                       & $0.95$     \\
+$\epsilon_{\min}$                                                                              & $0.1$     \\
+$\epsilon_{\max}$                                                                              & $1.0$      \\
 $k$                                                                                            & 1000     \\
 $M$                                                                                            & 25       \\
-\begin{tabular}[c]{@{}l@{}}Probabilidad de\\ transición en ambiente\\ estocástico\end{tabular} & 0.7      \\ \hline
+$H$ & 200\\
+$\delta$ & $0.25$\\
+$p_a$ & $0.7$      \\ \hline
 \end{tabular}
 \end{table}
 
@@ -113,7 +112,7 @@ $M$                                                                             
 
 En la Figura \ref{fig:results-taxi} se muestran los resultados obtenidos
 para ambas configuraciones del ambiente (determinista y estocástico) donde
-los valores de los parámetros se describen en el Cuadro \ref{tab:tax-params}.
+los valores de los parámetros se describen en la tabla \ref{tab:tax-params}.
 La recompensa promedio por episodio para el método propuesto y para el algoritmo
 original Q-learning están en color naranja y azul, respectivamente. 
 Los resultados muestran que el algoritmo Q-learning guiado por el grafo da un salto inicial alto y mantiene una recompensa promedio mucho mayor hasta que ambos métodos convergen. Esto es esperado, ya que
@@ -128,10 +127,10 @@ no inicia una exploración a ciegas. En ambas versiones del ambiente, los algori
   \label{fig:results-taxi}
 \end{figure}
 
-La tarea para el ambiente determinista se considera resuelta cuando se obtiene una recompensa promedio de 9.7 durante 100 episodios consecutivos. Sin embargo, para fines de este experimentos se propone relajar este parámetro a un valor de 0 para el caso determinista y -30 para la versión estocástica del ambiente. En el Cuadro \ref{tab:resultados-taxi} se muestran los resultados del número de episodios, promedio sobre $M$ experimentos,
+La tarea para el ambiente determinista se considera resuelta cuando se obtiene una recompensa promedio de 9.7 durante 100 episodios consecutivos. Sin embargo, para fines de este experimentos se propone relajar este parámetro a un valor de 0 para el caso determinista y -30 para la versión estocástica del ambiente. En la tabla \ref{tab:resultados-taxi} se muestran los resultados del número de episodios, promedio sobre $M$ experimentos,
 que tarda cada algoritmo en alcanzar la recompensa óptima propuesta durante una racha de más de 100 episodios. Entre menor sea el número de episodios en alcanzar la racha denota que un algoritmo aprendió más rápido.
 
-De acuerdo con los resultados del Cuadro \ref{tab:resultados-taxi}, el algoritmo que alcanza la recompensa óptima antes, es el método Q-learning con la información causal. Sin embargo, con el fin de validar los resultados se utiliza la prueba de Welch como se sugiere en \cite{colas2019hitchhikers}. La hipótesis nula $h_0$ corresponde a que el número de episodios en alcanzar la recompensa óptima durante más de 100 episodios seguidos es igual para ambos algoritmos. Para el caso del ambiente determinista la hipótesis es rechazada con $p < 0.05$. Sin embargo, para el caso del ambiente estocástico se falla al rechazar $h_0$ ya que $p > 0.05$. Por lo tanto, a pesar de que los resultados en el Cuando 
+De acuerdo con los resultados de la tabla \ref{tab:resultados-taxi}, el algoritmo que alcanza la recompensa óptima antes, es el método Q-learning con la información causal. Sin embargo, con el fin de validar los resultados se utiliza la prueba de Welch como se sugiere en \cite{colas2019hitchhikers}. La hipótesis nula $h_0$ corresponde a que el número de episodios en alcanzar la recompensa óptima durante más de 100 episodios seguidos es igual para ambos algoritmos. Para el caso del ambiente determinista la hipótesis es rechazada con $p < 0.05$. Sin embargo, para el caso del ambiente estocástico se falla al rechazar $h_0$ ya que $p > 0.05$. Por lo tanto, a pesar de que los resultados en el Cuando 
 \ref{tab:resultados-taxi} indican un mejor comportamiento para el algoritmo con la estructura causal auxiliando la selección de acciones, no hay diferencia estadísticamente significativa en la versión estocástica del ambiente.
 
 % Please add the following required packages to your document preamble:
@@ -255,7 +254,7 @@ donde $M$ es el número de experimentos y el $\mathbf{R_i^j}$ indica la recompen
 El parámetro $\epsilon$ se disminuye linealmente, donde
 en cada selección de acción va decreciendo hasta llegar
 un valor mínimo. La regla de actualización de $\epsilon$ en
-el paso de tiempo $t$ se puede definir como $\epsilon = \max(\epsilon_{\min}, (\epsilon_{\min} - \epsilon_{\max}) \times t/ (N \times k \times \delta) + \epsilon_{\max})$. Donde $0 < \delta \leq 1$, es un factor para controlar
+el paso de tiempo $t$ se puede definir como $\epsilon = \max(\epsilon_{\min}, \epsilon_{\max} - \frac{|\epsilon_{\max} - \epsilon_{\min}|}{H \times k \times \delta} \times t)$, donde $H=N$ y $0 < \delta \leq 1$, es un factor para controlar
 que tan rápido se alcanza el valor de $\epsilon$  mínimo, entre más cercano a 0,
 termina más rápido la exploración.
 % Con excepción
@@ -270,24 +269,24 @@ más constantemente. El tercer experimento, es probar
 el algoritmo cuando no se tienen las variables
 de alto nivel como observaciones directas, por lo tanto,
 se trabaja sobre un espacio de estados continuo. En general,
-algunos de los parámetros que se comparten entre los experimentos se muestran en el Cuadro \ref{tab:switch-params}.
+algunos de los parámetros que se comparten entre los experimentos se muestran en la tabla \ref{tab:switch-params}. En ésta se puede ver que para el caso de los ambientes estocásticos, la probabilidad de mover el interruptor que se eligió es $p_a = 0.75$ mientras que la probabilidad de accionar cualquier otro interruptor o ninguno, se distribuye uniformemente sobre el complemento. Además, se motiva al aprendizaje con un coeficiente $\alpha$ fijo con un valor alto.
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\caption{Valores para algunos parámetros de los algoritmos.}
+\caption{Valores para algunos parámetros que se comparten entre los distintos algoritmos.}
 \label{tab:switch-params}
 \begin{tabular}{ll}
 \hline
 Parámetro                                                                                      & Valor    \\ \hline
-$\alpha$                                                                                       & 0.8      \\
-$\gamma$                                                                                       & 0.95     \\
-$\epsilon_{\min}$                                                                              & 0.1      \\
-$\epsilon_{\max}$                                                                              & 1.0      \\
+$\alpha$                                                                                       & $0.8$      \\
+$\gamma$                                                                                       & $0.95$     \\
+$\epsilon_{\min}$                                                                              & $0.1$      \\
+$\epsilon_{\max}$                                                                              & $1.0$      \\
 $N$                                                                                            & \{5, 7, 9\} \\
 $H$                                                                                            & \{5, 7, 9\} \\
 $k$                                                                                            & \{200, 5000, 10000, 20000\}\\
 $M$                                                                                            & 10       \\
-\begin{tabular}[c]{@{}l@{}}Probabilidad de\\ transición en ambientes\\ estocástico\end{tabular} & 0.75      \\ \hline
+$p_a$ & $0.75$      \\ \hline
 \end{tabular}
 \end{table}
 

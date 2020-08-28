@@ -15,8 +15,7 @@ Además, en el capítulo \ref{chapter5} se presenta la experimentación que veri
     se ha llegado a las siguientes conclusiones:
     
 \begin{enumerate}
-    \item Tener el modelo causal completo parece resolver la tarea. Surge la 
-    duda de si el aprendizaje por refuerzo todavía es necesario.
+    \item Tener el modelo causal completo parece resolver la tarea. Sin embargo, en la práctica se espera tener un modelo causal incompleto e incorrecto, en donde el aprendizaje por refuerzo es necesario y además el modelo de todos modos asiste a éste.
     \item Proveer a un agente con un grafo que conserva pocas relaciones
     causales verdaderas no afecta tan drásticamente el desempeño del agente, pues 
     continúa teniendo un comportamiento mejor que sin guiar su selección de acciones.
@@ -25,7 +24,7 @@ Además, en el capítulo \ref{chapter5} se presenta la experimentación que veri
     ser porque con la poca exploración guiada que han ejecutado los algoritmos,
     ya han sesgado su comportamiento.
     
-    \item El comportamiento utilizando observaciones de alta dimensión para entrenar a un agente y ayudándolo con un modelo en una dimensión mucho menor y con variables que representan al estado del ambiente den un alto nivel mantiene las mismas características que trabajar en un espacio de menor dimensión directamente.
+    \item El comportamiento utilizando observaciones de alta dimensión para entrenar a un agente y ayudándolo con un modelo en una dimensión mucho menor y con variables que representan al estado del ambiente en un alto nivel mantiene las mismas características que trabajar en un espacio de menor dimensión directamente.
 \end{enumerate}
 
 \section{Trabajo futuro}
@@ -35,14 +34,19 @@ mencionan algunos tareas y problemas pendientes.
 
 Con respecto a los problemas atacados en el trabajo,
 varios experimentos y análisis quedan pendientes. Entre ellos, 
-establecer cuándo se considera resuelta una tarea, por ejemplo, 
+para el problema de los interruptores falta 
 definir una recompensa óptima por episodio y 
-calcular quién tiene la racha más larga.  Otro escenario que sería interesante
-explorar es aquel donde en la estructuras con caminos causales con más de dos aristas. Por ejemplo, para el problema de los interruptores, se pueden
+calcular quién tiene la racha más larga como en el dominio del taxi.  Otro escenario que sería interesante
+explorar es aquel donde hay estructuras con caminos causales con más de dos aristas. Por ejemplo, para el problema de los interruptores, se pueden
 tener escenarios donde sea necesario mover un interruptor ``maestro'' para
 poder mover los otros interruptores. Además, queda abierto el problema
 de las estructuras uno-a-uno y el comportamiento anormal, en comparación
 a las otras configuraciones, de sus curvas de recompensa.
+
+Un problema abierto, es adaptar, en caso de que se pueda, el método propuesto para 
+tareas de control continuo. En tareas de esta naturaleza no es trivial definir que una acción 
+causa o no cierto efecto en un estado. Principalmente porque las acciones se encuentran
+en el dominio de los reales y no se simplifica a decir que la acción se lleva a cabo o no.
 
 Por otro lado, sigue abierta la tarea del proceso de aprendizaje del modelo
 causal. De manera general, una propuesta consiste en iniciar con una estructura con pesos que representen 
@@ -52,5 +56,7 @@ a través de sus respuestas le brinde información del modelo causal que lo gobi
 
 Por otra parte, también se está intentando atacar tareas más 
 complejas que subsumen los siguientes problemas: 1) debido al problema de la asignación de crédito es difícil saber qué acción a la larga causará un estado deseado, 2) los efectos de una acción en el ambiente puede ser imperceptibles, por lo que es necesario medir el efecto causal de una acción sobre un estado una función similar a una función de valor. En particular, un ejemplo de un ambiente con estas dificultades, es Animal AI \cite{beyret2019animalai}.
+
+
 
 
