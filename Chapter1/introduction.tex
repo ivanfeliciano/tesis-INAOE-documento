@@ -235,6 +235,20 @@ preguntas sobre intervenciones que no ha visto antes
 los algoritmos de aprendizaje con herramientas de razonamiento
 causal para acelerar su aprendizaje y además alcanzar 
 un desempeño al nivel de los humanos.
+Aunque quedan fuera de este trabajo de investigación el análisis y el aprovechamiento de las ventajas de utilizar un modelo causal para asistir el aprendizaje en vez de un modelo asociativo, es importante mencionar algunas de éstas:
+
+\begin{itemize}
+\item Permite razonamiento contrafactual, esto es, brindar al agente la
+capacidad de responder a preguntas como: ¿qué pasaría si tomara cierta
+acción? Cosa, que no es posible con modelos asociativos.
+\item En general, el conocimiento causal es genérico, así que sería fácil
+transferirlo a otras aplicaciones en dominios similares.
+\item Puede ser más fácil que lo especifique una persona, ya que los seres humanos tienden a pensar en términos causales \cite{edmonds2018human, Gershman2017}.
+\item Los modelos causales hacen a los sistemas más transparentes lo que permite que puedan explicar sus
+decisiones.
+\end{itemize}
+
+
 Este trabajo explora un marco de trabajo donde un agente
 de aprendizaje por refuerzo acelera su entrenamiento a través
 del uso de un modelo causal, parcial o completo del ambiente
@@ -370,6 +384,18 @@ los siguientes objetivos:
     ambiente.
 \end{enumerate}
 
+\section{Método propuesto y resultados}
+
+El método propuesto en esta tesis se enfoca en guiar la
+selección acciones de un agente de RL. De manera superficial y general, el método sigue un esquema similar al de la política $\epsilon$-greedy.
+% , aunque puede adaptarse para otros enfoques de selección de acción.
+El algoritmo propuesto recibe como entrada una estructura causal que describe las relaciones entre variables de estado y acciones.
+Con cierta probabilidad se elige consultar el modelo, en otro caso, se elige la mejor acción según una función de valor o una política. 
+Si el agente elige utilizar el modelo causal, entonces se obtiene una lista de aquellas variables que necesitan cambiar para aproximarse o alcanzar una meta de la tarea del agente. Para obtener una acción que acerca a la meta y además evitar aquellas que pueden desviar al agente, se consulta la estructura causal. La consulta consiste en obtener las acciones predecesoras de la lista de variables calculada en el paso anterior. Con esto, 
+el agente puede realizar alguna acción deseable y evitar las que conducen a un comportamiento erróneo.
+
+% En este trabajo, se incorpora el método propuesto en el algoritmo clásico de RL, Q-learning y se realizan diferentes experimentos.
+Los resultados de los experimentos muestran, entre otras cosas, lo que es intuitivo, esto es, que una exploración guiada (incluso cuando no está completamente correcta) es mejor que una búsqueda a ciegas. Además, a pesar de que contar con un modelo completo parece resolver la tarea sin necesidad del aprendizaje, este es un escenario poco realista. Por lo tanto, se puede suponer que la información del modelo causal y el RL se complementan entre sí.
 
 \section{Estructura del documento}
 

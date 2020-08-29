@@ -43,7 +43,7 @@ El episodio termina cuando el pasajero es dejado en su destino.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.25]{Chapter5/Figs/taxi-env.pdf}
+    \includegraphics[scale=0.2]{Chapter5/Figs/taxi-env.pdf}
     \caption{La cuadrícula del ambiente del taxi. El taxi se encuentra en el cuadro central. En esta configuración del mundo, el objetivo es recoger al pasajero en la posición R y llevarlo a la posición G.}
     \label{fig:taxi}
 \end{figure}
@@ -72,10 +72,13 @@ pasajero esté dentro del taxi, $x_2 = 1$, entonces se debe actuar
 subiéndolo al vehículo $a_1$ y además estar en la misma ubicación que
 el pasajero.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[scale=0.35]{Chapter5/Figs/causal_structure_taxi.png}
-    \caption{Propuesta de una estructura causal para la tarea del taxi.}
+    \includegraphics[scale=0.3]{Chapter5/Figs/causal_structure_taxi.png}
+    \caption{Propuesta de una estructura causal para la tarea del taxi. Los nodos azules
+    denotan a las acciones recoger y dejar, $a_1$ y $a_2$ respectivamente. Los nodos verdes son las variables que describen algunos estados del ambiente; $x_1$
+es la variable que indica si el taxi está en la misma posición que el
+pasajero, $x_2$  si el pasajero es llevado dentro del taxi, $x_3$ corresponde a si el taxi está en la posición destino y $x_4$ que indica que el pasajero es entregado correctamente.}
     \label{fig:cm-taxi}
 \end{figure}
 
@@ -127,7 +130,8 @@ no inicia una exploración a ciegas. En ambas versiones del ambiente, los algori
   \label{fig:results-taxi}
 \end{figure}
 
-La tarea para el ambiente determinista se considera resuelta cuando se obtiene una recompensa promedio de 9.7 durante 100 episodios consecutivos. Sin embargo, para fines de este experimentos se propone relajar este parámetro a un valor de 0 para el caso determinista y -30 para la versión estocástica del ambiente. En la tabla \ref{tab:resultados-taxi} se muestran los resultados del número de episodios, promedio sobre $M$ experimentos,
+
+La tarea para el ambiente determinista se considera resuelta cuando se obtiene una recompensa promedio de 9.7 durante 100 episodios consecutivos. Sin embargo, para fines de este experimento se propone relajar este parámetro. Se calculó la recompensa promedio en los últimos 100 experimentos del algoritmo Q-learning sin información extra, la cual es 0 y -30 para el ambiente determinista y estocástico, respectivamente. Por lo tanto, para considerar la tareas resuelta y con eso medir qué algoritmo es mejor, se utilizan como valores de recompensa óptima al 0 y -30, según corresponda. En la tabla \ref{tab:resultados-taxi} se muestran los resultados del número de episodios, promedio sobre $M$ experimentos,
 que tarda cada algoritmo en alcanzar la recompensa óptima propuesta durante una racha de más de 100 episodios. Entre menor sea el número de episodios en alcanzar la racha denota que un algoritmo aprendió más rápido.
 
 De acuerdo con los resultados de la tabla \ref{tab:resultados-taxi}, el algoritmo que alcanza la recompensa óptima antes, es el método Q-learning con la información causal. Sin embargo, con el fin de validar los resultados se utiliza la prueba de Welch como se sugiere en \cite{colas2019hitchhikers}. La hipótesis nula $h_0$ corresponde a que el número de episodios en alcanzar la recompensa óptima durante más de 100 episodios seguidos es igual para ambos algoritmos. Para el caso del ambiente determinista la hipótesis es rechazada con $p < 0.05$. Sin embargo, para el caso del ambiente estocástico se falla al rechazar $h_0$ ya que $p > 0.05$. Por lo tanto, a pesar de que los resultados en el Cuando 
@@ -190,7 +194,7 @@ se muestran en la Figura \ref{fig:struct}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.3]{Chapter5/Figs/switches_struct.png}
+    \includegraphics[scale=0.2]{Chapter5/Figs/switches_struct.png}
     \caption{Tipos de estructuras causales subyacentes posibles.}
     \label{fig:struct}
 \end{figure}
@@ -221,12 +225,12 @@ comparados.
 
 \begin{figure}
   \centering
-  \subfloat[$\mathcal{D}$.]{\includegraphics[width=0.2\textwidth]{Chapter5/Figs/completeD.png}\label{fig:completeD}}
+  \subfloat[$\mathcal{D}$.]{\includegraphics[width=0.15\textwidth]{Chapter5/Figs/completeD.png}\label{fig:completeD}}
   \qquad
-  \subfloat[$\mathcal{D}'$]{\includegraphics[width=0.2\textwidth]{Chapter5/Figs/incompleteD.png}\label{fig:incompleteD}}
+  \subfloat[$\mathcal{D}'$]{\includegraphics[width=0.15\textwidth]{Chapter5/Figs/incompleteD.png}\label{fig:incompleteD}}
 %   \hfill
     \qquad
-  \subfloat[$\mathcal{D}''$]{\includegraphics[width=0.2\textwidth]{Chapter5/Figs/wrongD.png}\label{fig:wrongD}}
+  \subfloat[$\mathcal{D}''$]{\includegraphics[width=0.15\textwidth]{Chapter5/Figs/wrongD.png}\label{fig:wrongD}}
   \caption{Ejemplo de los tres tipos de información con los que puede  contar el algoritmo Q-learning. El tipo de estructura
   del problema es uno-a-uno. Las aristas dirigidas punteadas describen conexiones espurias.}
   \label{fig:types-info-dag}
@@ -257,23 +261,43 @@ un valor mínimo. La regla de actualización de $\epsilon$ en
 el paso de tiempo $t$ se puede definir como $\epsilon = \max(\epsilon_{\min}, \epsilon_{\max} - \frac{|\epsilon_{\max} - \epsilon_{\min}|}{H \times k \times \delta} \times t)$, donde $H=N$ y $0 < \delta \leq 1$, es un factor para controlar
 que tan rápido se alcanza el valor de $\epsilon$  mínimo, entre más cercano a 0,
 termina más rápido la exploración.
-% Con excepción
-% del Experimento 2 (Sección \ref{subsection:exp-epsilon}), donde se cambia el denominador de la
-% tasa de decremento para que éste se más rápido.
 
-%Los experimentos se llevan a cabo en dos versiones del ambiente, una discreta y otra estocástica. 
 De manera general se realizan tres tipos de experimentos. El primer experimento tiene 
 como objetivo medir el desempeño al modificar la estructura causal $\mathcal{D}$ a diferentes porcentajes para obtener $\mathcal{D'}$ y $\mathcal{D}''$. El segundo experimento es con respecto a cambiar la tasa de decremento
 de $\epsilon$ para llegar más rápido o lento a explotar 
 más constantemente. El tercer experimento, es probar
 el algoritmo cuando no se tienen las variables
 de alto nivel como observaciones directas, por lo tanto,
-se trabaja sobre un espacio de estados continuo. En general,
-algunos de los parámetros que se comparten entre los experimentos se muestran en la tabla \ref{tab:switch-params}. En ésta se puede ver que para el caso de los ambientes estocásticos, la probabilidad de mover el interruptor que se eligió es $p_a = 0.75$ mientras que la probabilidad de accionar cualquier otro interruptor o ninguno, se distribuye uniformemente sobre el complemento. Además, se motiva al aprendizaje con un coeficiente $\alpha$ fijo con un valor alto.
+se trabaja sobre un espacio de estados continuo. En la tabla \ref{tab:exp-overview} se muestra una breve descripción de cada experimento.
 
-\begin{table}[h]
+En general,
+algunos de los parámetros que se comparten entre los experimentos se muestran en la tabla \ref{tab:switch-params}. 
+% En ésta se puede ver que para el caso de los ambientes estocásticos, la probabilidad de mover el interruptor que se eligió es $p_a = 0.75$ mientras que la probabilidad de accionar cualquier otro interruptor o ninguno, se distribuye uniformemente sobre el complemento. Además, se motiva al aprendizaje con un coeficiente $\alpha$ fijo con un valor alto.
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{graphicx}
+\begin{table}[]
 \centering
-\caption{Valores para algunos parámetros que se comparten entre los distintos algoritmos.}
+\caption{Resumen de los experimentos presentados en este capítulo.}
+\label{tab:exp-overview}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lll@{}}
+\toprule
+Experimento & Descripción & Objetivo \\ \midrule
+\begin{tabular}[c]{@{}l@{}}Variando el porcentaje de \\ modificación del grafo causal\end{tabular} & \begin{tabular}[c]{@{}l@{}}Este experimento consiste en modificar\\ el grafo $\mathcal{D}$ para obtener $\mathcal{D'}$ y $\mathcal{D''}$\\  a diferentes niveles. Cada uno de esos \\ niveles de modificación corresponden \\ al porcentajede conexiones que se \\ eliminan o que se añaden al grafo original.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Determinar si la información provista \\ por un modelo incompleto o \\ parcialmente  incorrecto ayuda y no \\ afecta negativamente el desempeño\\ del algoritmo de RL.\end{tabular} \\
+Explotar o seguir explorando & \begin{tabular}[c]{@{}l@{}}Se controla qué tan rápido se desea alcanzar $\epsilon_{\min}$ \\ variando el parámetro $\delta$.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Determinar si reducir o aumentar las \\ consultas al grafo causal a lo largo del \\ aprendizaje afecta el desempeño\\ de los algoritmos.\end{tabular} \\
+\begin{tabular}[c]{@{}l@{}}Utilizando observaciones \\ visuales del ambiente\end{tabular} & \begin{tabular}[c]{@{}l@{}}En este experimento no se tiene acceso a las \\ macro variables $\mathcal{X}$ directamente. \\ Sin embargo, el agente percibe imágenes del \\ estado del ambiente como observaciones.\end{tabular} & \begin{tabular}[c]{@{}l@{}}Determinar si el modelo causal con\\ variables  en otro espacio siguen \\ conservando las propiedades de \\ ayudar en el aprendizaje como en los\\ casos discretos.\end{tabular} \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+
+\begin{table}[]
+\centering
+\caption{Valores para algunos parámetros que se comparten entre los distintos algoritmos. Se 
+utiliza una tasa de aprendiza alta $\alpha$, dando más peso a la actualización. El factor de 
+descuento $\gamma$ es cercano a $1$, dándole peso a la recompensa a largo plazo. El valor de $\epsilon$ se decrementa comenzando en $1$ y terminando en $0.1$. El número de acciones puede 
+tomar los tres valores dados por $N$. El horizonte $H$ es igual al $N$ según sea el caso. El número de episodios es $200$ en los experimentos que usan DQN como algoritmo base. El número de experimentos es el mismo para todos los experimentos. Para las configuraciones estocásticas se utiliza una probabilidad de ejecutar las acción $p_a$, distribuyendo uniformemente la probabilidad de las otras acciones sobre $1-p_a$.}
 \label{tab:switch-params}
 \begin{tabular}{ll}
 \hline

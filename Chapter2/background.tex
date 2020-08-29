@@ -39,7 +39,10 @@ El aprendizaje por refuerzo se encarga de aprender el comportamiento de un agent
 de tal forma que se maximice una señal de recompensa numérica, esto es, a que un
 agente aprenda a mapear estados de su mundo a acciones. Al aprendiz o agente no se le 
 dice qué acciones tomar, en cambio éste debe descubrir cuáles, al intentarlas, producen
-una mayor recompensa. Las dos características más importantes que diferencían al
+una mayor recompensa. 
+En la Figura \ref{fig:rl-outline} se muestra el esquema general de la interacción de un agente de RL con su mundo.
+
+Las dos características más importantes que diferencían al
 aprendizaje por refuerzo de otros paradigmas en el aprendizaje computacional son 
 la búsqueda por prueba-y-error y la recompensa diferida. Que la recompensa sea diferida significa que el agente debe ser 
 capaz de aprender cuales son acciones deseables basándose en una recompensa que puede ocurrir muy en el futuro.
@@ -47,10 +50,11 @@ capaz de aprender cuales son acciones deseables basándose en una recompensa que
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4]{Chapter2/Figs/agend_interaction.png}
+   
     \caption{La idea general del RL es que un agente interactúa con un ambiente para
     aprender a partir de experiencias. Cada paso en el tiempo, el agente se encuentra
     en cierto estado $s\in \mathcal{S}$ y toma la acción $a \in \mathcal{A}$. Como
-    resultado, el estado del mundo cambia y recibe una recompensa $r$.}
+    resultado, el estado del mundo cambia y recibe una recompensa $r$.  \label{fig:rl-outline}}
 \end{figure}
 
 En las siguientes secciones primero se formaliza el problema de aprendizaje por refuerzo como
@@ -513,7 +517,7 @@ la eficiencia y efectividad de este enfoque en ambientes complejos: el uso de un
 El búfer cíclico de experiencias de repetición guarda transiciones de la forma 
 $(s_t, a_t, s_{t+1}, r_{t+1})$, permitiendo que un agente de RL 
 tome muestras de éste y entrene sobre datos previamente observados. 
-Esto no solo reduce la cantidad de interacciones necesarias con el ambiente,
+Esto no sólo reduce la cantidad de interacciones necesarias con el ambiente,
 también permite obtener lotes de muestras, reduciendo la varianza de 
 las actualizaciones de aprendizaje. 
 % Además, al tomar muestras de una memoria
@@ -525,7 +529,7 @@ oscilantes de los valores Q, la red de la política usa la red objetivo fija.
 Durante el entrenamiento, los pesos de la red objetivo son actualizados 
 para coincidir con la red de la política después de un número establecido de pasos.
 
-De manera general, el algoritmo DQN tiene los siguientes pasos: 1) se inicializan los parámetros para las redes neuronales $Q(s, a)$ y la red objetivo $\hat{Q}(s, a)$ con pesos aleatorios y 
+El algoritmo DQN tal y como se formula en el artículo original se muestra en el Algoritmo \ref{alg:dqn-algo} y de manera general consiste de los siguientes pasos: 1) se inicializan los parámetros para las redes neuronales $Q(s, a)$ y la red objetivo $\hat{Q}(s, a)$ con pesos aleatorios y 
 un búfer de experiencias $D$ vacío con un tamaño máximo igual a $N$, 2) se selecciona
 una acción aleatoria de acuerdo con la política $\epsilon$-greedy y se observa
 la recompensa $r_t$ y el siguiente estado $s_{t+1}$, 3) se almacena la tupla
@@ -625,7 +629,7 @@ El segundo nivel, intervenir, implica predecir los
 efectos de alteraciones arbitrarias sobre el ambiente
 y producir una salida deseada después de elegir entre esas alteraciones. Las intervenciones ocupan un lugar más alto que las
 asociaciones porque involucran
-no solo observar sino cambiar lo que es.
+no sólo observar sino cambiar lo que es.
 En el tercer nivel se encuentra
 el razonamiento \textit{contrafactual} donde la retrospección
 e imaginación permite responde preguntas como ¿por qué?

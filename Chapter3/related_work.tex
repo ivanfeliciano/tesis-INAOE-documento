@@ -108,7 +108,7 @@ conocimiento causal para tomar decisiones.
 Desde un enfoque hacia la teoría de decisiones, los autores en \cite{playingagainstnature2018, gonzalezsoto2019von} proponen una alternativa al aprendizaje por interacción que se sigue en RL en ambientes causales. Los autores platean que los métodos más utilizados en RL son meramente asociativos y que se puede aprovechar la característica de algunos ambientes gobernados por mecanismos causales. El método que proponen consiste en seleccionar la mejor acción 
 	en cada interacción con respecto con los parámetros de un modelo causal. Donde estos últimos se van aprendiendo utilizando las respuestas del ambiente. De acuerdo con los resultados, su propuesta tiene un desempeño similar a un método clásico de RL, sin embargo, el primero explota la información causal del mundo. Por otra parte, una suposición que comparte con esta tesis es conocer la estructura causal de variables del ambiente. La principal diferencia es que ellos proponen una alternativa más general para la toma de decisiones bajo incertidumbre sin utilizar un enfoque por refuerzo y esta tesis se concentra en guiar la selección de acciones de un agente de RL sin involucrar descubrimiento causal.
 
-Otro problema en RL que está siendo atacado con elementos causales es el de manipulación de la función de recompensa (\textit{reward tampering} en inglés) \cite{everitt2019reward}. Descrito de manera general, este problema surge cuando un agente descubre una estrategia que parece la mejor, pero en realidad encontró una ``laguna'' en la recompensa especificada. A veces, un agente se enfoca en recoger pequeñas recompensas y evitar aquel comportamiento que lo lleva por la recompensa mayor. Por ejemplo, un agente que debe recoger diamantes, pero existen rocas que también le dan recompensa puede inclinarse a solo buscar las rocas y no los diamantes. Los autores utilizan un diagrama de influencia causal para representar este problema. Los nodos de utilidad representan las recompensas y los nodos de decisión las acciones. Por otro lado el resto de nodos describen los estados parámetros que describen las recompensas (por ejemplo, si lo recogido es una roca o un diamante).
+Otro problema en RL que está siendo atacado con elementos causales es el de manipulación de la función de recompensa (\textit{reward tampering} en inglés) \cite{everitt2019reward}. Descrito de manera general, este problema surge cuando un agente descubre una estrategia que parece la mejor, pero en realidad encontró una ``laguna'' en la recompensa especificada. A veces, un agente se enfoca en recoger pequeñas recompensas y evitar aquel comportamiento que lo lleva por la recompensa mayor. Por ejemplo, un agente que debe recoger diamantes, pero existen rocas que también le dan recompensa puede inclinarse a solo buscar las rocas y no los diamantes. Los autores utilizan un diagrama de influencia causal para representar este problema. Los nodos de utilidad representan las recompensas y los nodos de decisión las acciones. Por otro lado, el resto de nodos son los estados que describen las recompensas obtenidas (por ejemplo, si lo recogido es una roca o un diamante).
 Dado que en esta tesis no atacamos el mismo problema, el método propuesto no modela como afectan las acciones a las recompensas ni como puede la información con respecto a las recompensas influir en la selección de una acción.
 
 En \cite{nair2019causal}, se propone
@@ -186,10 +186,26 @@ estado actual. Sin embargo, el enfoque sigue siendo
 asociativo.
 
 Los autores en \cite{saunders2017trial} proponen un esquema 
-para exploración segura a través de la intervención de un humano. El humano controla la interfaz entre el agente y el ambiente, vigila
+para una exploración segura a través de la intervención de un humano. El humano controla la interfaz entre el agente y el ambiente, vigila
 al agente y bloquea cualquier acción que pueda ser catastrófica. Este enfoque
 está limitado a donde un humano pueda intervenir durante la interacción 
 del agente con su ambiente.
+
+
+El trabajo de \cite{Abel2015GoalBasedAP}  se enfoca en aprovechar conocimiento
+brindado por un humano experto acerca de las acciones. Los autores presentan
+una formalización de este conocimiento que permite al agente 
+evitar acciones subóptimas y acotar la búsqueda al eliminar acciones 
+irrelevantes para la meta del agente. A pesar de buscar reducir el espacio 
+de búsqueda, la principal diferencia con esta tesis es que
+los autores en \cite{Abel2015GoalBasedAP} suponen que se conoce el modelo 
+del problema, es decir, se cuenta con la función de transición y por lo tanto,
+resuelven la tarea usando programación dinámica.
+
+
+Un enfoque diferente para superar el problema de la exploración aleatoria es
+aprovechar demostraciones realizadas por humanos. El trabajo presentado en \cite{nair2017overcoming} muestra que se puede acelerar el aprendizaje por refuerzo al incorporar demostraciones en tareas donde el control es continuo. Si bien, en esta tesis se atacan problemas donde la información extra es provista por un experto, la principal diferencia es que las tareas que ellos resuelven se definen en espacios de estados de menor dimensión. Además, esta tesis se limita a espacios de acciones discretas.
+
 
 En el aprendizaje por refuerzo profundo existe el problema de que las experiencias del búfer de repetición son muestreadas de manera uniforme sin tomar en cuenta su importancia. Los autores en \cite{schaul2015prioritized}  se enfocan en priorizar aquellas transiciones por lo que hacen que las experiencias sean más eficientes y efectivas que muestrear de manera aleatoria. El usar un búfer de experiencias conduce a dos opciones de diseño en dos niveles: el primero con respecto a qué experiencias almacenar y el segundo a cuáles experiencias utilizar. Los autores en \cite{schaul2015prioritized} se enfocan en la segunda opción mientras que la tesis en la primera. En esta tesis se hace la suposición que guardar mejores experiencias también conduce a un aprendizaje con un mejor desempeño.
 
@@ -202,6 +218,15 @@ En el aprendizaje por refuerzo profundo existe el problema de que las experienci
 \section{Discusión}
 
 La principal diferencia del trabajo de investigación con los trabajos enfocados a combinar conceptos de las áreas de interés es que la perspectiva abordada es sobre apoyar el aprendizaje de un agente de RL con información que se obtiene de un modelo causal. A pesar de las muchas suposiciones que se hacen y las limitaciones del trabajo, se puede afirmar que este trabajo es parte de los primeros intentos en incluir conceptos de RL y causalidad en un nuevo marco de trabajo. Además, aunque se presenta un método simple con un rango de aplicación muy acotado, es parte de un esfuerzo para motivar a seguir este camino que presentan de manera más formal en los trabajos mencionados. Por otro lado, la principal ventaja del trabajo presentado es que puede verse como un trabajo introductorio para comprender de manera general algunos fundamentos sobre modelos de aprendizaje basados en RL y en inferencia causal.
+
+Es difícil definir una línea base sobre la cuál comparar esta tesis con respecto al estado del arte. De acuerdo con los trabajos mencionados, se proponen diversas perspectivas que en realidad se complementan entre sí. Sin embargo, las siguientes contribuciones distinguen
+la propuesta sobre los trabajos recientes:
+
+\begin{itemize}
+    \item Se utiliza un enfoque para guiar la selección de acción usando modelos gráficos causales en problemas de aprendizaje secuencial.
+    \item De acuerdo con los experimentos, se muestra que incluso conocimiento causal incompleto e incorrecto asiste al aprendizaje.
+    \item  El método propuesto se aplica a problemas con espacios de estados continuos.
+\end{itemize}
 
 En la tabla \ref{table:comparison-related-work}, se presenta una comparación entre los trabajos mencionados previamente y el método propuesto en esta tesis. A continuación se describe lo que indica cada una de las columnas:
 
@@ -241,6 +266,8 @@ Playing against nature \cite{playingagainstnature2018}                          
 \begin{tabular}[c]{@{}l@{}}Guided exploration in \\ deep reinforcement \\ learning \cite{mazumder2019guided}\end{tabular}                            &           &            & X          & X                                                    & X            &             &            &                                                              &             &           \\ \hline
 \begin{tabular}[c]{@{}l@{}}Trial without Error:\\ Towards Safe Reinforcement\\ Learning via \\ Human Intervention \cite{saunders2017trial}\end{tabular} &           &            & X          & X                                                    & X            &             &            &                                                              &             & X         \\ \hline
 \begin{tabular}[c]{@{}l@{}}Causal bandits: learning \\ good interventions \\ via causal inference \cite{lattimore2016causal}\end{tabular}             & X         & X          &            &                                                      &              &             &            &                                                              &             &           \\ \hline
+ Goal-based action priors \cite{Abel2015GoalBasedAP}             &          &      X   &    X        &  X                                                    &           X   &     X        &            &                                                              &     X        &      X     \\ \hline
+\begin{tabular}[c]{@{}l@{}}Overcoming exploration in RL\\ with demostrations \cite{lattimore2016causal}\end{tabular}             &          &           &  X          & X                                                     &              &             &            &                                                              &             &     X      \\ \hline
 \rowcolor[HTML]{C0C0C0} 
 \textbf{Método propuesto}                                                                                                  & \textbf{} & \textbf{X} & \textbf{X} & \textbf{X}                                           & \textbf{X}   & \textbf{X}  & \textbf{X} & \textbf{X}                                                   & \textbf{}   & \textbf{} \\ \hline
 \end{tabular}%

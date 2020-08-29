@@ -2,21 +2,26 @@
 
 En este capítulo se presentaron los experimentos para comparar  el desempeño de un agente de RL con y sin información de una estructura causal. La intuición de que una exploración guiada es mejor que una búsqueda a ciegas se cumple de acuerdo 
 con los experimentos. 
-Para la experimentación se hizo frente a los problemas del taxi \cite{Dietterich:2000:HRL:1622262.1622268} y de los interruptores de la luz \cite{nair2019causal} en su versión para Gym \cite{gym2016brockman}.
+Además, se logra demostrar la hipótesis de la tesis, es decir, los algoritmos que aprovechan
+el modelo causal que gobierna a la tarea atacada, reducen su tiempo de aprendizaje respecto a una exploración a ciegas.
 
+Para la experimentación se hizo frente a los problemas del taxi \cite{Dietterich:2000:HRL:1622262.1622268} y de los interruptores de la luz \cite{nair2019causal} en su versión para Gym \cite{gym2016brockman}.
 De acuerdo con los resultados, el modelo causal no necesariamente debe describir completamente cómo el ambiente puede contestar a cada una de las acciones del agente.
 En el caso del taxi, se utilizó un modelo muy limitado y simple donde
 solo se conoce lo que un par de acciones causan en la configuración del mundo. Sin embargo, al menos para el caso determinista,
 el agente que cuenta con información del grafo causal resuelve la tarea en menos tiempo. Por otro lado, con respecto a los experimentos realizados sobre la tarea
 de los interruptores de luz, se mostró que contar con una estructura causal aun incompleta o con relaciones falsas, se obtiene un mejor desempeño que un algoritmo 
-clásico de RL. Incluso, conservando algunas relaciones causales verdaderas en los grafos modificados para el experimento, se logra ver que se comportan en la mayoría de los casos mejor que no usar información extra.
+clásico de RL. 
+% Incluso, conservando algunas relaciones causales verdaderas en los grafos modificados para el experimento, se logra ver que se comportan en la mayoría de los casos mejor que no usar información extra. 
+Por otro lado, hay ocasiones en las que usar la estructura causal parcial o incorrecta produce, durante la etapa de evaluación, un mejor desempeño que usar las estructura correcta. Aunque la diferencia no es muy notable, esto puede estar relacionado a que en realidad el modelo causal se deja de consultar cada vez menos con el paso del tiempo. Posiblemente, la combinación de la poca información no errónea en los modelos
+incorrectos junto con la exploración, motivan a un correcto aprendizaje de la función $Q$.
 
 En relación a la cuestión de si disminuir a un mínimo las consultas al modelo causal de manera temprana durante el entrenamiento afecta el rendimiento del agente, no 
 parece que el efecto sea negativo, salvo en un par de casos. Esto debido a un comportamiento que parece anormal en los agente que utilizan información del grafo causal para tareas donde subyacen estructuras uno a uno. Al parecer, para estos problemas, existe un intervalo en el que parece 
 ajustarse el aprendizaje de acuerdo con la transición de una mayor a una menor exploración. Sin embargo, conforme se estabilizan los algoritmos, el método con información del grafo mantiene una desempeño igual o superior.
 
 El último experimento presentado en el capítulo muestra el desempeño
-de agentes donde las observaciones son imágenes del estado del mundo (luces prendidas o apagadas). Los resultados del experimento muestran que dirigir las acciones
+de agentes donde las observaciones son imágenes del estado del mundo. Los resultados del experimento muestran que dirigir las acciones
 con un modelo causal de variables que están en un espacio
 de menor dimensión a las observaciones es mejor que la versión del algoritmo sin 
 acotar las posibilidades de acción. Estos resultados son intuitivos ya que 
@@ -26,8 +31,12 @@ Por otro lado, los resultados indican que si se tiene un modelo completo, como e
 el modelo no resuelve el problema. 
 
 Dado que lo presentado es una prueba de concepto, los problemas atacados
-son pequeños y relativamente simples. Además, los experimentos son muy generales y los resultados muestran  que la intuición que se tiene sobre acotar las posibilidades que tiene un agente si beneficia el aprendizaje.
-A pesar de esto, los resultados conducen a la búsqueda
+son pequeños y relativamente simples. Además, existen bastantes suposiciones
+que limitan al método propuesto, entre ellas están que sólo se atacan problemas de control
+no continuo y se debe conocer al menos una parte del modelo causal real.
+
+Aunque los experimentos son muy generales, los resultados muestran que la intuición que se tiene sobre acotar las posibilidades que tiene un agente sí beneficia el aprendizaje.
+Los resultados conducen a la búsqueda
 de problemas que puedan ponerse en el contexto de procesos de decisión
 con una estructura causal subyacente que se brinde o aprenda previamente. Además,
 es necesario afinar los experimentos para comprender por qué los comportamientos singulares para algunos casos.

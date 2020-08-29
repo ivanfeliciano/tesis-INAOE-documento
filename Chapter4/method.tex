@@ -128,7 +128,7 @@ El algoritmo recibe como entrada lo siguiente: la estructura causal $\mathcal{D}
 
 El valor de $\epsilon$ se va actualizando en cada paso de entrenamiento usando un enfoque conocido como recocido lineal (\textit{linear annealing} en inglés) \cite{pan2018policy}. Durante el ciclo de entrenamiento, se decrementa linealmente $\epsilon$ a lo largo de las $C$ iteraciones del algoritmo. Se comienza con $\epsilon = \epsilon_{\max}$, normalmente $\epsilon_{\max} = 1$, hasta $\epsilon = \epsilon_{\min}$, donde $\epsilon_{\min}=0.1$ por ejemplo. 
 Por lo tanto, la regla de actualización de $\epsilon$ para cada paso $t$, se puede definir como
-$\epsilon = \max(\epsilon_{\min}, \epsilon_{\max} - m t)$, donde $0 \leq m < 1$ y representa la tasa de decremento. La tasa de decremento $m$ depende de como se divide la diferencia $|\epsilon_{\max} - \epsilon_{\min}|$ entre el número de pasos del algoritmo $C$. El valor de $C$ depende del número de episodios y de la duración de estos. Para este trabajo, se propone que $C = H \times k$, donde $H$ es el horizonte del episodio (el máximo número de pasos que puede durar un episodio) y $k$ es el número de episodios. Además, se puede añadir un factor $0 < \delta \leq 1$ para inducir un decremento más rápido sobre $\epsilon$. Entre menor es el valor $\delta$
+$\epsilon = \max(\epsilon_{\min}, \epsilon_{\max} - m t)$, donde $0 \leq m < 1$ y representa la tasa de decremento. La tasa de decremento $m$ depende de como se divide la diferencia $|\epsilon_{\max} - \epsilon_{\min}|$ entre el número de pasos del algoritmo $C$. El valor de $C$ depende del número de episodios y de la duración de éstos. Para este trabajo, se propone que $C = H \times k$, donde $H$ es el horizonte del episodio (el máximo número de pasos que puede durar un episodio) y $k$ es el número de episodios. Además, se puede añadir un factor $0 < \delta \leq 1$ para inducir un decremento más rápido sobre $\epsilon$. Entre menor es el valor $\delta$
 más rápido se alcanza $\epsilon_{\min}$ en el entrenamiento. Entonces, la actualización de $\epsilon$, en el paso de entrenamiento $t$, queda como $\epsilon = \max(\epsilon_{\min}, \epsilon_{\max} - \frac{|\epsilon_{\max} - \epsilon_{\min}| \times t}{H \times k \times \delta})$.
     % transfers it to an inner policy which chooses the action. The threshold
     % value is following a linear function decreasing over time. Este valor se puede expresar como Linear annealed: f(x) = ax + b. Donde $m$ es un hiperparámetro que se puede modificar para acelerar alcanzar el mínimo valor de $\epsilon$. En esta tesis se define a m como ...
@@ -139,13 +139,13 @@ más rápido se alcanza $\epsilon_{\min}$ en el entrenamiento. Entonces, la actu
   \begin{algorithmic}[1]
   \setstretch{1}
   \REQUIRE Estructura causal $\mathcal{D}$ donde las variables pertenecen a $\mathcal{X} \cup \mathcal{A}$, un vector de variables
-  que describe a la meta $\mathbf{g} = [x_1, \dots, x_n]$ donde $x_i \in \mathcal{X}$, una observación del ambiente $s$, probabilidad de exploración $\epsilon$.
+  que describe a la meta $\mathbf{g} = [x_1, \dots, x_N]$ donde $x_i \in \mathcal{X}$, una observación del ambiente $s$, probabilidad de exploración $\epsilon$.
   \ENSURE Una acción a ejecutar $a$.
   \STATE Elegir un número aleatorio $r \in [0, 1]$.
   \IF{$r > \epsilon$}
     \RETURN La mejor opción hasta ahora $a$.
    \ENDIF
-  \STATE $\mathbf{x} \leftarrow \phi(s)$ \COMMENT{Mapea las observación $s$ a un vector de variables $\mathbf{x} = [x_1, \dots, x_n]$ donde $x_i \in \mathcal{X}$}
+  \STATE $\mathbf{x} \leftarrow \phi(s)$ \COMMENT{Mapea las observación $s$ a un vector de variables $\mathbf{x} = [x_1, \dots, x_N]$ donde $x_i \in \mathcal{X}$}
    \STATE $E \leftarrow f(\mathbf{g}, \mathbf{x})$ 
   \COMMENT{$f$ Obtiene una lista ordenada de aquellas variables diferentes $x_i \neq x_i'$, donde $x_i, x_i' \in \mathcal{X}$}
     \FOR{$e \in E$}
@@ -206,7 +206,7 @@ El siguiente paso corresponde a obtener una acción $a \in \mathcal{A}$ para que
 Para esto, se hace un recorrido sobre la lista $E$, donde
 por cada elemento $e \in E$ se hace una consulta al grafo causal. La consulta consiste en la
 obtención de los padres de $e$.  Si $e$ se encuentra en el grafo y además tiene al menos una variable de acción $a$ como predecesor se realiza tal acción.
-En este trabajo, solo se abordan problemas donde los grafos causales solo tienen conexiones donde la acciones son vértices sin padres y además no es necesario llevar a cabo varias acciones al mismo tiempo para afectar a $e$.
+En este trabajo, solo se abordan problemas donde los grafos causales los vértices que representan las acciones no tienen padres y además no es necesario llevar a cabo varias acciones al mismo tiempo para afectar a $e$.
 % Algunos posibles casos de los tipos de conexiones entre las acciones y las variables de interés se pueden ver en la Figura \ref{fig:connection-types}. 
 % Las conexiones (a) representan el caso donde una variable de estado $e'$ afecta la acción que se desea tomar.
 % % El grafo (b) denota el caso donde para llevar a cabo una acción $a$ es necesario realizar antes la acción $a'$. La estructura (c) muestra el caso donde $e$ solo es afectado cuando varias acciones son ejecutadas al mismo tiempo (el autor añade arbitrariamente una conexión entre las aristas para diferenciar este caso del (d)). 
@@ -245,7 +245,7 @@ En los Algoritmos
 	\label{alg:q-algo-extra-info}
   \begin{algorithmic}[1]
   \setstretch{1}
-  \REQUIRE Estructura causal $\mathcal{D}$, la meta $\mathbf{g} = [x_1, \dots, x_n]$ donde $x_i \in \mathcal{X}$, la tasa de aprendizaje $\alpha \in (0,1]$, el número de episodios $k$, el horizonte $H$ de cada episodio, el coeficiente $\delta$, los valores $\epsilon_{\max}$ y $\epsilon_{\min}$.
+  \REQUIRE Estructura causal $\mathcal{D}$, la meta $\mathbf{g} = [x_1, \dots, x_N]$ donde $x_i \in \mathcal{X}$, la tasa de aprendizaje $\alpha \in (0,1]$, el número de episodios $k$, el horizonte $H$ de cada episodio, el coeficiente $\delta$, los valores $\epsilon_{\max}$ y $\epsilon_{\min}$.
   \STATE Inicializar arbitrariamente $Q(s,a)$, para todo $s\in \mathcal{S}$ excepto donde $Q(terminal, \cdot) = 0$.
   
   \FOR{$episodio = 1, \dots, k$}
@@ -386,6 +386,5 @@ corresponden con las contribuciones de este trabajo:
     \item \textit{Una representación de las relaciones causales del mundo del agente.} Para hacer consultas sobre un modelo causal del ambiente, se utiliza la estructura causal $\mathcal{D}$, la cual tiene como vértices las variables de estado y de acción.
     \item  \textit{Un esquema de interacción entre un algoritmo de aprendizaje por refuerzo
     y un modelo causal}. Se introduce un algoritmo basado en la política de selección
-    de acciones $\epsilon$-greedy, el cual guía la elección de acciones de acuerdo
-    a las conexiones en el grafo $\mathcal{D}$.
+    de acciones $\epsilon$-greedy, el cual guía la elección de acciones de acuerdo a la estructura $\mathcal{D}$, del modelo causal.
 \end{enumerate}
