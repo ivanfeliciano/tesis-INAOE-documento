@@ -4,8 +4,12 @@
 \graphicspath{{Chapter5/Figs/}}
 
 
+En general, un agente de RL debe decidir entre explotar el conocimiento que ha adquirido o explorar otras acciones posibles. Se puede restringir su espacio de búsqueda, aprovechando 
+propiedades del mundo y conocimiento que el agente tenga
+de éste para acelerar el entrenamiento.
 En este trabajo se propuso la integración de un modelo causal en un
 algoritmo de aprendizaje por refuerzo.
+
 La investigación presenta
 elementos para responder a las preguntas de investigación planteadas en el capítulo \ref{chapter1}. Entre las principales contribuciones están: 1) la representación de las relaciones causales presentes en el ambiente, en un grafo causal entre acciones y estados del mundo, y 2) incorporar conocimiento causal en aprendizaje por refuerzo, en particular al
 algoritmo Q-learning.
@@ -17,11 +21,15 @@ Además, en el capítulo \ref{chapter5} se presenta la experimentación que veri
     la mejora del desempeño de un agente usando diferentes niveles de información (completa y parcialmente incorrecta) contenida en el modelo causal. 
 
 \section{Conclusiones}
-    De acuerdo con los resultados de los experimentos 
-    se ha llegado a las siguientes conclusiones:
+
+Para probar el concepto propuesto se atacan dos problemas: la tarea de clásica del taxi \cite{Dietterich:2000:HRL:1622262.1622268} y la de los
+interruptores de luz propuesta por \cite{nair2019causal}.
+Para los experimentos se integró el grafo causal que gobierna el mundo del agente, o al menos una parte, en la política de selección de acciones. Se probó el método en diferentes configuraciones experimentales como: modificar el grafo causal a diferentes niveles para tener casos donde sólo se cuenta con información parcial o incorrecta, variar la tasa en la que se deja de consultar el modelo causal y utilizar como observaciones imágenes del estado del ambiente. De acuerdo con los resultados de los experimentos se ha llegado a las siguientes conclusiones:
     
 \begin{enumerate}
-    \item Tener el modelo causal completo parece resolver la tarea. Sin embargo, en la práctica se espera tener un modelo causal incompleto e incorrecto, en donde el aprendizaje por refuerzo es necesario y además el modelo de todos modos asiste a éste.
+\item El incorporar conocimiento causal a RL acelera el proceso de
+aprendizaje, incluso si el modelo es parcial o incorrecto.
+    % \item Tener el modelo causal completo parece resolver la tarea. Sin embargo, en la práctica se espera tener un modelo causal incompleto e incorrecto, en donde el aprendizaje por refuerzo es necesario y además el modelo de todos modos asiste a éste.
     \item Proveer a un agente con un grafo que conserva pocas relaciones
     causales verdaderas no afecta tan drásticamente el desempeño del agente, pues 
     continúa teniendo un comportamiento mejor que sin guiar su selección de acciones.
@@ -30,13 +38,15 @@ Además, en el capítulo \ref{chapter5} se presenta la experimentación que veri
     ser porque con la poca exploración guiada que han ejecutado los algoritmos,
     ya han sesgado su comportamiento.
     \item El comportamiento utilizando observaciones de alta dimensión para entrenar a un agente y ayudándolo con un modelo en una dimensión mucho menor y con variables que representan al estado del ambiente en un alto nivel mantiene las mismas características que trabajar en un espacio de menor dimensión directamente.
-    \item Se dotó a un agente de RL con conocimiento causal para tomar decisiones y planear anticipadamente. Y aunque queda fuera del alcance de esta investigación explotar todas las ventajas de un modelo causal sobre uno asociativo, por ejemplo explicar o imaginar, se motiva a seguir el camino de equipar agentes con herramientas de razonamiento causal en vez de los enfoques que no capturan relaciones causales.
+    % \item Se dotó a un agente de RL con conocimiento causal para tomar decisiones y planear anticipadamente. Y aunque queda fuera del alcance de esta investigación explotar todas las ventajas de un modelo causal sobre uno asociativo, por ejemplo explicar o imaginar, se motiva a seguir el camino de equipar agentes con herramientas de razonamiento causal en vez de los enfoques que no capturan relaciones causales.
 \end{enumerate}
 
 \section{Trabajo futuro}
 
 Diferentes tareas y problemas permanecen abiertos y fuera del alcance de este trabajo. Algunos de ellos con respecto al nivel de formalización de las ideas presentadas, a los escenarios experimentales atacados  y otros que se han encontrado durante la investigación. A continuación, se 
 mencionan algunos tareas y problemas pendientes.
+
+Aunque se dotó a un agente de RL con conocimiento causal para tomar decisiones y planear anticipadamente, queda fuera del alcance de esta investigación explotar todas las ventajas de un modelo causal sobre otro tipos de modelos como los asociativos, por ejemplo, explicar o imaginar.
 
 Con respecto a los problemas atacados en el trabajo,
 varios experimentos y análisis quedan pendientes. Entre ellos, 

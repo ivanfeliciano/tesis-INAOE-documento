@@ -8,7 +8,7 @@ En este capítulo se describe la experimentación y los resultados obtenidos
 que muestran la mejora en el desempeño de un agente que aprende
 con y sin información adicional de un grafo causal.
 Para probar el concepto propuesto se atacan dos problemas: la tarea de clásica del taxi \cite{Dietterich:2000:HRL:1622262.1622268} y la de los
-interruptores de luz, descrita en el capítulo \ref{chapter4}.
+interruptores de luz propuesta por \cite{nair2019causal}.
 En resumen, los experimentos consisten en integrar el grafo $\mathcal{D}$ a la política $\epsilon$-greedy
 en el algoritmo $Q$-learning \cite{watkins1992q}.
 En la política $\epsilon$-greedy en vez de mantener fijo a $\epsilon$, se propone empezar motivando al agente a explorar y usar
@@ -160,7 +160,7 @@ en un ambiente estocástico no es significativa. Tener un modelo pequeño sumand
 \section{Problema de los interruptores de luz}
 
 En esta sección se muestran los experimentos y resultados del método propuesto para
-el problema de los interruptores de luz descrito en el capítulo \ref{chapter4}.
+el problema de los interruptores de luz originalmente descrito en \cite{nair2019causal}.
 A diferencia del ambiente del taxi, este problema cuenta 
 con diferentes variaciones. Por ejemplo,
 diferentes tipos de conexiones en la estructura subyacente del problema, el tamaño de dicha estructura, etc.
@@ -168,9 +168,78 @@ En general, de acuerdo con los experimentos, el algoritmo usando un grafo causal
 configuraciones donde las estructuras causales están parcialmente incorrectas o también 
 al disminuir la tasa de consultas al modelo en una parte temprana del aprendizaje.
 
+\subsection{Descripción de la tarea}\label{section:switches-example}
 
-\subsection{Descripción de la tarea}
-Para los experimentos de esta sección se ataca la tarea de control de interruptores de luz propuesta en \cite{nair2019causal} y descrita de manera general en la Sección \ref{section:switches-example}. Un agente tiene el control
+% En esta sección se describe un ejemplo sobre un problema en que se realizan 
+% lo experimentos de esta investigación. Por ahora, solo se describe el problema
+% y cómo se aplica el método propuesto.
+Imagina que construyes un robot llamado Joi, con el propósito de prender o apagar las luces de las habitaciones 
+de una casa de acuerdo a como se le comande.
+A Joi se le puede dotar de cierto conocimiento previo de la configuración
+del cableado de la casa, tal que le ayude a descifrar las correspondencias entre
+interruptores de luz y los focos de las habitaciones. 
+ A Joi le gusta aprender mediante prueba
+ y error y recibir una señal de recompensa positiva o negativa de acuerdo a su comportamiento. Además, el robot 
+ necesita repetir muchas veces la misma acción para aprender
+ qué provocará realizarla. Por lo tanto, si Joi conoce los efectos de algunas de sus acciones (mover los interruptores), puede reducir sus intentos para
+ resolver las conexiones entre interruptores y los focos. 
+ Por ejemplo, con anticipación Joi puede saber que el mover interruptor de luz $i$ causa que
+prenda o apague la luz de la cocina.
+ Así que al darle la orden de prender las luces de la cocina, el baño y de alguna otra habitación, Joi solo se enfoca en aprender las partes que no
+ conoce.
+ 
+ El problema se puede ver como una tarea donde es necesario tomar las
+ decisiones adecuadas para llegar a un configuración de luces deseada. Formalmente, se puede ver como un MDP condicionado a metas donde 
+ 
+ \begin{itemize}
+     \item El espacio de estados $\mathcal{S}$, es el conjunto de
+     posibles observaciones de la casa desde una vista cenital como en la Figura
+   \ref{fig:obs-switches}.
+     \begin{figure}[H]
+         \centering
+         \includegraphics[scale=0.17]{Chapter4/Figs/example_obs.png}
+         \caption{Observación disponible para el robot.}
+         \label{fig:obs-switches}
+     \end{figure}
+     \item El espacio de acciones es $\mathcal{A} = \{a_1, a_2, \dots, a_N\}$
+     donde cada $a_i$ corresponde a mover o no el interruptor de luz $i$. $a_i = 0$ si no se mueve el interruptor y $a_i = 1$ si se mueve.
+     \item El conjunto de variables de alto nivel $\mathcal{X} = \{x_1, x_2, \dots, x_N\}$ contiene
+     a las variables que describen el estado de cada foco en la casa. Por ejemplo, $x_i = 1$ establece que el foco $i$ está prendido.
+     \item El grafo causal $\mathcal{D} = <\mathcal{A'}, \mathcal{X'}>$, donde
+     $\mathcal{A'} \subseteq \mathcal{A}$ y $\mathcal{X'} \subseteq \mathcal{X}$, visualmente el grafo se puede representar como en la Figura \ref{fig:dag-example-switches}.
+     
+     \begin{figure}[H]
+         \centering
+         \includegraphics[scale=0.2]{Chapter4/Figs/graph.png}
+        \caption{Una estructura causal posible para $N$ interruptores y $N$ luces
+        con un tipo de conexión uno-a-uno.}
+        \label{fig:dag-example-switches}
+     \end{figure}
+     \item No se cuenta con la función de transición $\mathcal{P}$, sin embargo,
+     se conoce que el interruptor $i$ no necesariamente corresponde al foco $i$.
+     \item El espacio de metas $\mathcal{G}$ contiene a todas las
+     combinaciones posibles de focos prendidos y apagados en la casa.
+     \item La recompensa inmediata $r$ se calcula a través de medir la diferencia entre la observación y la meta.
+ \end{itemize}
+ 
+ Una vez que la tarea se ha descrito como un MDP, es posible que Joi
+ aprenda a alcanzar una configuración de luces deseada
+ utilizando un algoritmo de RL, Q-learning por ejemplo. Además,
+ dado que suponemos que Joi puede aprovechar el conocimiento que le
+ ofrece el grafo causal $\mathcal{D}$, la selección de acciones se puede
+ guiar usando el Algoritmo \ref{alg:guided-action-selection}. 
+ En la Figura \ref{fig:example-switches} se muestra un paso en el proceso de aprendizaje.
+ 
+ \begin{figure}
+     \centering
+     \includegraphics[scale=0.25]{Chapter4/Figs/example_method.png}
+     \caption{Interacción del agente con su ambiente: 1) el agente observa el estado de su ambiente además de conocer el vector $\mathbf{g}$, 2) inicia
+     la política de selección de acciones, 3) si el agente debe explorar, mapea la observación a un vector de variables de alto nivel $\mathbf{x}$, 4) se calculan los diferentes entre los vectores $\mathbf{x}$ y $\mathbf{g}$, 5) se consultan los padres de las variables de interés y se retorna la acción. El entrenamiento continúa su aprendizaje de manera normal.}
+     \label{fig:example-switches}
+ \end{figure}
+ 
+% \subsection{Descripción de la tarea}
+Para los experimentos de esta sección se ataca la tarea de control de interruptores de luz descrita de manera general arriba. Un agente tiene el control
 de $N$ interruptores que controlan $N$ luces en un sitio.
 Cada acción $a\in \mathcal{A}$ corresponde a mover un interruptor o 
 a no mover ninguno, por lo tanto $|\mathcal{A}| = N + 1$.
@@ -231,7 +300,7 @@ comparados.
 %   \hfill
     \qquad
   \subfloat[$\mathcal{D}''$]{\includegraphics[width=0.15\textwidth]{Chapter5/Figs/wrongD.png}\label{fig:wrongD}}
-  \caption{Ejemplo de los tres tipos de información con los que puede  contar el algoritmo Q-learning. El tipo de estructura
+  \caption{Ejemplo de los tres tipos de información con los que puede contar el algoritmo Q-learning. El grafo $\mathcal{D}$, es la estructura causal del modelo completo y correcto. $\mathcal{D'}$ y $\mathcal{D''}$ son el grafo con información parcial del modelo completo y la estructura causal sin todas las relaciones causales y además con relaciones falsas, respectivamente. El tipo de estructura
   del problema es uno-a-uno. Las aristas dirigidas punteadas describen conexiones espurias.}
   \label{fig:types-info-dag}
 \end{figure}

@@ -8,9 +8,10 @@ de un modelo causal en un algoritmo de aprendizaje por refuerzo para
 acelerar su aprendizaje. Primero, se formula el problema a atacar, se delimita
 y se describen las suposiciones que se hacen. Además, se presentan algunas definiciones 
 importantes para entender el método.
-Después, se describe el algoritmo planteado. Finalmente, se muestra como 
-ejemplo el problema de los interruptores de luz, una tarea que puede ser atacada
-con el marco de trabajo propuesto.
+Finalmente, se describe el algoritmo planteado y cómo se acopla en algoritmos de RL. 
+% Finalmente, se muestra como 
+% ejemplo el problema de los interruptores de luz, una tarea que puede ser atacada
+% con el marco de trabajo propuesto.
 
 % \begin{itemize}
 %     \item \textbf{Descripción del problema y declaración}: Debe 1) presentar
@@ -183,7 +184,8 @@ y el vector de macro variables $\mathbf{x}$. Se puede suponer que $\mathbf{x} \n
 
 % A menudo, la meta final de una tarea en RL está compuesta de submetas. Por ejemplo, un brazo robótico cuya meta es mover un objeto de un punto $P_x$ a otro $P_y$, antes debe tomarlo  algunos casos,   
 En algunos casos, las variables de interés pueden seguir un orden causal, lo que se puede interpretar como que una meta depende de que se cumplan otras submetas.
-Por lo tanto, la lista $E$ puede guardarse en un estructura de datos tal que sus elementos estén ordenados por una función de prioridad, por ejemplo, de acuerdo con el orden topológico de $\mathcal{D}$. Con esto, los elementos con mayor prioridad pueden ser las variables que llevan a cumplir submetas necesarias para alcanzar la meta final.
+Por lo tanto, la lista $E$ puede guardarse en un estructura de datos tal que sus elementos estén ordenados por una función de prioridad, por ejemplo, de acuerdo con el orden topológico de $\mathcal{D}$. Con esto, se busca realizar antes aquellas acciones que conducen a la meta final.
+% los elementos con mayor prioridad pueden ser las variables que llevan a cumplir submetas necesarias para alcanzar la meta final.
 En la Figura \ref{fig:e-list} se describe un ejemplo de cómo se produce la lista $E$ con respecto al grafo de la Figura \ref{fig:example-d}. 
 
 
@@ -206,7 +208,7 @@ El siguiente paso corresponde a obtener una acción $a \in \mathcal{A}$ para que
 Para esto, se hace un recorrido sobre la lista $E$, donde
 por cada elemento $e \in E$ se hace una consulta al grafo causal. La consulta consiste en la
 obtención de los padres de $e$.  Si $e$ se encuentra en el grafo y además tiene al menos una variable de acción $a$ como predecesor se realiza tal acción.
-En este trabajo, solo se abordan problemas donde los grafos causales los vértices que representan las acciones no tienen padres y además no es necesario llevar a cabo varias acciones al mismo tiempo para afectar a $e$.
+En este trabajo, sólo se abordan problemas donde los grafos causales los vértices que representan las acciones no tienen padres y además no es necesario llevar a cabo varias acciones al mismo tiempo para afectar a $e$.
 % Algunos posibles casos de los tipos de conexiones entre las acciones y las variables de interés se pueden ver en la Figura \ref{fig:connection-types}. 
 % Las conexiones (a) representan el caso donde una variable de estado $e'$ afecta la acción que se desea tomar.
 % % El grafo (b) denota el caso donde para llevar a cabo una acción $a$ es necesario realizar antes la acción $a'$. La estructura (c) muestra el caso donde $e$ solo es afectado cuando varias acciones son ejecutadas al mismo tiempo (el autor añade arbitrariamente una conexión entre las aristas para diferenciar este caso del (d)). 
@@ -296,76 +298,76 @@ En los Algoritmos
 \end{mialgoritmo}
 
 
-\section{Ejemplo: Problema de los interruptores de luz}\label{section:switches-example}
+% \section{Ejemplo: Problema de los interruptores de luz}\label{section:switches-example}
 
-En esta sección se describe un ejemplo sobre un problema en que se realizan 
-lo experimentos de esta investigación. Por ahora, solo se describe el problema
-y cómo se aplica el método propuesto.
+% En esta sección se describe un ejemplo sobre un problema en que se realizan 
+% lo experimentos de esta investigación. Por ahora, solo se describe el problema
+% y cómo se aplica el método propuesto.
 
-Imagina que construyes un robot llamado Joi, con el propósito de prender o apagar las luces de las habitaciones 
-de una casa de acuerdo a como se le comande.
-A Joi se le puede dotar de cierto conocimiento previo de la configuración
-del cableado de la casa, tal que le ayude a descifrar las correspondencias entre
-interruptores de luz y los focos de las habitaciones. 
- A Joi le gusta aprender mediante prueba
- y error y recibir una señal de recompensa positiva o negativa de acuerdo a su comportamiento. Además, el robot 
- necesita repetir muchas veces la misma acción para aprender
- qué provocará realizarla. Por lo tanto, si Joi conoce los efectos de algunas de sus acciones (mover los interruptores), puede reducir sus intentos para
- resolver las conexiones entre interruptores y los focos. 
- Por ejemplo, con anticipación Joi puede saber que el mover interruptor de luz $i$ causa que
-prenda o apague la luz de la cocina.
- Así que al darle la orden de prender las luces de la cocina, el baño y de alguna otra habitación, Joi solo se enfoca en aprender las partes que no
- conoce.
+% Imagina que construyes un robot llamado Joi, con el propósito de prender o apagar las luces de las habitaciones 
+% de una casa de acuerdo a como se le comande.
+% A Joi se le puede dotar de cierto conocimiento previo de la configuración
+% del cableado de la casa, tal que le ayude a descifrar las correspondencias entre
+% interruptores de luz y los focos de las habitaciones. 
+%  A Joi le gusta aprender mediante prueba
+%  y error y recibir una señal de recompensa positiva o negativa de acuerdo a su comportamiento. Además, el robot 
+%  necesita repetir muchas veces la misma acción para aprender
+%  qué provocará realizarla. Por lo tanto, si Joi conoce los efectos de algunas de sus acciones (mover los interruptores), puede reducir sus intentos para
+%  resolver las conexiones entre interruptores y los focos. 
+%  Por ejemplo, con anticipación Joi puede saber que el mover interruptor de luz $i$ causa que
+% prenda o apague la luz de la cocina.
+%  Así que al darle la orden de prender las luces de la cocina, el baño y de alguna otra habitación, Joi solo se enfoca en aprender las partes que no
+%  conoce.
  
- El problema se puede ver como una tarea donde es necesario tomar las
- decisiones adecuadas para llegar a un configuración de luces deseada. Formalmente, se puede ver como un MDP condicionado a metas donde 
+%  El problema se puede ver como una tarea donde es necesario tomar las
+%  decisiones adecuadas para llegar a un configuración de luces deseada. Formalmente, se puede ver como un MDP condicionado a metas donde 
  
- \begin{itemize}
-     \item El espacio de estados $\mathcal{S}$, es el conjunto de
-     posibles observaciones de la casa desde una vista cenital como en la Figura
-   \ref{fig:obs-switches}.
-     \begin{figure}[H]
-         \centering
-         \includegraphics[scale=0.17]{Chapter4/Figs/example_obs.png}
-         \caption{Observación disponible para el robot.}
-         \label{fig:obs-switches}
-     \end{figure}
-     \item El espacio de acciones es $\mathcal{A} = \{a_1, a_2, \dots, a_N\}$
-     donde cada $a_i$ corresponde a mover o no el interruptor de luz $i$. $a_i = 0$ si no se mueve el interruptor y $a_i = 1$ si se mueve.
-     \item El conjunto de variables de alto nivel $\mathcal{X} = \{x_1, x_2, \dots, x_N\}$ contiene
-     a las variables que describen el estado de cada foco en la casa. Por ejemplo, $x_i = 1$ establece que el foco $i$ está prendido.
-     \item El grafo causal $\mathcal{D} = <\mathcal{A'}, \mathcal{X'}>$, donde
-     $\mathcal{A'} \subseteq \mathcal{A}$ y $\mathcal{X'} \subseteq \mathcal{X}$, visualmente el grafo se puede representar como en la Figura \ref{fig:dag-example-switches}.
+%  \begin{itemize}
+%      \item El espacio de estados $\mathcal{S}$, es el conjunto de
+%      posibles observaciones de la casa desde una vista cenital como en la Figura
+%   \ref{fig:obs-switches}.
+%      \begin{figure}[H]
+%          \centering
+%          \includegraphics[scale=0.17]{Chapter4/Figs/example_obs.png}
+%          \caption{Observación disponible para el robot.}
+%          \label{fig:obs-switches}
+%      \end{figure}
+%      \item El espacio de acciones es $\mathcal{A} = \{a_1, a_2, \dots, a_N\}$
+%      donde cada $a_i$ corresponde a mover o no el interruptor de luz $i$. $a_i = 0$ si no se mueve el interruptor y $a_i = 1$ si se mueve.
+%      \item El conjunto de variables de alto nivel $\mathcal{X} = \{x_1, x_2, \dots, x_N\}$ contiene
+%      a las variables que describen el estado de cada foco en la casa. Por ejemplo, $x_i = 1$ establece que el foco $i$ está prendido.
+%      \item El grafo causal $\mathcal{D} = <\mathcal{A'}, \mathcal{X'}>$, donde
+%      $\mathcal{A'} \subseteq \mathcal{A}$ y $\mathcal{X'} \subseteq \mathcal{X}$, visualmente el grafo se puede representar como en la Figura \ref{fig:dag-example-switches}.
      
-     \begin{figure}[H]
-         \centering
-         \includegraphics[scale=0.2]{Chapter4/Figs/graph.png}
-        \caption{Una estructura causal posible para $N$ interruptores y $N$ luces
-        con un tipo de conexión uno-a-uno.}
-        \label{fig:dag-example-switches}
-     \end{figure}
-     \item No se cuenta con la función de transición $\mathcal{P}$, sin embargo,
-     se conoce que el interruptor $i$ no necesariamente corresponde al foco $i$.
-     \item El espacio de metas $\mathcal{G}$ contiene a todas las
-     combinaciones posibles de focos prendidos y apagados en la casa.
-     \item La recompensa inmediata $r$ se calcula a través de medir la diferencia entre la observación y la meta.
- \end{itemize}
+%      \begin{figure}[H]
+%          \centering
+%          \includegraphics[scale=0.2]{Chapter4/Figs/graph.png}
+%         \caption{Una estructura causal posible para $N$ interruptores y $N$ luces
+%         con un tipo de conexión uno-a-uno.}
+%         \label{fig:dag-example-switches}
+%      \end{figure}
+%      \item No se cuenta con la función de transición $\mathcal{P}$, sin embargo,
+%      se conoce que el interruptor $i$ no necesariamente corresponde al foco $i$.
+%      \item El espacio de metas $\mathcal{G}$ contiene a todas las
+%      combinaciones posibles de focos prendidos y apagados en la casa.
+%      \item La recompensa inmediata $r$ se calcula a través de medir la diferencia entre la observación y la meta.
+%  \end{itemize}
  
- Una vez que la tarea se ha descrito como un MDP, es posible que Joi
- aprenda a alcanzar una configuración de luces deseada
- utilizando un algoritmo de RL, Q-learning por ejemplo. Además,
- dado que suponemos que Joi puede aprovechar el conocimiento que le
- ofrece el grafo causal $\mathcal{D}$, la selección de acciones se puede
- guiar usando el Algoritmo \ref{alg:guided-action-selection}. 
- En la Figura \ref{fig:example-switches} se muestra un paso en el proceso de aprendizaje.
+%  Una vez que la tarea se ha descrito como un MDP, es posible que Joi
+%  aprenda a alcanzar una configuración de luces deseada
+%  utilizando un algoritmo de RL, Q-learning por ejemplo. Además,
+%  dado que suponemos que Joi puede aprovechar el conocimiento que le
+%  ofrece el grafo causal $\mathcal{D}$, la selección de acciones se puede
+%  guiar usando el Algoritmo \ref{alg:guided-action-selection}. 
+%  En la Figura \ref{fig:example-switches} se muestra un paso en el proceso de aprendizaje.
  
- \begin{figure}
-     \centering
-     \includegraphics[scale=0.25]{Chapter4/Figs/example_method.png}
-     \caption{Interacción del agente con su ambiente: 1) el agente observa el estado de su ambiente además de conocer el vector $\mathbf{g}$, 2) inicia
-     la política de selección de acciones, 3) si el agente debe explorar, mapea la observación a un vector de variables de alto nivel $\mathbf{x}$, 4) se calculan los diferentes entre los vectores $\mathbf{x}$ y $\mathbf{g}$, 5) se consultan los padres de las variables de interés y se retorna la acción. El entrenamiento continúa su aprendizaje de manera normal.}
-     \label{fig:example-switches}
- \end{figure}
+%  \begin{figure}
+%      \centering
+%      \includegraphics[scale=0.25]{Chapter4/Figs/example_method.png}
+%      \caption{Interacción del agente con su ambiente: 1) el agente observa el estado de su ambiente además de conocer el vector $\mathbf{g}$, 2) inicia
+%      la política de selección de acciones, 3) si el agente debe explorar, mapea la observación a un vector de variables de alto nivel $\mathbf{x}$, 4) se calculan los diferentes entre los vectores $\mathbf{x}$ y $\mathbf{g}$, 5) se consultan los padres de las variables de interés y se retorna la acción. El entrenamiento continúa su aprendizaje de manera normal.}
+%      \label{fig:example-switches}
+%  \end{figure}
  
  \clearpage
  \section{Resumen}
