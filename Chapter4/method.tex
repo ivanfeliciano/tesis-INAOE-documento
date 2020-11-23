@@ -45,7 +45,7 @@ una tupla $<\mathcal{S}, \mathcal{A}, \mathcal{X},
     \item $\mathcal{X}$ es el conjunto de
     macro-variables de estado \cite{chalupka2014visual} (variables 
     que describen a los estados en un alto nivel), donde $|\mathcal{X}| = N$ y
-    $N \ll |S|$,
+    $N \ll |S|$, 
     \item $\mathcal{D}$ es un grafo causal
     que define relaciones entre
     los conjuntos $\mathcal{A}$ y $\mathcal{X}$, 
@@ -166,6 +166,7 @@ Inicialmente la probabilidad de
 explotar la mejor opción es muy baja, es decir, $\epsilon$ inicia con un valor igual o cercano a 1.
 Si no se eligió la mejor acción, entonces se consulta la estructura causal.
 
+  \hl{visual  cause  is  a  high-level  random  variable  that  is  afunction (or feature) of the image, which in turn is definedby the random micro-variables that determine the pixel val-ues.}
 Debido a que la estructura causal está en términos de variables de alto nivel,
 entonces, se necesita de $\phi$ para  convertir la observación $s$ a un vector de macro variables $\mathbf{x} = [x_1, \dots, x_N]$, donde $x_i \in \mathcal{X}$. En la Figura \ref{fig:obs-to-macro} se muestra un ejemplo de la transformación de una observación $s$, de dos dimensiones, en un vector de tamaño $N$ con variables que describen al estado en un alto nivel.
 

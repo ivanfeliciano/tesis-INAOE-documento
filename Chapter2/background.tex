@@ -37,7 +37,7 @@ Una perspectiva dentro del \textit{aprendizaje computacional} \cite{Goodfellow-e
 
 El aprendizaje por refuerzo se encarga de aprender el comportamiento de un agente 
 de tal forma que se maximice una señal de recompensa numérica, esto es, a que un
-agente aprenda a mapear estados de su mundo a acciones. Al aprendiz o agente no se le 
+agente aprenda a \hl{relacionar} estados de su mundo a acciones. Al aprendiz o agente no se le 
 dice qué acciones tomar, en cambio éste debe descubrir cuáles, al intentarlas, producen
 una mayor recompensa. 
 En la Figura \ref{fig:rl-outline} se muestra el esquema general de la interacción de un agente de RL con su mundo.
@@ -78,7 +78,7 @@ selecciona \textit{acciones} y
 el ambiente responde a estas 
 acciones presentando nuevos 
 \textit{estados} al agente. Además,
-el ambiente envía \textit{recompensas},
+\hl{existen \textit{recompensas}},
 las cuales son valores numéricos 
 que el agente busca maximizar con
 el paso del tiempo mediante la 
@@ -91,13 +91,13 @@ Formalmente, un MDP es una tupla $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \math
     \item $\mathcal{A}$ es el conjunto de acciones, donde $a_t \in \mathcal{A}$
     denota la acción realizada en un estado $s$ en el tiempo $t$.
     \item $\mathcal{P}_{ss'}^{a}: \mathcal{S}\times \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]$ (también denotada por $\mathcal{P}$) es una función de probabilidad de transición de pasar del estado $s \in \mathcal{S}$ al estado $s' \in \mathcal{S}$ cuando se toma la acción $a$.% en el tiempo $t$.
-    \item $\mathcal{R}_{ss'}^{a}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ (también denotada por $\mathcal{R}$) es la función de recompensa inmediata que el agente recibe después de pasar de $s$ a $s'$.
+    \item $\mathcal{R}_{ss'}^{a}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ (también denotada por $\mathcal{R}$) es la función de recompensa inmediata que el agente recibe después de pasar de $s$ a $s'$, \hl{habiendo tomado la acción $a$}.
     \item $\gamma \in [0,1]$ es el factor de descuento que sirve para
     calcular el retorno esperado con descuento.
 \end{itemize}
 
 
-Además de estos componentes, un sistema de aprendizaje por refuerzo subsume otros elementos como: una \textit{política} y una \textit{función de valor}. Una política es una función $\pi$ que mapea estados
+Además de estos componentes, un sistema de aprendizaje por refuerzo subsume otros elementos como: una \textit{política} y una \textit{función de valor}. \hl{Por lo tanto, la tupla se puede reescribir como $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma, \pi, f>$, donde los últimos elementos representan la política y la función de valor, respectivamente}. Una política es una función $\pi$ que mapea estados
 a acciones y que maximiza alguna medida de refuerzo a largo plazo. Mientras que la recompensa expresa lo que es bueno
 de manera inmediata, una función de valor especifica lo que
 es bueno a la larga. 
@@ -126,7 +126,7 @@ $r_{t+1}$.
 % aquella que maximiza la recompensa esperada por el agente a largo plazo.
 En RL, la meta del agente está formalizada
 en términos de la señal de recompensa que
-envía el ambiente al agente. En cada paso $t$, la recompensa es un número real $r_t \in \mathbb{R}$. La meta de un agente
+envía el ambiente al agente. En cada paso $t$, sin pérdida de generalidad, la recompensa es un número real $r_t \in \mathbb{R}$. \hl{Aunque las funciones de valor pueden estar en el dominio de $\mathbb{C}$ como en} \cite{complexRLhamagami}. La meta de un agente
 es maximizar la recompensa total recibida.
 Esto significa, que no solo se maximiza la recompensa inmediata sino la recompensa acumulada a largo plazo.
 
@@ -138,10 +138,11 @@ futuro son consideradas. Si $\gamma = 0$
 solo la recompensa inmediata es
 tomada en cuenta.
 
-\[
+\begin{equation}
+\label{eq:retorno-esperado}
 R_t = r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \gamma^3 r_{t+4} + \dots = 
 \sum_{k = 0}^\infty \gamma^{k} r_{t+k+1}
-\]
+\end{equation}
 
 Si se tiene un punto terminal se llaman tareas \textit{episódicas}, si no se tiene se conocen como tareas \textit{continuas}.
 
@@ -150,12 +151,12 @@ Si se tiene un punto terminal se llaman tareas \textit{episódicas}, si no se ti
 Una política, denotada por $\pi(s, a)$, describe una manera de actuar. Es una función que mapea un estado $s$ y una acción $a$ a la probabilidad de tomar esa acción en ese estado.
 Por lo tanto para un estado dado, 
 $\sum_a \pi (s, a) = 1$. El problema fundamental en los MDP es encontrar una política óptima $\pi^*$, es decir, aquella que maximiza la recompensa que espera recibir el agente a largo plazo.
-A veces es escrita como $\pi^*(s) = a$, la cual es un mapeo de estados a las acciones óptimas en esos estados.
+A veces es escrita como $\pi^*(s) = a$, la cual es una \hl{relación} de estados a las acciones óptimas en esos estados.
 
 Para aprender la política óptima, se utilizan las \textit{funciones de valor}. Existen dos tipos de funciones de valor: la \textit{función de valor de estado},
 denotada por $V(s)$, y la \textit{función de valor de acción}, expresada como $Q(s, a)$.
 
-La función de valor de estado describe el valor de un estado al seguir una política. Es el retorno esperado partiendo del estado $s$, actuando de acuerdo
+La \textit{función de valor de estado} describe el valor de un estado al seguir una política. Es el retorno esperado partiendo del estado $s$, actuando de acuerdo
 a la política $\pi$
 
 \begin{equation}\label{eq:state-value-func}
@@ -172,7 +173,7 @@ sucede después de llegar a un estado. Se puede contar con una política estocá
 todas las acciones que se toman. Además, la función de transición puede ser estocástica, lo cual implica cierta incertidumbre de llegar a cualquier 
 estado.
 
-La otra función de valor que se utiliza es la función de valor de acción.
+La otra función de valor que se utiliza es la \textit{función de valor de acción}.
 La función de valor de acción define el valor de 
 tomar una acción en algún estado cuando se sigue cierta política. Es el
 retorno esperado dados un estado y una acción bajo la política $\pi$
@@ -181,13 +182,20 @@ retorno esperado dados un estado y una acción bajo la política $\pi$
 Q^\pi (s,a) = \mathbb{E}[R_t | s_t = s, a_t = a].    
 \end{equation}
 
-Las funciones de valor óptimas se definen como
-\[
-V^*(s) = \max_{\pi} V^\pi(s) \text{ y } Q^*(s, a) = \max_{\pi} Q^\pi (s,a).
-\]
+Las funciones de valor óptimas se definen en las ecuaciones \ref{eq:optimal-value-function}
+y \ref{eq:optimal-action-function}.
+
+\begin{equation}
+\label{eq:optimal-value-function}
+V^*(s) = \max_{\pi} V^\pi(s).
+\end{equation}
+\begin{equation}
+\label{eq:optimal-action-function}
+    Q^*(s, a) = \max_{\pi} Q^\pi (s,a).
+\end{equation}
 
 
-Las funciones anteriores pueden ser expresadas mediante las ecuaciones de optimalidad de Bellman \cite{bellman1966dynamic}.
+Las funciones anteriores pueden ser expresadas mediante las \textit{ecuaciones de optimalidad de Bellman} \cite{bellman1966dynamic}.
 Las ecuaciones de Bellman están presentes en casi todos lo métodos de RL y es importante conocer de donde surgen para comprender estos algoritmos. Por lo tanto, a continuación se muestra la obtención de las ecuaciones
 de Bellman como lo muestra \cite{greaves}.
 
@@ -199,37 +207,42 @@ $\mathcal{R}_{ss'}^a = \mathbb{E}[r_{t+1} | s_t = s, s_{t+1} = s', a_t = a]$.
 Usando la función de retorno esperado con descuento, se puede
 reescribir la ecuación \ref{eq:state-value-func} como
 
-\[
+\begin{equation}
 V^\pi(s) = \mathbb{E}_\pi[r_{t+1} + \gamma r_{t+2} + \dots | s_t = s] = \mathbb{E}_{\pi}[\sum_{k = 0}^\infty \gamma^{k} r_{t+k+1} | s_t =s].
-\]
+\end{equation}
 
 
-Si se deja fuera de la suma la primera recompensa, se tiene
-\[
+Si se deja fuera de la suma la \hl{recompensa más antigua}, se tiene
+\begin{equation}
 V^\pi(s) = \mathbb{E}_\pi[r_{t+1} + \gamma \sum_{k = 0}^\infty \gamma^{k} r_{t+k+2} | s_t =s].
-\]
+\end{equation}
 
 El valor esperado describe el retorno esperado que se obtiene si se parte del estado $s$ siguiendo la política $\pi$.
 El valor esperado puede ser escrito explícitamente mediante la suma de todas
-las acciones posible y todos los posible estados, por lo tanto se tienen las siguientes ecuaciones
+las acciones posible y todos los posible estados, por lo tanto se tienen las ecuaciones
+\ref{eq:valor-esperado-recompensa-inmediata} y \ref{eq:valor-esperado-recompensas-siguientes}.
 
-\[
-\begin{split}
-\mathrm{E}_\pi[r_{t+1}| s_t=s] &= \sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a\mathcal{R}_{ss'}^a,\\
-\mathbb{E}_\pi[\gamma \sum_{k = 0}^\infty \gamma^{k} r_{t+k+2} | s_t =s] &=
-\sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a \gamma \mathbb{E}_\pi[\sum_{k = 0}^\infty \gamma^{k} r_{t+k+2} | s_{t+1} = s']
-\end{split}.
-\]
+\begin{equation}
+\label{eq:valor-esperado-recompensa-inmediata}
+\mathrm{E}_\pi[r_{t+1}| s_t=s] = \sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a\mathcal{R}_{ss'}^a,    
+\end{equation}
+\begin{equation}
+\label{eq:valor-esperado-recompensas-siguientes}
+\mathbb{E}_\pi[\gamma \sum_{k = 0}^\infty \gamma^{k} r_{t+k+2} | s_t =s] =
+\sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a \gamma \mathbb{E}_\pi[\sum_{k = 0}^\infty \gamma^{k} r_{t+k+2} | s_{t+1} = s']    
+\end{equation}
 
-Con las ecuaciones anteriores se puede reescribir $V^\pi(s)$ de la
+
+Con las ecuaciones \ref{eq:valor-esperado-recompensa-inmediata} y \ref{eq:valor-esperado-recompensas-siguientes}, se puede reescribir $V^\pi(s)$ de la
 siguiente forma
-\[
+\begin{equation}
+\label{eq:state-value-func-extended}
 V^\pi(s) = \sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a [\mathcal{R}_{ss'}^a +
 \gamma \mathbb{E}_\pi[\sum_{k = 0}^\infty \gamma^{k} r_{t+k+2} | s_{t+1} = s']].
-\]
+\end{equation}
 
-La última parte de la ecuación tiene
-la misma forma que la ecuación \ref{eq:state-value-func}, por lo tanto, sustituyéndola, se tiene
+La última parte de la ecuación \ref{eq:state-value-func-extended} tiene
+la misma forma que la ecuación \ref{eq:state-value-func}. Por lo tanto, sustituyéndola, se tiene
 
 \begin{equation}\label{eq:bellman-state-val}
     V^\pi(s) = \sum_a \pi(s,a) \sum_{s'}\mathcal{P}_{ss'}^a [\mathcal{R}_{ss'}^a + \gamma V^\pi(s')].
@@ -243,15 +256,18 @@ La ecuación de Bellman para la función de valor de acción se deriva de la mis
 
 Las ecuaciones de Bellman permiten expresar valores de estados como
 valores de otros estados, es decir, si se conoce el valor de $s_{t+1}$, se puede calcular $s_t$. A partir de las ecuaciones \ref{eq:bellman-state-val} y \ref{eq:bellman-acion-val} los valores óptimos de
-las funciones de valor quedan como sigue
+las funciones de valor se describen en las ecuaciones \ref{eq:optimal-value-f} y \ref{eq:optimal-action-value-f}.
 
-\[
-V^*(s) = \max_{a}\sum_{s'}\mathcal{P}_{ss'}^a[\mathcal{R}_{ss'}^a + \gamma V^*(s')]
-\]
-y 
-\[
+\begin{equation}
+\label{eq:optimal-value-f}
+V^*(s) = \max_{a}\sum_{s'}\mathcal{P}_{ss'}^a[\mathcal{R}_{ss'}^a + \gamma V^*(s')],
+\end{equation}
+
+\begin{equation}
+\label{eq:optimal-action-value-f}
 Q^*(s,a) = \sum_{s'}\mathcal{P}_{ss'}^a[\mathcal{R}_{ss'}^a + \gamma \max_{a'}Q^*(s',a')].
-\]
+\end{equation}
+
 
 Un MDP busca la solución a las ecuaciones de Bellman, lo que equivale a encontrar
 la política óptima. Si $\mathcal{P}$ y $\mathcal{R}$ son conocidas, i.e., se cuenta con el \textit{modelo} de un MDP, se puede resolver mediante programación dinámica o programación lineal. En caso contrario, cuando el modelo no es conocido, se utiliza aprendizaje por refuerzo.
@@ -407,7 +423,7 @@ siguiente estado $r_{t+1} + \gamma V(s_{t+1})$. El error que mide la diferencia 
 % \subsubsection{Deep Q Network}
 
 El algoritmo $Q$-learning \cite{watkins1992q} es un método de control TD \textit{fuera de política}, es decir,
-la política $\pi$ no se utiliza para actualizar la tabla $Q$. 
+la política $\pi$ no se utiliza, \hl{de manera explícita}, para actualizar la tabla $Q$. 
 La regla de actualización del $Q$-learning está dada por 
 
 \begin{equation}\label{eq:q-learning-update}
@@ -418,8 +434,8 @@ Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha[r_{t+1} + \gamma \max_a Q(s_{t+1}, a
 
 Normalmente, la política para la selección de acciones es una política voraz. El agente
 siempre elige la acción con el máximo valor de acción. Sin embargo, explotar la acciones vorazmente con el conocimiento actual puede conducir a que el
-agente quede atascado en una política no óptima. Para evitar 
-este caso, acciones exploratorias deben tomarse en cuenta de vez en cuando.
+agente quede ``atascado'' en una política no óptima. Para evitar 
+este comportamiento, se deben tomar en cuenta acciones exploratorias de vez en cuando.
 Una política es llamada $\epsilon$-greedy, si la mejor acción actual se toma 
 con una probabilidad de $1-\epsilon$ y una acción aleatoria se toma con una 
 probabilidad $\epsilon$. La ecuación de la política $\epsilon$-greedy
@@ -439,7 +455,7 @@ $\epsilon$ es un valor entre 0 y 1 y pondera la relación entre
 exploración y explotación.
 
 En general, el algoritmo Q-learning consiste de de los siguientes pasos:
-1) se inicializa la tabla $Q$ que mapea los estados a valores de las acciones,
+1) se inicializa la tabla $Q$ que \hl{relaciona} los estados a valores de las acciones,
 2) en un paso de tiempo $t$ del episodio el agente interactúa con su ambiente al realizar una acción $a_t$ de acuerdo con una política $\epsilon$-greedy (ecuación \ref{eq:epsilongreedy}) y obtiene una señal de recompensa $r_{t+1}$ y una observación $s_{t+1}$, y finalmente 3) actualiza los valores
 correspondientes de la tabla $Q$ usando la ecuación \ref{eq:q-learning-update}. El método
 se explica a detalle en el Algoritmo \ref{alg:q-algo}.
@@ -461,6 +477,7 @@ se explica a detalle en el Algoritmo \ref{alg:q-algo}.
     \STATE $s_t \leftarrow s_{t+1}$.
     \ENDFOR
   \ENDFOR
+  \RETURN $Q$
   \end{algorithmic}
 \end{mialgoritmo}
 
@@ -499,8 +516,8 @@ es muy grande. Por ejemplo, en algunos videojuegos se puede tener una gran varie
 de imágenes diferentes, por lo que  si se decide a usar pixeles como 
 estados individuales es fácil notar que se tiene que seguir la pista de muchos
 estados y se tienen que aproximar muchos valores. 
-Una solución a este problema es usar una representación no lineal que mapea 
-el par estado-acción a un valor.
+\hl{Una solución a este problema es usar una función que se aproxime a aquella que relaciona
+el par estado-acción a un valor.}
 Existen diversas formas de representar y entrenar dicha función, la que 
 se explora en esta sección es usando una red neuronal profunda \cite{lapan_2020, Goodfellow-et-al-2016}.
 
@@ -512,7 +529,7 @@ La primera versión del algoritmo DQN fue aplicada al dominio de los videojuegos
 extraer características del espacio y tiempo. El último mapa de características
 de las capas convolucionales es procesado por varias capas completamente conectadas, que codifican los efectos de las acciones.
 
-Son tres los elementos que forman las bases que permitieron demostrar
+Son tres los elementos que forman las bases que permitieron \hl{mostrar}
 la eficiencia y efectividad de este enfoque en ambientes complejos: el uso de una política $\epsilon$-greedy, un búfer de repetición o experiencia de repetición \cite{lin1993reinforcement} y una red objetivo.
 El búfer cíclico de experiencias de repetición guarda transiciones de la forma 
 $(s_t, a_t, s_{t+1}, r_{t+1})$, permitiendo que un agente de RL 
@@ -540,21 +557,25 @@ valores $y_j$ y usando la función $Q$, 7) se actualiza $Q$ usando el algoritmo 
 de gradiente estocástico minimizando la pérdida, y finalmente 8) después de algunos $C$
 pasos de tiempo se copian los parámetros de la función de valor $Q$ a la objetivo $\hat{Q}$.
 
-\begin{mialgoritmo}[H]
+En esta tesis se utilizan los algoritmos Q-learning y DQN con modificaciones para considerar los modelos causales.
+
+
+\begin{mialgoritmo}[ht]
   	\caption{Algoritmo $Q$-learning profundo con experiencias de repetición}
 	\label{alg:dqn-algo}
   \begin{algorithmic}[1]
   \setstretch{1}
+  \REQUIRE Una política de selección de acciones (e.g. $\epsilon$-greedy), una función $\phi$ que relacione el espacio de estados del ambiente a elementos de la funciones $Q$ y $\hat{Q}$, un número $C$ que indica cada cuantos pasos se copian los pesos de las función $Q$ a $\hat{Q}$.
   \STATE Inicializar búfer de experiencias $D$ con capacidad $N$.
-  \STATE Inicializar la función de valor de acción $Q$ con pesos aleatorios $\theta$.
-  \STATE Inicializar la función de valor de acción objetivo $\hat{Q}$ con pesos $\theta^- = \theta$.
+  \STATE Inicializar la función de valor de acción $Q$ con pesos aleatorios, denotados por $\theta$.
+  \STATE Inicializar los pesos de la función de valor de acción objetivo $\hat{Q}$, denotados por $\theta^-$ tal que $\theta^- = \theta$.
   
   \FOR{$episodio = 1, \dots, M$}
     \STATE Inicializar secuencia $s_1 = {x_1}$ y preprocesar secuencia $\phi_1 = \phi(s_1)$.
     \FOR{$t = 1, \dots, T$}
-    \STATE Elegir $a_t$ usando una política $\epsilon$-greedy.
+    \STATE Elegir $a_t$ usando la política de selección de acciones.
     \STATE Tomar acción $a_t$, observar recompensa $r_{t}$ e imagen $x_{t+1}$.
-    \STATE Asignar $s_{t+1} =  s_t, a_t, x_{t+1}$ y preprocesar $\phi_{t+1} = \phi(s_{t+1})$.
+    \STATE Asignar $s_{t+1} =  s_t$ y preprocesar $\phi_{t+1} = \phi(s_{t+1})$.
     \STATE Guardar transición $(\phi_t, a_t, r_t, \phi_{t+1})$ en $D$.
     \STATE De $D$ tomar una muestra aleatoria de un lote de transiciones $(\phi_j, a_j, r_j, \phi_{j+1})$.
     \STATE Establecer
@@ -562,84 +583,80 @@ pasos de tiempo se copian los parámetros de la función de valor $Q$ a la objet
 	 y_j = 
    \begin{cases} 
       r_j  & \mbox{si el episodio termina en el paso } j + 1 \\
-      r_j + \gamma \max_{a'}\hat{Q}(\phi_{j+1}, a'; \theta^-) & \mbox{en cualquier otro caso.}
+      r_j + \gamma \max_{a'}\hat{Q}(\phi_{j+1}, a'; \theta^-) &   \mbox{en cualquier otro caso.}
    \end{cases}
 	\]
 	\STATE Realizar el paso del
 	descenso de gradiente sobre $(y_j -  Q(\phi_j,a_j;\theta))^2$ con respecto a los parámetros de la red $\theta$.
-	\STATE Cada $C$ pasos reiniciar $\hat{Q} = Q$.
+	\IF{$(i \mod C) = 0$}
+	\STATE Reiniciar $\hat{Q} = Q$.
+	\ENDIF
     \ENDFOR
   \ENDFOR
+  \RETURN $Q$.
   \end{algorithmic}
 \end{mialgoritmo}
 
-En esta tesis se utilizan los algoritmos Q-learning y DQN con modificaciones para considerar los modelos causales.
 
 
-% \RestyleAlgo{boxruled}
-% \begin{mialgoritmo}[!hbt]
-% 	\caption{Algoritmo $Q$-learning profundo con experiencias de repetición}
-% 	\label{alg:dqn-algo}
-	
-% 	\SetAlgoLined\DontPrintSemicolon
-%     \SetAlgoHangIndent{0.5em}
-% 	%\scriptsize
-% 	\SetAlFnt{\large} 
-%     \SetKwData{patterns}{\textit{PS}}
-	
-%     Inicializar búfer de experiencias $D$ a una capacidad $N$\;
-%     Inicializar la función de valor de acción $Q$ con pesos aleatorios $\theta$\;
-%     Inicializar la función de valor de acción objetivo $\hat{Q}$ con pesos $\theta^- = \theta$\;
-% 	Repetir por cada episodio:\;
-% 	\hspace{0.5cm}Inicializar secuencia $s_1 = {x_1}$ y preprocesar secuencia $\phi_1 = \phi(s_1)$\;
-% 	\hspace{0.5cm}Repetir por cada paso del episodio:\;
-% 	\hspace{1cm}Elegir $a_t$ usando una política $\epsilon$-greedy\;
-% 	\hspace{1cm}Tomar acción $a_t$, observar recompensa $r_{t}$ e imagen $x_{t+1}$\;
-% 	\hspace{1cm}Asignar $s_{t+1} = s_t, a_t, x_{t+1}$ y preprocesar $\phi_{t+1} = \phi(s_{t+1})$\;
-% 	\hspace{1cm}Guardar transición $(\phi_t, a_t, r_t, \phi_{t+1})$ en $D$\;
-% 	\hspace{1cm}A partir de $D$, De $D$ tomar una muestra aleatoria de un lote de transiciones $(\phi_j, a_j, r_j, \phi_{j+1})$\;
-% 	\hspace{1cm}Establecer
-% 	\[
-% 	 y_j = 
-%   \begin{cases} 
-%       r_j  & \mbox{si el episodio termina en el paso } j + 1 \\
-%       r_j + \gamma \max_{a'}\hat{Q}(\phi_{j+1}, a'; \theta^-) & \mbox{en cualquier otro caso.}
-%   \end{cases}
-% 	\]\;
-% 	\hspace{1cm}Realizar el paso del
-% 	descenso de gradiente sobre $(y_j -  Q(\phi_j,a_j;\theta))^2$ con respecto a los parámetros de la red $\theta$\;
-%     \hspace{1cm}Cada $C$ pasos reiniciar $\hat{Q} = Q$\;
-% \end{mialgoritmo}
 
-
-\newpage
 \section{Causalidad}\label{causation-section}
 
 
-En este trabajo se sigue la interpretación de causalidad  
-\textit{intervencionista} según como la han descrito en \cite{woodward2005making, spirtes2000causation, pearl_2009}.
-De acuerdo con \cite{pearl2018bookofwhy} existen tres niveles
-de razonamiento causal: \textit{observar}, \textit{intervenir}
-e \textit{imaginar}.
+En este trabajo se sigue el esquema de causalidad  
+a través de \textit{intervenciones} según como se ha descrito en \cite{woodward2005making, spirtes2000causation, pearl_2009}.
+Judea Pearl, en su libro \textit{The Book of Why} \cite{pearl2018bookofwhy}, propone tres niveles
+de razonamiento causal, a través de una metáfora que llama ``\textit{la escalera de la causalidad}''.
+Los tres niveles son: 1) \textit{asociación}, 2) \textit{intervención} y 3) \textit{contrafactuales}, los cuales están en un ordenados de abajo hacia arriba en la \textit{escalera de la causalidad}.
+
 En el primer nivel, el de asociación, se buscan regularidades
-en el ambiente a partir de observaciones. 
-En general, se dice que un evento está asociado a otro si observar uno
-cambia la probabilidad de observar al otro.
+en el ambiente a partir de observaciones. La asociación 
+involucra observar regularidades en datos para 
+asociar eventos pasados a otro en el futuro \cite{kathpalia2019measuring}.
+
+% Association involves observing regularities in the data to associate a past event with a future one
+% En general, se dice que un evento está asociado a otro si observar uno
+% cambia la probabilidad de observar al otro.
+
+
+% This is a statistical association, i.e. non-independence, with clearly establishedordering from cause to response and which cannot be removed by conditioning onallowablealter-native features. 
+
 El segundo nivel, intervenir, implica predecir los 
 efectos de alteraciones arbitrarias sobre el ambiente
-y producir una salida deseada después de elegir entre esas alteraciones. Las intervenciones ocupan un lugar más alto que las
-asociaciones porque involucran
-no sólo observar sino cambiar lo que es.
+y producir una salida deseada después de elegir entre esas alteraciones. Las asociaciones
+están un ``escalón'' debajo, porque
+% cambiar lo que es y entonces observar su efecto.
+% Esto es, en un nivel de asociaciones, 
+no hay
+intervenciones involucradas para observar el efecto
+causal de hacer algo en un sistema.
+
 En el tercer nivel se encuentra
 el razonamiento \textit{contrafactual} donde la retrospección
 e imaginación permite responde preguntas como ¿por qué?
 y ¿qué hubiera pasado si una intervención se hubiera hecho 
 en vez de otra?
-La parte central del razonamiento causal se encuentra en el segundo
-y tercer nivel, donde se puede observar qué pasa después de que 
-alguna variable ha sido manipulada o intervenida y donde se puede
-preguntar qué hubiera pasado si cierta intervención se hubiera 
-hecho de otra forma.
+
+La mayoría de los animales así como los algoritmos
+de aprendizaje estos días, se encuentran en el primer 
+nivel de la escalera. Por lo
+tanto, se persigue el segundo y tercer nivel;
+en los cuales: se puede observar qué pasa después de que alguna variable ha sido manipulada o intervenida, donde se puede preguntar qué hubiera pasado si cierta intervención se hubiera hecho de otra forma, etc.
+
+% La parte central del razonamiento causal se encuentra en el segundo
+% y tercer nivel, donde se puede observar qué pasa después de que 
+% alguna variable ha sido manipulada o intervenida y donde se puede
+% preguntar qué hubiera pasado si cierta intervención se hubiera 
+% hecho de otra forma.
+
+% he aim is to compare the outcomes arising under different interventions, giventwo or more (possible) interventions in a system.
+
+% This way of inferring causationmay have an objective of decision-making or may require the conduction of a controlled experiment, although that isnot always the case
+% Second-level causality is used for explaininghowthese dependencies aroseorwhat underlying generating process were involved for the causal relationships observed.On several occasions, this will require incorporating information from previous studies in the field or by doing laboratoryexperiments. 
+% r. Randomized control trials as well as model-based causality measures (which aim to find the underlyinggenerating mechanism) fall in this category. 
+
+% While model based measures do not directly intervene, they invert the assumed model to obtain itsvarious parameters based on the available data. The complete model can then be helpful to intervene, such as to makepredictions about situations for which data is unavailable.
+
 
 Las relaciones asociativas están basadas en correlaciones
 entre eventos o patrones de ocurrencia encontrados en los
@@ -651,21 +668,22 @@ manipulaciones \cite{sep-causal-models}.
 
 Numerosas técnicas han sido desarrolladas para representar
 sistemas de relaciones causales y para inferir 
-relaciones causales a partir de probabilidades.
+relaciones causales a partir de probabilidades \cite{sep-causation-probabilistic}.
 Al conjunto de teorías que buscan caracterizar las
 relaciones causa y efecto usando herramientas de la
 teoría de probabilidad se le llama \textit{causalidad probabilista}. 
 La idea central detrás de estas teorías es que las causas cambian las probabilidades de sus efectos.
 
 El nombre de \textit{modelado causal} se usa para describir al campo 
-que estudia los métodos de la \textit{inferencia causal}. Dentro de este campo
-entre los autores principales están \cite{pearl2010introduction, spirtes2000causation}, entre otros. En las siguientes secciones
+que estudia, \hl{entre otras cosas}, los métodos de la \textit{inferencia causal}. Dentro de este campo
+entre los autores principales están
+Judea Pearl \cite{pearl2010introduction} y Peter Spirtes \cite{spirtes2000causation}, entre otros. En las siguientes secciones
 se describen formalmentes algunos elementos importantes utilizados en esta investigación
 siguiendo el marco de trabajo de los \textit{modelos gráficos causales} propuesto por esos autores.
 
-De acuerdo con \cite{spirtes2000causation} se entiende a la causalidad 
-como una relación entre eventos: \textit{algo sucede y causa que algo más suceda}. Cada causa es un evento específico y cada efecto es una evento
-en particular. Se supone que esta relación es \textit{transitiva}, \textit{irreflexiva} y \textit{antisimétrica}. Esto es 
+De acuerdo con \cite{spirtes2000causation} la \textit{causalidad}
+es una relación entre eventos: \textit{algo sucede y causa que algo más suceda}. Cada causa es un evento específico y cada efecto es una evento
+en particular. \hl{Esta relación es} \textit{transitiva}, \textit{irreflexiva} y \textit{antisimétrica}. Esto es 
 \begin{itemize}
     \item Si $A$ es una causa de $B$ y $B$ es una causa de $C$, entonces
     $A$ es también una causa de $C$,
@@ -676,7 +694,7 @@ en particular. Se supone que esta relación es \textit{transitiva}, \textit{irre
 \subsection{Estructura y modelo causal}
 
 Supóngase un conjunto de variables $\mathcal{V}$ que incluyen a $A$ y $X$. 
-Se dice que $A$ es causa directa de $X$ con respecto a $\mathcal{V}$
+Se dice que $A$ es \hl{\textit{causa directa}} de $X$ con respecto a $\mathcal{V}$
 solo en caso de que $A$ sea un miembro de algún conjunto 
 $\mathcal{A} \subseteq \mathcal{V} - \{X\}$ tal que 
 
@@ -693,20 +711,13 @@ $\mathcal{V}$ es un conjunto de variables y $E$ es un conjunto
 de pares ordenados de $\mathcal{V}$, donde $<X, Y> \in E$ si
 y sólo si $X$ es causa directa de $Y$ con respecto a  
 $\mathcal{V}$ \cite{spirtes2000causation}.
-
 Una estructura causal se puede representar como un grafo
 dirigido $D = <\mathcal{V},E>$ que representa una estructura causal suficiente $C$ (i.e., que todas las causas de las variables están dentro del conjunto de variables de $C$), donde los vértices de $D$ denotan las variables en $C$ y existe una
 arista dirigida de $A$ a $B$ en $D$ si y sólo si $A$ es
 una causa directa de $B$.
 A un grafo acíclico dirigido que representa una estructura causal se le llama \textit{grafo causal}.
-
-Las aristas de un grafo causal implican una semántica causal: si existe un camino dirigido de $A$ a $X$, entonces $A$ es un una \textit{causa potencial} de $X$. Los caminos dirigidos también se conocen como \textit{caminos causales}. El efecto causal de $A$ sobre $X$ se puede ver como la distribución condicional de $X$ dado $A$ restringida solo a caminos causales \cite{dasgupta2019causal}.
-
-De acuerdo con \cite{pearl_2009}, la estructura causal $D$ de un conjunto de variables $\mathcal{V}$ es un grafo acíclico dirigido (DAG por sus siglas en inglés) en el cual cada nodo corresponde a un elemento distinto de $\mathcal{V}$ y cada arista define una relación funcional directa entre las
-variables correspondientes. 
-
-Hay tres condiciones que conectan probabilidades con
-grafos causales: \textit{la condición causal de Markov}, \textit{la condición de minimalidad} y \textit{la condición
+Además, para que una estructura causal tenga una interpretación de causalidad, se deben cumplir las 
+siguientes condiciones: \textit{la condición causal de Markov}, \textit{la condición de minimalidad} y \textit{la condición
 de fidelidad} \cite{gonzalez-soto, spirtes2000causation}.
 
 \begin{itemize}
@@ -715,6 +726,14 @@ de fidelidad} \cite{gonzalez-soto, spirtes2000causation}.
     \item \textit{Condición de minimalidad}. Ningún subgrafo propio de $D$ satisface la condición causal de Markov.
     \item \textit{Condición de fidelidad}. La condición causal de Markov contiene todas las condiciones de independencia expresadas en el grafo $D$.
 \end{itemize}
+
+
+Las aristas de un grafo causal implican una semántica causal: si existe un camino dirigido de $A$ a $X$, entonces $A$ es un una \textit{causa potencial} de $X$. Los caminos dirigidos también se conocen como \textit{caminos causales}. El efecto causal de $A$ sobre $X$ se puede ver como la distribución condicional de $X$ dado $A$ restringida solo a caminos causales \cite{dasgupta2019causal}.
+
+De acuerdo con \cite{pearl_2009}, la estructura causal $D$ de un conjunto de variables $\mathcal{V}$ es un grafo acíclico dirigido (DAG por sus siglas en inglés) en el cual cada nodo corresponde a un elemento distinto de $\mathcal{V}$ y cada arista define una relación funcional directa entre las
+variables correspondientes. 
+
+
 % Markov Causality: an eventV(or node inG) is independent of every other eventAsuchthatAisn’t either a cause nor an effect ofVgiven the causes ofV.•Causal Minimality: No proper sub-graph ofGsatisfies the Markov Causality condition.•Causal Faithfulness: The Markov Causal condition contains all of the conditional inde-pendence statements expressed by the DAGG
 
 De manera general, un modelo causal de acuerdo con \cite{pearl_2009}, se define como un par $\mathcal{M} = <D, \Theta_D>$ donde $D$
@@ -768,9 +787,9 @@ $P(A)$ y $P(C|A, E)$.
 % si se \textit{interviene} al fijar el valor de $X$ a un valor $x$ en particular. Esto último se denota como $P(Y=y| do(X=x))$ \cite{pearl_2009}.
 ¿Cuál es la diferencia entre observar e intervenir o
 manipular? 
-Cuando se interviene una variable en un modelo, se fija su valor, con esto se modifica el sistema y como resultado, normalmente, los valores de las otras variables cambian.
+Cuando se interviene una variable en un modelo, se fija su valor \hl{y se elimina el efecto de sus padres}, con esto se modifica el sistema y como resultado, normalmente, los valores de las otras variables cambian.
 Cuando se condiciona sobre una variable, nada cambia, simplemente se limita el enfoque al subconjunto de casos en los que variable toma el valor de interés. 
-Por lo tanto, lo que cambia es la percepción del mundo, no el mundo mismo.
+% Por lo tanto, lo que cambia es la percepción del mundo, no el mundo mismo.
 
 Para distinguir los casos donde una variable $X$ toma un valor $x$ naturalmente
 y aquellos donde se fija $X = x$, este último se denota como $do(X=x)$.
@@ -801,11 +820,11 @@ efecto de esta intervención eliminando las aristas
 dirigidas a las variables que se desean intervenir. Tal
 intervención a veces es descrita como ``romper'' esas aristas \cite{sep-causal-models}.
 
-Dadas dos variables, $X$ y $Y$,
-el efecto causal de $X$ sobre $Y$ se denota como $P(Y=y|do(X=x))$. Para 
-cada realización $x$ de $X$, $P(Y=y| do(X=x))$ es la probabilidad de $Y=y$ 
+\hl{Dadas dos variables, $X$, $Y$ y $W$,
+el efecto causal de $X$ sobre $Y$ se denota como $P(Y=y|do(X=x), W=x)$. Para 
+cada realización $x$ de $X$, $P(Y=y| do(X=x), W=x)$ es la probabilidad de $Y=y$ 
 inducida al eliminar del modelo todas las ecuaciones que corresponde a las
-variables en $X$ y sustituir $X=x$ en el resto de ecuaciones.
+variables en $X$, sustituir $X=x$ en el resto de ecuaciones y observar los valores que toma otra variable $(W=x)$ en el mismo ``mundo'' donde la intervención se lleva a cabo}.
 En general, si $X$ y $Y$ pueden tomar más de un valor, se desea poder
 predecir el \textit{efecto causal general}.
 La diferencia $\mathbb{E}(Y|do(x'))- \mathbb{E}(Y|do(x''))$ a veces
@@ -848,18 +867,50 @@ dirigida $A \rightarrow E$ (Figura \ref{fig:dag-intervention}) y sin alterar los
 
 De acuerdo con algunos trabajos, la relación entre el aprendizaje por refuerzo
 y la causalidad es mucho más estrecha que con otras áreas del
-aprendizaje automático \cite{schlkopf2019causality} \cite{Gershman2017}. Esto debido a que al ejecutar acciones sobre su ambiente, entonces
-estima distribuciones intervencionistas y por lo tanto el aprendizaje por refuerzo es un problema causal. Sin embargo, se ha demostrado que el aprendizaje
-por refuerzo no está formulado tal que se utilicen operaciones
-causales \cite{gonzalezsoto2019reinforcement}.
-En este documento, más que intentar construir los fundamentos de una nueva 
-teoría que combine ambas áreas, se apunta hacia una perspectiva
-en la que elementos de una auxilien a la otra de tal forma que
-los aproveche y mejore. En particular, en esta investigación
-se sigue la dirección de utilizar información causal para ayudar al 
-aprendizaje de un agente.
+aprendizaje automático \cite{schlkopf2019causality} \cite{Gershman2017}. 
+% Esto debido a que al ejecutar acciones sobre su ambiente, entonces
+% estima distribuciones intervencionistas y por lo tanto el aprendizaje por refuerzo es un problema causal. Sin embargo, se ha demostrado que el aprendizaje
+% por refuerzo no está formulado tal que se utilicen operaciones
+% causales \cite{gonzalezsoto2019reinforcement}.
+% En este documento, más que intentar construir los fundamentos de una nueva 
+% teoría que combine ambas áreas, se apunta hacia una perspectiva
+% en la que elementos de una auxilien a la otra de tal forma que
+% los aproveche y mejore. En particular, en esta investigación
+% se sigue la dirección de utilizar información causal para ayudar al 
+% aprendizaje de un agente.
 
-Por esta razón, no se presentan conceptos teóricos que unan ambas áreas. 
-En capítulos posteriores se introducen algunas definiciones y notación
-que sirven para entender el método propuesto y que sirven para acotar el
-problema atacado.
+% Por esta razón, no se presentan conceptos teóricos que unan ambas áreas. 
+% En capítulos posteriores se introducen algunas definiciones y notación
+% que sirven para entender el método propuesto y que sirven para acotar el
+% problema atacado.
+La mayoría de los algoritmos de aprendizaje por refuerzo son métodos genéricos que pueden ser aplicados a cualquier tarea modelada como un proceso de decisión de Markov.
+En específico, esta investigación se restringe a hacer frente
+a problemas que pueden ser planteados como un proceso de decisión de Markov condicionado a metas
+\cite{nair2019causal}. Esto, debido a que de acuerdo  con la definición propuesta por \cite{nair2019causal} este 
+tipo de tareas tiene una estructura causal subyacente que describe el comportamiento del ambiente.
+
+    Un MDP condicionado a metas es
+una tupla $<\mathcal{S}, \mathcal{A}, \mathcal{X},
+\mathcal{D}, \mathcal{P}, \mathcal{G}, r, \gamma, \phi>$, donde 
+\begin{itemize}
+    \item $\mathcal{S}$ es el espacio de estados, 
+    \item $\mathcal{A}$ es el espacio de acciones, 
+    \item $\mathcal{X}$ es el conjunto de
+    macro-variables de estado \cite{chalupka2014visual} (variables 
+    que describen a los estados en un alto nivel), donde $|\mathcal{X}| = N$ y
+    $N \ll |S|$, 
+    \item $\mathcal{D}$ es un grafo causal
+    que define relaciones entre
+    los conjuntos $\mathcal{A}$ y $\mathcal{X}$, 
+    \item $\mathcal{P}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]
+     $ es la función de probabilidad de transición de pasar de un estado a otro dada una acción. 
+    \item $\mathcal{G}$ es el espacio de metas, donde cada uno de sus elementos es un vector $\mathbf{g} = [x_1, \dots, x_N]$ y $x_i \in \mathcal{X}$
+    con $i \in \{1, \dots, N\}$,
+    \item $r : \mathcal{S} \times \mathcal{A} \times \mathcal{G} \rightarrow \mathbb{R}$ es una función
+de recompensa, donde $r(s, a, \mathbf{g})$ produce la recompensa inmediata condicionada a la meta $\mathbf{g} \in \mathcal{G}$,
+\item $\gamma$ es el factor de descuento,
+\item $\phi : \mathcal{S} \rightarrow \mathcal{X}$ es una función que mapea el espacio de estados al de macro-variables.
+\end{itemize}
+
+En un MDP condicionado a metas, el objetivo es aprender una 
+política óptima condicionada a una meta $\pi^*_g: \mathcal{S} \times \mathcal{G} \rightarrow \mathcal{A}$ que maximice el retorno esperado $R = \sum_{k}^{\infty}\gamma^{k} r(s_k, a_k, g)$.
