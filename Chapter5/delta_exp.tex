@@ -47,119 +47,418 @@ para las diferentes configuraciones del experimento
 se evalúa la medida \textit{average}.
 De manera gráfica, se muestra el desempeño de los algoritmos
 para los diferentes valores $\delta$ en las Figuras \ref{fig:low-epsilon-det}, \ref{fig:low-epsilon-sto}, \ref{fig:high-epsilon-det} y \ref{fig:high-epsilon-sto}.
+Además, en las tablas \ref{tab:one-to-one-delta-det}, \ref{tab:one-to-one-delta-sto}, \ref{tab:common-effect-one-to-one-delta-det}, \ref{tab:common-effect-one-to-one-delta-sto},
+\ref{tab:common-cause-delta-det} y \ref{tab:common-cause-delta-sto}, se muestran los resultados de las pruebas estadísticas.
+
+
 
 En las Figuras \ref{fig:low-epsilon-det}-\ref{fig:high-epsilon-sto} se puede ver que en la mayoría de los casos, los algoritmos que utilizan conocimiento del grafo inician con una recompensa mayor y se estabilizan más rápido que el algoritmo Q-learning
 sin información adicional en ambientes con transiciones deterministas y estocásticas.
-De acuerdo con los resultados parece que 
+
+De las curvas de aprendizaje se puede observar que 
 entre mayor sea $\delta$ más tarda en estabilizarse
 el algoritmo de aprendizaje sin información que lo auxilie. Esto es de esperarse, ya que se sigue explorando durante más tiempo. 
+
 Por otro lado, para las estructuras uno-a-uno, la recompensa en los algoritmos que se guían por el grafo, se desestabiliza el intervalo en el que se encuentra la transición a dejar de dar peso a
-la exploración. Pero, una vez fuera de esa ``zona de transición'' los
-algoritmos se recuperan y tienden a estar por encima del algoritmo sin datos 
-extra.
+la exploración. Una vez fuera de esa ``zona de transición'' los
+algoritmos se recuperan y tienden a estar por encima del algoritmo sin datos extra.
 
-Por otro lado, además de las curvas de aprendizaje se propone hacer una comparación estadística de
-los métodos. Para esto, se
-compara la recompensa promedio de los últimos $E$ episodios
-de entrenamiento sobre los $M$ experimentos. Con esto, se 
-puede obtener una muestra de tamaño $E$ para cada algoritmo
-y hacer una prueba estadística para mostrar que existe una diferencia entre ellos. La prueba estadística se realiza comparando los algoritmos que utilizan información extra versus el algoritmo Q-learning usando una exploración a prueba y error para saber si los primeros son superiores significativamente sobre el segundo. 
+De acuerdo con las pruebas estadísticas, en las tablas \ref{tab:one-to-one-delta-det} y \ref{tab:one-to-one-delta-sto} se 
+puede notar que en general, en las estructuras uno a uno, el método con el grafo causal completo es más 
+rápido que el resto. Hay un par de excepciones, y corresponden
+al $N$ más grade en un ambiente determinista. Por otro lado, en 
+ninguna configuración el algoritmo $Q_1$ logra la racha de 
+recompensa episódica óptima, antes de que termine el entrenamiento.
+En el ambiente estocástico, en la mayoría de los casos los
+algoritmos $Q_{2-4}$ resuelven la tarea más rápido que $Q_1$.
 
-En las tablas \ref{tab:delta-one-to-one}, \ref{tab:delta-one-to-many} y \ref{tab:delta-many-to-one} se muestran
-los promedios de las recompensas durante los últimos $E$ episodios. 
-De igual manera que en las curvas de aprendizaje se puede notar que en la mayoría de tareas el algoritmo Q-learning usando el grafo causal completo tiene una recompensa mayor que en los otros métodos. Además, en general los métodos que utilizan el grafo ya sea incorrecto o incompleto superan al método clásico de Q-learning. Para validar estos resultados se usa la prueba de Welch con $p < 0.05$ para encontrar diferencias estadísticamente significativas. 
-Los resultados de las pruebas refuerzan lo concluido a partir de las gráficas. Existe una diferencia estadística en el desempeño de los algoritmos, excepto por algunos casos (marcados por $\dagger$ en las tablas). Estos últimos corresponden
-al desempeño en tareas con una estructura causal subyacente de tipo uno a uno y con $N=9$. Esto puede ser debido a esta transición
-de exploración y explotación. 
+En las tablas \ref{tab:common-effect-one-to-one-delta-det} y \ref{tab:common-effect-one-to-one-delta-sto}, se puede ver que para el tipo de estructuras de efecto común, en la mayoría
+de casos, los algoritmos $Q_{2-4}$ son más rápidos que $Q_1$,
+en ambas configuraciones del ambiente. Los casos en donde
+no se puede encontrar una diferencia corresponden a cuando 
+se termina de explorar más rápido ($\delta=0.25$).	
 
-\begin{table}[h]
-\centering
-\caption{Comparación de la recompensa promedio obtenida durante los últimos $E=100$ episodios de entrenamiento para $M$ experimentos en tareas con estructuras causales uno a uno. En negritas se resaltan las recompensas promedio mayores con respecto al resto de los algoritmos en una configuración experimental dada.}
-\label{tab:delta-one-to-one}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}ccclll@{}}
-\toprule
-Ambiente & $\delta$ & Algoritmo & \multicolumn{3}{c}{$N$} \\ \cmidrule(l){4-6} 
- &  &  & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{9} \\ \midrule
-Determinista & $0.25$ & $Q_{1}$ & $-2.2324 \pm 0.6353$ & $-4.3184 \pm 0.8746$ & $-6.3564 \pm 1.3603$ \\
- &  & $Q_{2}$ & $\mathbf{-1.9466 \pm 0.4679}$ & $-3.5731 \pm 0.7285$ & $-5.7115 \pm 1.1855$ \\
- &  & $Q_{2}$ & $-1.9825 \pm 0.4632$ & $\mathbf{-3.5061 \pm 0.7207}$ & $\mathbf{-5.6209 \pm 1.0718}$ \\
- &  & $Q_{4}$ & $-2.0330 \pm 0.5384$ & $-3.5547 \pm 0.7081$ & $-5.8372 \pm 1.0747$ \\ \cmidrule(l){2-6} 
- & $0.75$ & $Q_{1}$ & $-2.3774 \pm 0.6925$ & $-4.3218 \pm 0.9312$ & $-6.2775 \pm 1.1195$ \\
- &  & $Q_{2}$ & $\mathbf{-1.8880 \pm 0.4666}$ & $\mathbf{-3.4929 \pm 0.7115}$ & $-6.9414 \pm 1.6493$ \\
- &  & $Q_{2}$ & $-2.1314 \pm 0.4933$ & $-3.8299 \pm 0.7694$ & $-6.3671 \pm 1.4099\dagger$ \\
- &  & $Q_{4}$ & $-1.9896 \pm 0.5470$ & $-3.8252 \pm 0.7840$ & $\mathbf{-6.2538 \pm 1.3547\dagger}$ \\ \cmidrule(l){2-6} 
-Estocástico & $0.25$ & $Q_{1}$ & $-4.8575 \pm 0.9453$ & $-9.3174 \pm 1.2780$ & $-14.5087 \pm 1.4934$ \\
- &  & $Q_{2}$ & $\mathbf{-3.4833 \pm 0.8100}$ & $-7.2904 \pm 1.3719$ & $\mathbf{-10.7682 \pm 1.8282}$ \\
- &  & $Q_{2}$ & $-3.7870 \pm 0.8263$ & $\mathbf{-6.8757 \pm 1.2246}$ & $-11.9817 \pm 1.9420$ \\
- &  & $Q_{4}$ & $-3.8850 \pm 0.8119$ & $-7.1184 \pm 1.1471$ & $-12.4496 \pm 1.9692$ \\ \cmidrule(l){2-6} 
- & $0.75$ & $Q_{1}$ & $-5.0956 \pm 0.8950$ & $-9.3535 \pm 1.2484$ & $-14.3432 \pm 1.7236$ \\
- &  & $Q_{2}$ & $\mathbf{-3.9598 \pm 0.8291}$ & $-8.1395 \pm 1.3979$ & $\mathbf{-13.7784 \pm 1.8453}$ \\
- &  & $Q_{2}$ & $-4.2412 \pm 0.9166$ & $-8.4381 \pm 1.4981$ & $-13.8170 \pm 2.0379\dagger$ \\
- &  & $Q_{4}$ & $-3.9809 \pm 0.8148$ & $\mathbf{-8.1071 \pm 1.2102}$ & $-13.9492 \pm 1.7832\dagger$ \\ \bottomrule
-\end{tabular}%
-}
-\end{table}
+Por último, en las tablas \ref{tab:common-cause-pmod-det} y \ref{tab:common-cause-delta-sto}, se nota que en las tareas con estructuras latentes de causa común, en la mayoría
+de casos los algoritmos de la propuesta son más rápidos, con excepción de algunos casos con $\delta = 0.25$
 
-\newpage
+De los diagramas de la Figura \ref{fig:boxplots-pmod}, que muestran un resumen
+de todos los resultados de las tablas, se puede notar que el 
+que los algoritmos $Q_2$, $Q_3$ y $Q_4$ superan al método clásico
+Q-learning. A pesar de haber casos donde se tiene un comportamiento
+similar entre los tres algoritmos con información 
+del modelo causal, en las tareas con estructuras uno a uno por ejemplo; existen algunos casos donde
+sobresale notablemente el algoritmo con la información completa, como en los problemas con estructuras con relaciones de causa común.
 
+% Por otro lado, además de las curvas de aprendizaje se propone hacer una comparación estadística de
+% los métodos. Para esto, se
+% compara la recompensa promedio de los últimos $E$ episodios
+% de entrenamiento sobre los $M$ experimentos. Con esto, se 
+% puede obtener una muestra de tamaño $E$ para cada algoritmo
+% y hacer una prueba estadística para mostrar que existe una diferencia entre ellos. La prueba estadística se realiza comparando los algoritmos que utilizan información extra versus el algoritmo Q-learning usando una exploración a prueba y error para saber si los primeros son superiores significativamente sobre el segundo. 
+
+% En las tablas \ref{tab:delta-one-to-one}, \ref{tab:delta-one-to-many} y \ref{tab:delta-many-to-one} se muestran
+% los promedios de las recompensas durante los últimos $E$ episodios. 
+% De igual manera que en las curvas de aprendizaje se puede notar que en la mayoría de tareas el algoritmo Q-learning usando el grafo causal completo tiene una recompensa mayor que en los otros métodos. Además, en general los métodos que utilizan el grafo ya sea incorrecto o incompleto superan al método clásico de Q-learning. Para validar estos resultados se usa la prueba de Welch con $p < 0.05$ para encontrar diferencias estadísticamente significativas. 
+% Los resultados de las pruebas refuerzan lo concluido a partir de las gráficas. Existe una diferencia estadística en el desempeño de los algoritmos, excepto por algunos casos (marcados por $\dagger$ en las tablas). Estos últimos corresponden
+% al desempeño en tareas con una estructura causal subyacente de tipo uno a uno y con $N=9$. Esto puede ser debido a esta transición
+% de exploración y explotación. 
+
+
+\clearpage
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
 \begin{table}[]
 \centering
-\caption{Comparación de la recompensa promedio obtenida durante los últimos $E=100$ episodios de entrenamiento para $M$ experimentos en tareas con estructuras de causa común. En negritas se resaltan las recompensas promedio mayores con respecto al resto de los algoritmos en una configuración experimental dada.}
-\label{tab:delta-one-to-many}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{ccclll}
+\caption{Resumen de las pruebas estadísticas del t-test de Welch en las
+estructuras una o uno en un ambiente determinista. Se muestra la media y desviación estándar $std$ del número 
+de episodios que tarda en alcanzar la recompensa óptima, para los cuatro métodos, los diferentes número de luces $N$, y tasa de decremento de la exploración $\delta$. Además, se pone la información
+de la prueba estadística, el estadístico $t$, los grados de libertad $df$, el nivel
+de significacia $p$, la hipótesis nula $h_0$ (que corresponde a si noy hay diferencia entre $Q_1$ y el método correspondiente) y el tamaño de efecto $d$ de \citet{cohen2013statistical}.}
+\label{tab:one-to-one-delta-det}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
 \hline
-Ambiente & $\delta$ & Algoritmo & \multicolumn{3}{c}{$N$} \\ \cline{4-6} 
- &  &  & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{9} \\ \hline
-Determinista & $0.25$ & $Q_{1}$ & $-1.1242 \pm 0.4301$ & $-2.4038 \pm 0.7038$ & $-2.9975 \pm 0.8161$ \\
- &  & $Q_{2}$ & $-0.8281 \pm 0.2998$ & $\mathbf{-1.8221 \pm 0.5187}$ & $\mathbf{-2.4173 \pm 0.5790}$ \\
- &  & $Q_{2}$ & $-0.8161 \pm 0.2827$ & $-1.8789 \pm 0.4548$ & $-2.5532 \pm 0.5628$ \\
- &  & $Q_{4}$ & $\mathbf{-0.8068 \pm 0.3186}$ & $-1.8897 \pm 0.4411$ & $-2.5236 \pm 0.6685$ \\ \cline{2-6} 
- & $0.75$ & $Q_{1}$ & $-1.6430 \pm 0.6236$ & $-2.9379 \pm 0.7767$ & $-4.1146 \pm 1.2066$ \\
- &  & $Q_{2}$ & $\mathbf{-0.9273 \pm 0.2693}$ & $\mathbf{-1.6828 \pm 0.4610}$ & $\mathbf{-2.6278 \pm 0.6338}$ \\
- &  & $Q_{2}$ & $-1.0958 \pm 0.4066$ & $-1.9402 \pm 0.6138$ & $-2.9660 \pm 0.6821$ \\
- &  & $Q_{4}$ & $-1.0778 \pm 0.3990$ & $-1.9267 \pm 0.5551$ & $-3.3222 \pm 0.8773$ \\ \cline{2-6} 
-Estocástico & $0.25$ & $Q_{1}$ & $-2.8257 \pm 0.8804$ & $-6.0498 \pm 1.4224$ & $-8.9472 \pm 1.7429$ \\
- &  & $Q_{2}$ & $\mathbf{-2.1866 \pm 0.7467}$ & $\mathbf{-4.0352 \pm 1.0788}$ & $\mathbf{-5.0238 \pm 1.3692}$ \\
- &  & $Q_{2}$ & $-2.2934 \pm 0.7969$ & $-4.0734 \pm 1.2090$ & $-5.3714 \pm 1.4905$ \\
- &  & $Q_{4}$ & $-2.2001 \pm 0.7131$ & $-4.2083 \pm 1.1122$ & $-5.4152 \pm 1.5542$ \\ \cline{2-6} 
- & $0.75$ & $Q_{1}$ & $-3.3176 \pm 1.0664$ & $-6.3604 \pm 1.4621$ & $-9.7091 \pm 1.8713$ \\
- &  & $Q_{2}$ & $\mathbf{-2.0068 \pm 0.6758}$ & $\mathbf{-4.1851 \pm 1.0592}$ & $\mathbf{-5.7100 \pm 1.5696}$ \\
- &  & $Q_{2}$ & $-2.2042 \pm 0.7600$ & $-4.5311 \pm 1.2282$ & $-6.8496 \pm 1.5566$ \\
- &  & $Q_{4}$ & $-2.3583 \pm 0.7962$ & $-4.6244 \pm 1.2486$ & $-6.3323 \pm 1.6861$ \\ \hline
-\end{tabular}%
-}
+$N$ & $\delta$ & Alg & Media & std & $t$ & $df$ & $p$ & $h_0$ & $d$ \\ \hline
+\multirow{8}{*}{5} & \multirow{4}{*}{0.25} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 2762.00 & 772.45 & -8.69 & 9.00 & 0.00 & rechazada & 3.89 \\ \cline{3-10} 
+ &  & $Q_3$ & 4512.00 & 990.68 & -1.48 & 9.00 & 0.17 & aceptada & 0.66 \\ \cline{3-10} 
+ &  & $Q_4$ & 4542.00 & 713.33 & -1.93 & 9.00 & 0.09 & aceptada & 0.86 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 1744.00 & 662.95 & -14.73 & 9.00 & 0.00 & rechazada & 6.59 \\ \cline{3-10} 
+ &  & $Q_3$ & 3660.00 & 785.82 & -5.12 & 9.00 & 0.00 & rechazada & 2.29 \\ \cline{3-10} 
+ &  & $Q_4$ & 4358.00 & 718.47 & -2.68 & 9.00 & 0.03 & rechazada & 1.20 \\ \hline
+\multirow{8}{*}{7} & \multirow{4}{*}{0.25} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3472.00 & 875.09 & -5.24 & 9.00 & 0.00 & rechazada & 2.34 \\ \cline{3-10} 
+ &  & $Q_3$ & 3338.00 & 887.35 & -5.62 & 9.00 & 0.00 & rechazada & 2.51 \\ \cline{3-10} 
+ &  & $Q_4$ & 3742.00 & 816.94 & -4.62 & 9.00 & 0.00 & rechazada & 2.07 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3924.00 & 193.25 & -16.70 & 9.00 & 0.00 & rechazada & 7.47 \\ \cline{3-10} 
+ &  & $Q_3$ & 4284.00 & 508.55 & -4.22 & 9.00 & 0.00 & rechazada & 1.89 \\ \cline{3-10} 
+ &  & $Q_4$ & 4116.00 & 352.00 & -7.53 & 9.00 & 0.00 & rechazada & 3.37 \\ \hline
+\multirow{8}{*}{9} & \multirow{4}{*}{0.25} & $Q_1$ & 10000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 9688.00 & 519.32 & -1.80 & 9.00 & 0.10 & aceptada & 0.81 \\ \cline{3-10} 
+ &  & $Q_3$ & 9552.00 & 719.07 & -1.87 & 9.00 & 0.09 & aceptada & 0.84 \\ \cline{3-10} 
+ &  & $Q_4$ & 9818.00 & 290.03 & -1.88 & 9.00 & 0.09 & aceptada & 0.84 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 10000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 10000.00 & 0.00 & 0.0 & 18.0 & 1.0 & aceptada & 0.0 \\ \cline{3-10} 
+ &  & $Q_3$ & 10000.00 & 0.00 & 0.0 & 18.0 & 1.0 & aceptada & 0.0 \\ \cline{3-10} 
+ &  & $Q_4$ & 10000.00 & 0.00 & 0.0 & 18.0 & 1.0 & aceptada & 0.0 \\ \hline
+\end{tabular}
 \end{table}
 
+\clearpage
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
 \begin{table}[]
 \centering
-\caption{Comparación de la recompensa promedio obtenida durante los últimos $E=100$ episodios de entrenamiento para $M$ experimentos en tareas con estructuras con relaciones de efecto común. En negritas se resaltan las recompensas promedio mayores con respecto al resto de los algoritmos en una configuración experimental dada.}
-\label{tab:delta-many-to-one}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{ccclll}
+\caption{Resumen de las pruebas estadísticas del t-test de Welch en las
+estructuras una o uno en un ambiente estocástico. Se muestra la media y desviación estándar $std$ del número 
+de episodios que tarda en alcanzar la recompensa óptima, para los cuatro métodos, los diferentes número de luces $N$, y tasa de decremento de la exploración $\delta$. Además, se pone la información
+de la prueba estadística, el estadístico $t$, los grados de libertad $df$, el nivel
+de significacia $p$, la hipótesis nula $h_0$ (que corresponde a si noy hay diferencia entre $Q_1$ y el método correspondiente) y el tamaño de efecto $d$ de \citet{cohen2013statistical}.}
+\label{tab:one-to-one-delta-sto}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
 \hline
-Ambiente & $\delta$ & Algoritmo & \multicolumn{3}{c}{$N$} \\ \cline{4-6} 
- &  &  & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{9} \\ \hline
-Determinista & $0.25$ & $Q_{1}$ & $-0.9308 \pm 0.3887$ & $-2.0693 \pm 0.6689$ & $-2.9613 \pm 0.7537$ \\
- &  & $Q_{2}$ & $\mathbf{-0.6354 \pm 0.2388}$ & $\mathbf{-1.5994 \pm 0.4242}$ & $-2.5653 \pm 0.5053$ \\
- &  & $Q_{2}$ & $-0.7521 \pm 0.2444$ & $-1.6121 \pm 0.4051$ & $\mathbf{-2.5128 \pm 0.5890}$ \\
- &  & $Q_{4}$ & $-0.6659 \pm 0.2323$ & $-1.5995 \pm 0.4407$ & $-2.6478 \pm 0.6228$ \\ \cline{2-6} 
- & $0.75$ & $Q_{1}$ & $-1.5390 \pm 0.5056$ & $-2.9007 \pm 0.7137$ & $-3.9921 \pm 1.0301$ \\
- &  & $Q_{2}$ & $\mathbf{-0.8006 \pm 0.2368}$ & $\mathbf{-1.7237 \pm 0.4467}$ & $\mathbf{-2.4808 \pm 0.5215}$ \\
- &  & $Q_{2}$ & $-0.9448 \pm 0.3327$ & $-1.9036 \pm 0.5026$ & $-2.8287 \pm 0.7198$ \\
- &  & $Q_{4}$ & $-0.8983 \pm 0.3522$ & $-1.7377 \pm 0.4231$ & $-2.9039 \pm 0.7814$ \\ \cline{2-6} 
-Estocástico & $0.25$ & $Q_{1}$ & $-2.7417 \pm 0.8380$ & $-5.2262 \pm 1.1446$ & $-7.6755 \pm 1.5417$ \\
- &  & $Q_{2}$ & $-2.0551 \pm 0.6530$ & $-3.6230 \pm 1.0363$ & $\mathbf{-4.4380 \pm 1.1340}$ \\
- &  & $Q_{2}$ & $-2.0618 \pm 0.5730$ & $\mathbf{-3.3963 \pm 0.8821}$ & $-4.7390 \pm 1.1393$ \\
- &  & $Q_{4}$ & $\mathbf{-1.9463 \pm 0.6109}$ & $-3.6499 \pm 1.0723$ & $-5.6039 \pm 1.3790$ \\ \cline{2-6} 
- & $0.75$ & $Q_{1}$ & $-2.7992 \pm 0.8305$ & $-5.6699 \pm 1.3177$ & $-7.7359 \pm 1.7315$ \\
- &  & $Q_{2}$ & $\mathbf{-1.6935 \pm 0.5582}$ & $\mathbf{-3.7668 \pm 1.1628}$ & $\mathbf{-5.0338 \pm 1.0605}$ \\
- &  & $Q_{2}$ & $-1.8176 \pm 0.6096$ & $-4.0601 \pm 1.0350$ & $-5.9173 \pm 1.3811$ \\
- &  & $Q_{4}$ & $-2.2837 \pm 0.6340$ & $-4.5129 \pm 1.0016$ & $-5.6167 \pm 1.5121$ \\ \hline
-\end{tabular}%
-}
+$N$ & $\delta$ & Alg & Media & std & $t$ & $df$ & $p$ & $h_0$ & $d$ \\ \hline
+\multirow{8}{*}{5} & \multirow{4}{*}{0.25} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 2936.00 & 947.62 & -6.53 & 9.00 & 0.00 & rechazada & 2.92 \\ \cline{3-10} 
+ &  & $Q_3$ & 3018.00 & 583.81 & -10.18 & 9.00 & 0.00 & rechazada & 4.55 \\ \cline{3-10} 
+ &  & $Q_4$ & 3480.00 & 662.78 & -6.88 & 9.00 & 0.00 & rechazada & 3.08 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 4926.00 & 222.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 2000.00 & 801.25 & -10.56 & 10.37 & 0.00 & rechazada & 4.72 \\ \cline{3-10} 
+ &  & $Q_3$ & 3114.00 & 933.25 & -5.67 & 10.02 & 0.00 & rechazada & 2.53 \\ \cline{3-10} 
+ &  & $Q_4$ & 2848.00 & 1343.26 & -4.58 & 9.49 & 0.00 & rechazada & 2.05 \\ \hline
+\multirow{8}{*}{7} & \multirow{4}{*}{0.25} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3426.00 & 720.67 & -6.55 & 9.00 & 0.00 & rechazada & 2.93 \\ \cline{3-10} 
+ &  & $Q_3$ & 3576.00 & 413.84 & -10.32 & 9.00 & 0.00 & rechazada & 4.62 \\ \cline{3-10} 
+ &  & $Q_4$ & 3388.00 & 639.14 & -7.57 & 9.00 & 0.00 & rechazada & 3.38 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 2326.00 & 1087.68 & -7.38 & 9.00 & 0.00 & rechazada & 3.30 \\ \cline{3-10} 
+ &  & $Q_3$ & 2188.00 & 1163.73 & -7.25 & 9.00 & 0.00 & rechazada & 3.24 \\ \cline{3-10} 
+ &  & $Q_4$ & 2360.00 & 1049.61 & -7.55 & 9.00 & 0.00 & rechazada & 3.37 \\ \hline
+\multirow{8}{*}{9} & \multirow{4}{*}{0.25} & $Q_1$ & 10000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 7850.00 & 986.68 & -6.54 & 9.00 & 0.00 & rechazada & 2.92 \\ \cline{3-10} 
+ &  & $Q_3$ & 8532.00 & 550.29 & -8.00 & 9.00 & 0.00 & rechazada & 3.58 \\ \cline{3-10} 
+ &  & $Q_4$ & 8014.00 & 996.40 & -5.98 & 9.00 & 0.00 & rechazada & 2.67 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 10000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 1116.00 & 236.27 & -112.80 & 9.00 & 0.00 & rechazada & 50.45 \\ \cline{3-10} 
+ &  & $Q_3$ & 3014.00 & 3498.70 & -5.99 & 9.00 & 0.00 & rechazada & 2.68 \\ \cline{3-10} 
+ &  & $Q_4$ & 9168.00 & 2496.00 & -1.00 & 9.00 & 0.34 & aceptada & 0.45 \\ \hline
+\end{tabular}
 \end{table}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+\centering
+\caption{Resumen de las pruebas estadísticas del t-test de Welch en las
+estructuras de efecto común en un ambiente determinista. Se muestra la media y desviación estándar $std$ del número 
+de episodios que tarda en alcanzar la recompensa óptima, para los cuatro métodos, los diferentes número de luces $N$, y tasa de decremento de la exploración $\delta$. Además, se pone la información
+de la prueba estadística, el estadístico $t$, los grados de libertad $df$, el nivel
+de significacia $p$, la hipótesis nula $h_0$ (que corresponde a si noy hay diferencia entre $Q_1$ y el método correspondiente) y el tamaño de efecto $d$ de \citet{cohen2013statistical}.}
+\label{tab:common-effect-one-to-one-delta-det}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+\hline
+$N$ & $\delta$ & Alg & Media & $std$ & $t$ & $df$ & $p$ & $h_0$ & $d$ \\ \hline
+\multirow{8}{*}{5} & \multirow{4}{*}{0.25} & $Q_1$ & 4556.00 & 889.62 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3564.00 & 1749.60 & -1.52 & 13.36 & 0.15 & aceptada & 0.68 \\ \cline{3-10} 
+ &  & $Q_3$ & 4116.00 & 1478.83 & -0.76 & 14.76 & 0.46 & aceptada & 0.34 \\ \cline{3-10} 
+ &  & $Q_4$ & 3536.00 & 1876.99 & -1.47 & 12.85 & 0.16 & aceptada & 0.66 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 790.00 & 580.02 & -21.78 & 9.00 & 0.00 & rechazada & 9.74 \\ \cline{3-10} 
+ &  & $Q_3$ & 2118.00 & 2014.38 & -4.29 & 9.00 & 0.00 & rechazada & 1.92 \\ \cline{3-10} 
+ &  & $Q_4$ & 2648.00 & 2155.63 & -3.27 & 9.00 & 0.01 & rechazada & 1.46 \\ \hline
+\multirow{8}{*}{7} & \multirow{4}{*}{0.25} & $Q_1$ & 4704.00 & 636.04 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3002.00 & 2086.73 & -2.34 & 10.66 & 0.04 & rechazada & 1.05 \\ \cline{3-10} 
+ &  & $Q_3$ & 3542.00 & 1766.57 & -1.86 & 11.29 & 0.09 & aceptada & 0.83 \\ \cline{3-10} 
+ &  & $Q_4$ & 3508.00 & 1675.69 & -2.00 & 11.54 & 0.07 & aceptada & 0.90 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 1530.00 & 1747.64 & -5.96 & 9.00 & 0.00 & rechazada & 2.66 \\ \cline{3-10} 
+ &  & $Q_3$ & 2166.00 & 1958.04 & -4.34 & 9.00 & 0.00 & rechazada & 1.94 \\ \cline{3-10} 
+ &  & $Q_4$ & 1486.00 & 1428.74 & -7.38 & 9.00 & 0.00 & rechazada & 3.30 \\ \hline
+\multirow{8}{*}{9} & \multirow{4}{*}{0.25} & $Q_1$ & 8400.00 & 2213.72 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 6120.00 & 4159.65 & -1.45 & 13.72 & 0.17 & aceptada & 0.65 \\ \cline{3-10} 
+ &  & $Q_3$ & 7024.00 & 3154.77 & -1.07 & 16.13 & 0.30 & aceptada & 0.48 \\ \cline{3-10} 
+ &  & $Q_4$ & 7178.00 & 3695.23 & -0.85 & 14.72 & 0.41 & aceptada & 0.38 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 10000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 4342.00 & 3783.73 & -4.49 & 9.00 & 0.00 & rechazada & 2.01 \\ \cline{3-10} 
+ &  & $Q_3$ & 6970.00 & 2792.95 & -3.25 & 9.00 & 0.01 & rechazada & 1.46 \\ \cline{3-10} 
+ &  & $Q_4$ & 6320.00 & 3424.89 & -3.22 & 9.00 & 0.01 & rechazada & 1.44 \\ \hline
+\end{tabular}
+\end{table}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+\centering
+\caption{Resumen de las pruebas estadísticas del t-test de Welch en las
+estructuras de efecto común en un ambiente estocástico. Se muestra la media y desviación estándar $std$ del número 
+de episodios que tarda en alcanzar la recompensa óptima, para los cuatro métodos, los diferentes número de luces $N$, y tasa de decremento de la exploración $\delta$. Además, se pone la información
+de la prueba estadística, el estadístico $t$, los grados de libertad $df$, el nivel
+de significacia $p$, la hipótesis nula $h_0$ (que corresponde a si noy hay diferencia entre $Q_1$ y el método correspondiente) y el tamaño de efecto $d$ de \citet{cohen2013statistical}.}
+\label{tab:common-effect-one-to-one-delta-sto}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+\hline
+$N$ & $\delta$ & Alg & Media & $std$ & $t$ & $df$ & $p$ & $h_0$ & $d$ \\ \hline
+\multirow{8}{*}{5} & \multirow{4}{*}{0.25} & $Q_1$ & 3964.00 & 1279.21 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3348.00 & 1159.18 & -1.07 & 17.83 & 0.30 & aceptada & 0.48 \\ \cline{3-10} 
+ &  & $Q_3$ & 3454.00 & 1000.00 & -0.94 & 17.01 & 0.36 & aceptada & 0.42 \\ \cline{3-10} 
+ &  & $Q_4$ & 3240.00 & 1772.32 & -0.99 & 16.38 & 0.33 & aceptada & 0.44 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 4794.00 & 618.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 2206.00 & 1725.09 & -4.24 & 11.27 & 0.00 & rechazada & 1.89 \\ \cline{3-10} 
+ &  & $Q_3$ & 2768.00 & 1859.72 & -3.10 & 10.96 & 0.01 & rechazada & 1.39 \\ \cline{3-10} 
+ &  & $Q_4$ & 3326.00 & 1925.78 & -2.18 & 10.83 & 0.05 & aceptada & 0.97 \\ \hline
+\multirow{8}{*}{7} & \multirow{4}{*}{0.25} & $Q_1$ & 4262.00 & 976.83 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 2832.00 & 1659.69 & -2.23 & 14.57 & 0.04 & rechazada & 1.00 \\ \cline{3-10} 
+ &  & $Q_3$ & 2802.00 & 1847.60 & -2.10 & 13.67 & 0.06 & aceptada & 0.94 \\ \cline{3-10} 
+ &  & $Q_4$ & 3066.00 & 1774.33 & -1.77 & 14.00 & 0.10 & aceptada & 0.79 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 4654.00 & 561.29 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 1662.00 & 1746.07 & -4.89 & 10.84 & 0.00 & rechazada & 2.19 \\ \cline{3-10} 
+ &  & $Q_3$ & 2512.00 & 1814.79 & -3.38 & 10.71 & 0.01 & rechazada & 1.51 \\ \cline{3-10} 
+ &  & $Q_4$ & 2930.00 & 1717.07 & -2.86 & 10.90 & 0.02 & rechazada & 1.28 \\ \hline
+\multirow{8}{*}{9} & \multirow{4}{*}{0.25} & $Q_1$ & 8358.00 & 1969.48 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3144.00 & 2543.95 & -4.86 & 16.94 & 0.00 & rechazada & 2.17 \\ \cline{3-10} 
+ &  & $Q_3$ & 5858.00 & 2604.00 & -2.30 & 16.76 & 0.03 & rechazada & 1.03 \\ \cline{3-10} 
+ &  & $Q_4$ & 5508.00 & 2665.07 & -2.58 & 16.57 & 0.02 & rechazada & 1.15 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 9888.00 & 336.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3508.00 & 2931.53 & -6.49 & 9.24 & 0.00 & rechazada & 2.90 \\ \cline{3-10} 
+ &  & $Q_3$ & 5290.00 & 3413.13 & -4.02 & 9.17 & 0.00 & rechazada & 1.80 \\ \cline{3-10} 
+ &  & $Q_4$ & 4810.00 & 2748.50 & -5.50 & 9.27 & 0.00 & rechazada & 2.46 \\ \hline
+\end{tabular}
+\end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+\centering
+\caption{Resumen de las pruebas estadísticas del t-test de Welch en las
+estructuras de causa común en un ambiente determinista. Se muestra la media y desviación estándar $std$ del número 
+de episodios que tarda en alcanzar la recompensa óptima, para los cuatro métodos, los diferentes número de luces $N$, y tasa de decremento de la exploración $\delta$. Además, se pone la información
+de la prueba estadística, el estadístico $t$, los grados de libertad $df$, el nivel
+de significacia $p$, la hipótesis nula $h_0$ (que corresponde a si noy hay diferencia entre $Q_1$ y el método correspondiente) y el tamaño de efecto $d$ de \citet{cohen2013statistical}.}
+\label{tab:common-cause-delta-det}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+\hline
+$N$ & $\delta$ & Alg & Media & $std$ & $t$ & $df$ & $p$ & $h_0$ & $d$ \\ \hline
+\multirow{8}{*}{5} & \multirow{4}{*}{0.25} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3234.00 & 986.51 & -5.37 & 9.00 & 0.00 & rechazada & 2.40 \\ \cline{3-10} 
+ &  & $Q_3$ & 3702.00 & 923.32 & -4.22 & 9.00 & 0.00 & rechazada & 1.89 \\ \cline{3-10} 
+ &  & $Q_4$ & 4258.00 & 560.03 & -3.97 & 9.00 & 0.00 & rechazada & 1.78 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 746.00 & 550.06 & -23.20 & 9.00 & 0.00 & rechazada & 10.38 \\ \cline{3-10} 
+ &  & $Q_3$ & 2304.00 & 1880.00 & -4.30 & 9.00 & 0.00 & rechazada & 1.92 \\ \cline{3-10} 
+ &  & $Q_4$ & 2806.00 & 1973.22 & -3.34 & 9.00 & 0.01 & rechazada & 1.49 \\ \hline
+\multirow{8}{*}{7} & \multirow{4}{*}{0.25} & $Q_1$ & 4136.00 & 913.45 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3382.00 & 1592.37 & -1.23 & 14.34 & 0.24 & aceptada & 0.55 \\ \cline{3-10} 
+ &  & $Q_3$ & 3244.00 & 1812.46 & -1.32 & 13.29 & 0.21 & aceptada & 0.59 \\ \cline{3-10} 
+ &  & $Q_4$ & 3378.00 & 1702.46 & -1.18 & 13.79 & 0.26 & aceptada & 0.53 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 1438.00 & 1567.66 & -6.82 & 9.00 & 0.00 & rechazada & 3.05 \\ \cline{3-10} 
+ &  & $Q_3$ & 2982.00 & 1444.34 & -4.19 & 9.00 & 0.00 & rechazada & 1.87 \\ \cline{3-10} 
+ &  & $Q_4$ & 2582.00 & 1830.29 & -3.96 & 9.00 & 0.00 & rechazada & 1.77 \\ \hline
+\multirow{8}{*}{9} & \multirow{4}{*}{0.25} & $Q_1$ & 8430.00 & 1980.99 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 6584.00 & 3607.32 & -1.35 & 13.98 & 0.20 & aceptada & 0.60 \\ \cline{3-10} 
+ &  & $Q_3$ & 7236.00 & 2660.60 & -1.08 & 16.63 & 0.30 & aceptada & 0.48 \\ \cline{3-10} 
+ &  & $Q_4$ & 8034.00 & 1826.39 & -0.44 & 17.88 & 0.66 & aceptada & 0.20 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 10000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 4094.00 & 3322.83 & -5.33 & 9.00 & 0.00 & rechazada & 2.38 \\ \cline{3-10} 
+ &  & $Q_3$ & 7350.00 & 2698.21 & -2.95 & 9.00 & 0.02 & rechazada & 1.32 \\ \cline{3-10} 
+ &  & $Q_4$ & 8292.00 & 2203.71 & -2.33 & 9.00 & 0.05 & rechazada & 1.04 \\ \hline
+\end{tabular}
+\end{table}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+\centering
+\caption{Resumen de las pruebas estadísticas del t-test de Welch en las
+estructuras de tipo causa común en un ambiente estocástico. Se muestra la media y desviación estándar $std$ del número 
+de episodios que tarda en alcanzar la recompensa óptima, para los cuatro métodos, los diferentes número de luces $N$, y tasa de decremento de la exploración $\delta$. Además, se pone la información
+de la prueba estadística, el estadístico $t$, los grados de libertad $df$, el nivel
+de significacia $p$, la hipótesis nula $h_0$ (que corresponde a si noy hay diferencia entre $Q_1$ y el método correspondiente) y el tamaño de efecto $d$ de \citet{cohen2013statistical}.}
+\label{tab:common-cause-delta-sto}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+\hline
+$N$ & $\delta$ & Alg & Media & $std$ & $t$ & $df$ & $p$ & $h_0$ & $d$ \\ \hline
+\multirow{8}{*}{5} & \multirow{4}{*}{0.25} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3214.00 & 1570.91 & -3.41 & 9.00 & 0.01 & rechazada & 1.53 \\ \cline{3-10} 
+ &  & $Q_3$ & 3632.00 & 1067.45 & -3.84 & 9.00 & 0.00 & rechazada & 1.72 \\ \cline{3-10} 
+ &  & $Q_4$ & 3410.00 & 1622.79 & -2.94 & 9.00 & 0.02 & rechazada & 1.31 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 5000.00 & 0.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 1284.00 & 1403.82 & -7.94 & 9.00 & 0.00 & rechazada & 3.55 \\ \cline{3-10} 
+ &  & $Q_3$ & 2562.00 & 1655.64 & -4.42 & 9.00 & 0.00 & rechazada & 1.98 \\ \cline{3-10} 
+ &  & $Q_4$ & 2974.00 & 1738.64 & -3.50 & 9.00 & 0.01 & rechazada & 1.56 \\ \hline
+\multirow{8}{*}{7} & \multirow{4}{*}{0.25} & $Q_1$ & 4476.00 & 1054.43 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 2346.00 & 1460.06 & -3.55 & 16.38 & 0.00 & rechazada & 1.59 \\ \cline{3-10} 
+ &  & $Q_3$ & 2694.00 & 1438.14 & -3.00 & 16.51 & 0.01 & rechazada & 1.34 \\ \cline{3-10} 
+ &  & $Q_4$ & 2762.00 & 1447.33 & -2.87 & 16.45 & 0.01 & rechazada & 1.28 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 4958.00 & 126.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 1086.00 & 1364.26 & -8.48 & 9.15 & 0.00 & rechazada & 3.79 \\ \cline{3-10} 
+ &  & $Q_3$ & 2616.00 & 1536.69 & -4.56 & 9.12 & 0.00 & rechazada & 2.04 \\ \cline{3-10} 
+ &  & $Q_4$ & 2208.00 & 1562.11 & -5.26 & 9.12 & 0.00 & rechazada & 2.35 \\ \hline
+\multirow{8}{*}{9} & \multirow{4}{*}{0.25} & $Q_1$ & 7952.00 & 2383.38 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3462.00 & 3031.56 & -3.49 & 17.05 & 0.00 & rechazada & 1.56 \\ \cline{3-10} 
+ &  & $Q_3$ & 5904.00 & 2324.89 & -1.85 & 17.99 & 0.08 & aceptada & 0.83 \\ \cline{3-10} 
+ &  & $Q_4$ & 4912.00 & 3100.27 & -2.33 & 16.88 & 0.03 & rechazada & 1.04 \\ \cline{2-10} 
+ & \multirow{4}{*}{0.75} & $Q_1$ & 9922.00 & 234.00 & \multicolumn{5}{l|}{} \\ \cline{3-10} 
+ &  & $Q_2$ & 3206.00 & 2787.92 & -7.20 & 9.13 & 0.00 & rechazada & 3.22 \\ \cline{3-10} 
+ &  & $Q_3$ & 6054.00 & 1791.85 & -6.42 & 9.31 & 0.00 & rechazada & 2.87 \\ \cline{3-10} 
+ &  & $Q_4$ & 5774.00 & 3540.25 & -3.51 & 9.08 & 0.01 & rechazada & 1.57 \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{figure}[!htbp]
+  \centering
+  \subfloat[Uno a uno, ambiente determinista.]{\includegraphics[width=0.5\textwidth]{Chapter5/Figs/deltaexp/boxplot_deterministic_one_to_one.png}\label{fig:delta-boxplot-det-one-to-one}}
+  \hfill
+  \subfloat[Uno a uno, ambiente estocástico.]{\includegraphics[width=0.5\textwidth]{Chapter5/Figs/deltaexp/boxplot_stochastic_one_to_one.png}\label{fig:delta-boxplot-sto-one-to-one}}
+  \\
+  \subfloat[Efecto común, ambiente determinista.]{\includegraphics[width=0.5\textwidth]{Chapter5/Figs/deltaexp/boxplot_deterministic_many_to_one.png}\label{fig:delta-boxplot-det-many-to-one}}
+  \hfill
+  \subfloat[Efecto común, ambiente estocástico.]{\includegraphics[width=0.5\textwidth]{Chapter5/Figs/deltaexp/boxplot_stochastic_many_to_one.png}\label{fig:delta-boxplot-sto-many-to-one}}
+  \\
+  \subfloat[Causa común, ambiente determinista.]{\includegraphics[width=0.5\textwidth]{Chapter5/Figs/deltaexp/boxplot_deterministic_one_to_many.png}\label{fig:delta-boxplot-det-one-to-many}}
+  \hfill
+  \subfloat[Causa común, ambiente estocástico.]{\includegraphics[width=0.5\textwidth]{Chapter5/Figs/deltaexp/boxplot_stochastic_one_to_many.png}\label{fig:delta-boxplot-sto-one-to-many}}
+      \caption{Diagramas de caja y bigote que resumen los resultados del desempeño de las diferentes configuraciones del experimento. El eje vertical describe el número de
+      episodios en alcanzar la recompensa óptima y sobre el eje horizontal están los
+      diferentes $N$ y algoritmos.}\label{fig:delta-boxplots}
+\end{figure}
+
+% \begin{table}[h]
+% \centering
+% \caption{Comparación de la recompensa promedio obtenida durante los últimos $E=100$ episodios de entrenamiento para $M$ experimentos en tareas con estructuras causales uno a uno. En negritas se resaltan las recompensas promedio mayores con respecto al resto de los algoritmos en una configuración experimental dada.}
+% \label{tab:delta-one-to-one}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{@{}ccclll@{}}
+% \toprule
+% Ambiente & $\delta$ & Algoritmo & \multicolumn{3}{c}{$N$} \\ \cmidrule(l){4-6} 
+%  &  &  & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{9} \\ \midrule
+% Determinista & $0.25$ & $Q_{1}$ & $-2.2324 \pm 0.6353$ & $-4.3184 \pm 0.8746$ & $-6.3564 \pm 1.3603$ \\
+%  &  & $Q_{2}$ & $\mathbf{-1.9466 \pm 0.4679}$ & $-3.5731 \pm 0.7285$ & $-5.7115 \pm 1.1855$ \\
+%  &  & $Q_{2}$ & $-1.9825 \pm 0.4632$ & $\mathbf{-3.5061 \pm 0.7207}$ & $\mathbf{-5.6209 \pm 1.0718}$ \\
+%  &  & $Q_{4}$ & $-2.0330 \pm 0.5384$ & $-3.5547 \pm 0.7081$ & $-5.8372 \pm 1.0747$ \\ \cmidrule(l){2-6} 
+%  & $0.75$ & $Q_{1}$ & $-2.3774 \pm 0.6925$ & $-4.3218 \pm 0.9312$ & $-6.2775 \pm 1.1195$ \\
+%  &  & $Q_{2}$ & $\mathbf{-1.8880 \pm 0.4666}$ & $\mathbf{-3.4929 \pm 0.7115}$ & $-6.9414 \pm 1.6493$ \\
+%  &  & $Q_{2}$ & $-2.1314 \pm 0.4933$ & $-3.8299 \pm 0.7694$ & $-6.3671 \pm 1.4099\dagger$ \\
+%  &  & $Q_{4}$ & $-1.9896 \pm 0.5470$ & $-3.8252 \pm 0.7840$ & $\mathbf{-6.2538 \pm 1.3547\dagger}$ \\ \cmidrule(l){2-6} 
+% Estocástico & $0.25$ & $Q_{1}$ & $-4.8575 \pm 0.9453$ & $-9.3174 \pm 1.2780$ & $-14.5087 \pm 1.4934$ \\
+%  &  & $Q_{2}$ & $\mathbf{-3.4833 \pm 0.8100}$ & $-7.2904 \pm 1.3719$ & $\mathbf{-10.7682 \pm 1.8282}$ \\
+%  &  & $Q_{2}$ & $-3.7870 \pm 0.8263$ & $\mathbf{-6.8757 \pm 1.2246}$ & $-11.9817 \pm 1.9420$ \\
+%  &  & $Q_{4}$ & $-3.8850 \pm 0.8119$ & $-7.1184 \pm 1.1471$ & $-12.4496 \pm 1.9692$ \\ \cmidrule(l){2-6} 
+%  & $0.75$ & $Q_{1}$ & $-5.0956 \pm 0.8950$ & $-9.3535 \pm 1.2484$ & $-14.3432 \pm 1.7236$ \\
+%  &  & $Q_{2}$ & $\mathbf{-3.9598 \pm 0.8291}$ & $-8.1395 \pm 1.3979$ & $\mathbf{-13.7784 \pm 1.8453}$ \\
+%  &  & $Q_{2}$ & $-4.2412 \pm 0.9166$ & $-8.4381 \pm 1.4981$ & $-13.8170 \pm 2.0379\dagger$ \\
+%  &  & $Q_{4}$ & $-3.9809 \pm 0.8148$ & $\mathbf{-8.1071 \pm 1.2102}$ & $-13.9492 \pm 1.7832\dagger$ \\ \bottomrule
+% \end{tabular}%
+% }
+% \end{table}
+
+% \clearpage
+
+% \begin{table}[]
+% \centering
+% \caption{Comparación de la recompensa promedio obtenida durante los últimos $E=100$ episodios de entrenamiento para $M$ experimentos en tareas con estructuras de causa común. En negritas se resaltan las recompensas promedio mayores con respecto al resto de los algoritmos en una configuración experimental dada.}
+% \label{tab:delta-one-to-many}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{ccclll}
+% \hline
+% Ambiente & $\delta$ & Algoritmo & \multicolumn{3}{c}{$N$} \\ \cline{4-6} 
+%  &  &  & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{9} \\ \hline
+% Determinista & $0.25$ & $Q_{1}$ & $-1.1242 \pm 0.4301$ & $-2.4038 \pm 0.7038$ & $-2.9975 \pm 0.8161$ \\
+%  &  & $Q_{2}$ & $-0.8281 \pm 0.2998$ & $\mathbf{-1.8221 \pm 0.5187}$ & $\mathbf{-2.4173 \pm 0.5790}$ \\
+%  &  & $Q_{2}$ & $-0.8161 \pm 0.2827$ & $-1.8789 \pm 0.4548$ & $-2.5532 \pm 0.5628$ \\
+%  &  & $Q_{4}$ & $\mathbf{-0.8068 \pm 0.3186}$ & $-1.8897 \pm 0.4411$ & $-2.5236 \pm 0.6685$ \\ \cline{2-6} 
+%  & $0.75$ & $Q_{1}$ & $-1.6430 \pm 0.6236$ & $-2.9379 \pm 0.7767$ & $-4.1146 \pm 1.2066$ \\
+%  &  & $Q_{2}$ & $\mathbf{-0.9273 \pm 0.2693}$ & $\mathbf{-1.6828 \pm 0.4610}$ & $\mathbf{-2.6278 \pm 0.6338}$ \\
+%  &  & $Q_{2}$ & $-1.0958 \pm 0.4066$ & $-1.9402 \pm 0.6138$ & $-2.9660 \pm 0.6821$ \\
+%  &  & $Q_{4}$ & $-1.0778 \pm 0.3990$ & $-1.9267 \pm 0.5551$ & $-3.3222 \pm 0.8773$ \\ \cline{2-6} 
+% Estocástico & $0.25$ & $Q_{1}$ & $-2.8257 \pm 0.8804$ & $-6.0498 \pm 1.4224$ & $-8.9472 \pm 1.7429$ \\
+%  &  & $Q_{2}$ & $\mathbf{-2.1866 \pm 0.7467}$ & $\mathbf{-4.0352 \pm 1.0788}$ & $\mathbf{-5.0238 \pm 1.3692}$ \\
+%  &  & $Q_{2}$ & $-2.2934 \pm 0.7969$ & $-4.0734 \pm 1.2090$ & $-5.3714 \pm 1.4905$ \\
+%  &  & $Q_{4}$ & $-2.2001 \pm 0.7131$ & $-4.2083 \pm 1.1122$ & $-5.4152 \pm 1.5542$ \\ \cline{2-6} 
+%  & $0.75$ & $Q_{1}$ & $-3.3176 \pm 1.0664$ & $-6.3604 \pm 1.4621$ & $-9.7091 \pm 1.8713$ \\
+%  &  & $Q_{2}$ & $\mathbf{-2.0068 \pm 0.6758}$ & $\mathbf{-4.1851 \pm 1.0592}$ & $\mathbf{-5.7100 \pm 1.5696}$ \\
+%  &  & $Q_{2}$ & $-2.2042 \pm 0.7600$ & $-4.5311 \pm 1.2282$ & $-6.8496 \pm 1.5566$ \\
+%  &  & $Q_{4}$ & $-2.3583 \pm 0.7962$ & $-4.6244 \pm 1.2486$ & $-6.3323 \pm 1.6861$ \\ \hline
+% \end{tabular}%
+% }
+% \end{table}
+
+% \begin{table}[]
+% \centering
+% \caption{Comparación de la recompensa promedio obtenida durante los últimos $E=100$ episodios de entrenamiento para $M$ experimentos en tareas con estructuras con relaciones de efecto común. En negritas se resaltan las recompensas promedio mayores con respecto al resto de los algoritmos en una configuración experimental dada.}
+% \label{tab:delta-many-to-one}
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{ccclll}
+% \hline
+% Ambiente & $\delta$ & Algoritmo & \multicolumn{3}{c}{$N$} \\ \cline{4-6} 
+%  &  &  & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{9} \\ \hline
+% Determinista & $0.25$ & $Q_{1}$ & $-0.9308 \pm 0.3887$ & $-2.0693 \pm 0.6689$ & $-2.9613 \pm 0.7537$ \\
+%  &  & $Q_{2}$ & $\mathbf{-0.6354 \pm 0.2388}$ & $\mathbf{-1.5994 \pm 0.4242}$ & $-2.5653 \pm 0.5053$ \\
+%  &  & $Q_{2}$ & $-0.7521 \pm 0.2444$ & $-1.6121 \pm 0.4051$ & $\mathbf{-2.5128 \pm 0.5890}$ \\
+%  &  & $Q_{4}$ & $-0.6659 \pm 0.2323$ & $-1.5995 \pm 0.4407$ & $-2.6478 \pm 0.6228$ \\ \cline{2-6} 
+%  & $0.75$ & $Q_{1}$ & $-1.5390 \pm 0.5056$ & $-2.9007 \pm 0.7137$ & $-3.9921 \pm 1.0301$ \\
+%  &  & $Q_{2}$ & $\mathbf{-0.8006 \pm 0.2368}$ & $\mathbf{-1.7237 \pm 0.4467}$ & $\mathbf{-2.4808 \pm 0.5215}$ \\
+%  &  & $Q_{2}$ & $-0.9448 \pm 0.3327$ & $-1.9036 \pm 0.5026$ & $-2.8287 \pm 0.7198$ \\
+%  &  & $Q_{4}$ & $-0.8983 \pm 0.3522$ & $-1.7377 \pm 0.4231$ & $-2.9039 \pm 0.7814$ \\ \cline{2-6} 
+% Estocástico & $0.25$ & $Q_{1}$ & $-2.7417 \pm 0.8380$ & $-5.2262 \pm 1.1446$ & $-7.6755 \pm 1.5417$ \\
+%  &  & $Q_{2}$ & $-2.0551 \pm 0.6530$ & $-3.6230 \pm 1.0363$ & $\mathbf{-4.4380 \pm 1.1340}$ \\
+%  &  & $Q_{2}$ & $-2.0618 \pm 0.5730$ & $\mathbf{-3.3963 \pm 0.8821}$ & $-4.7390 \pm 1.1393$ \\
+%  &  & $Q_{4}$ & $\mathbf{-1.9463 \pm 0.6109}$ & $-3.6499 \pm 1.0723$ & $-5.6039 \pm 1.3790$ \\ \cline{2-6} 
+%  & $0.75$ & $Q_{1}$ & $-2.7992 \pm 0.8305$ & $-5.6699 \pm 1.3177$ & $-7.7359 \pm 1.7315$ \\
+%  &  & $Q_{2}$ & $\mathbf{-1.6935 \pm 0.5582}$ & $\mathbf{-3.7668 \pm 1.1628}$ & $\mathbf{-5.0338 \pm 1.0605}$ \\
+%  &  & $Q_{2}$ & $-1.8176 \pm 0.6096$ & $-4.0601 \pm 1.0350$ & $-5.9173 \pm 1.3811$ \\
+%  &  & $Q_{4}$ & $-2.2837 \pm 0.6340$ & $-4.5129 \pm 1.0016$ & $-5.6167 \pm 1.5121$ \\ \hline
+% \end{tabular}%
+% }
+% \end{table}
 
 \newpage
 

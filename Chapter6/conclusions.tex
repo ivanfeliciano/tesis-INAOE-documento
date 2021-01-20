@@ -9,26 +9,31 @@ propiedades del mundo y conocimiento que el agente tenga
 de éste para acelerar el entrenamiento.
 En este trabajo se propuso la integración de un modelo causal en un
 algoritmo de aprendizaje por refuerzo.
+% ¿Se puede establecer una representación de las relaciones causales
+% del ambiente que pueda ser beneficiosa para un agente
+% de aprendizaje por refuerzo?
+% ¿La acotación del espacio de búsqueda dada por una selección de acciones guiada por el modelo causal permite al agente reducir el tiempo de entrenamiento con respecto a una exploración a ciegas?}
 
+% Dada una tarea gobernada por un modelo causal y una representación
+% gráfica de dicho modelo, al integrar este conocimiento causal
+% a un agente que realiza aprendizaje por refuerzo, se reduce
+% el tiempo de aprendizaje respecto a una exploración a ciegas.
 La investigación presenta
 elementos para responder a las preguntas de investigación planteadas en el capítulo \ref{chapter1}. Entre las principales contribuciones están: 1) la representación de las relaciones causales presentes en el ambiente, en un grafo causal entre acciones y estados del mundo, y 2) incorporar conocimiento causal en aprendizaje por refuerzo, en particular al
 algoritmo Q-learning.
-% un esquema de interacción entre la estructura causal y el algoritmo Q-learning. 
-% De acuerdo con los experimentos se verifica empíricamente
-% la mejora del desempeño de un agente usando diferentes niveles de información
-% en la estructura causal (completa y parcialmente incorrecta).
 Además, en el capítulo \ref{chapter5} se presenta la experimentación que verifica empíricamente
     la mejora del desempeño de un agente usando diferentes niveles de información (completa y parcialmente incorrecta) contenida en el modelo causal. 
 
 \section{Conclusiones}
 
+Se presentó una metodología para guiar el paso de interacción de un agente de RL.
 Para probar el concepto propuesto se atacan dos problemas: la tarea de clásica del taxi \cite{Dietterich:2000:HRL:1622262.1622268} y la de los
 interruptores de luz propuesta por \cite{nair2019causal}.
-Para los experimentos se integró el grafo causal que gobierna el mundo del agente, o al menos una parte, en la política de selección de acciones. Se probó el método en diferentes configuraciones experimentales como: modificar el grafo causal a diferentes niveles para tener casos donde sólo se cuenta con información parcial o incorrecta, variar la tasa en la que se deja de consultar el modelo causal y utilizar como observaciones imágenes del estado del ambiente. De acuerdo con los resultados de los experimentos se ha llegado a las siguientes conclusiones:
-    
+Para los experimentos se integró el grafo causal que gobierna el mundo del agente, o al menos una parte de éste, en la política de selección de acciones. Se probó el método en diferentes configuraciones experimentales como: modificar el grafo causal a diferentes niveles para tener casos donde sólo se cuenta con poca información o parcialmente incorrecta, variar la tasa en la que se deja de consultar el modelo causal y utilizar como observaciones imágenes del estado del ambiente. De acuerdo con los resultados de los experimentos, se llegó a las siguientes conclusiones:
+
 \begin{enumerate}
-\item El incorporar conocimiento causal a RL acelera el proceso de
-aprendizaje, incluso si el modelo es parcial o incorrecto.
+\item El incorporar conocimiento causal a RL, acelera el proceso de
+aprendizaje, incluso si el modelo está incompleto o con algunas relaciones espurias.
     % \item Tener el modelo causal completo parece resolver la tarea. Sin embargo, en la práctica se espera tener un modelo causal incompleto e incorrecto, en donde el aprendizaje por refuerzo es necesario y además el modelo de todos modos asiste a éste.
     \item Proveer a un agente con un grafo que conserva pocas relaciones
     causales verdaderas no afecta tan drásticamente el desempeño del agente, pues 
@@ -37,9 +42,57 @@ aprendizaje, incluso si el modelo es parcial o incorrecto.
     temprana de entrenamiento, es decir, dar más peso a la explotación que a la exploración, parece no afectar el desempeño del agente demasiado. Esto podría
     ser porque con la poca exploración guiada que han ejecutado los algoritmos,
     ya han sesgado su comportamiento.
-    \item El comportamiento utilizando observaciones de alta dimensión para entrenar a un agente y ayudándolo con un modelo en una dimensión mucho menor y con variables que representan al estado del ambiente en un alto nivel mantiene las mismas características que trabajar en un espacio de menor dimensión directamente.
+    % \item El comportamiento utilizando observaciones de alta dimensión para entrenar a un agente y ayudándolo con un modelo en una dimensión mucho menor y con variables que representan al estado del ambiente en un alto nivel mantiene las mismas características que trabajar en un espacio de menor dimensión directamente.
     % \item Se dotó a un agente de RL con conocimiento causal para tomar decisiones y planear anticipadamente. Y aunque queda fuera del alcance de esta investigación explotar todas las ventajas de un modelo causal sobre uno asociativo, por ejemplo explicar o imaginar, se motiva a seguir el camino de equipar agentes con herramientas de razonamiento causal en vez de los enfoques que no capturan relaciones causales.
 \end{enumerate}
+
+
+Por otro lado, los resultados de utilizar un subconjunto de
+la relaciones verdaderas de un problema, implicarían que
+se puede compartir conocimiento de una tarea de menor tamaño
+en una tarea mas grande. Esto es, utilizar un subgrafo del modelo
+causal de un problema más grande, tal que éste ayude al
+aprendizaje de la política.
+
+% Además, que se puede notar es que no se tiene que ataar
+% a una configuración final del ambiente que se conserva durante
+% todo el aprendizaje, puese se puede ir cambiando, lo que implicaria en un tiempo
+% mayor de alcanzar una buena recompensa en un agente típico pues 
+% la mejor decisión no siempre sería la misma, cosa que con el modelo causal
+% debe mantenerse.
+
+
+% There is one possible problem that may arise during a decision-maker learning. If a greedy action selection policy is followed, i.e., an optimal action is selected every interaction with an environment, then the agent takes the risk of not observing enough events to update her beliefs due to the exploration vs. exploitation trade-off.
+
+A pesar de todo dicho previamente (que el agente
+cuente poca o toda la información de su mundo, resulta en un desempeño mayor sobre aquel
+sistema que comienza a ciegas)
+% . A la larga, los dos enfoques
+% parecen comportarse de manera muy similar. Esto es resultado
+% de que la política está siendo aprendida, ya sea 
+% siguiendo una exploración guiada o a prueba y error.
+% A pesar del resultado intuitivo, en la mayoría de los casos, 
+hay algunos experimentos donde parece necesario continuar ayudando al agente para que mantenga un desempeño estable. Esto puede ser parte del compromiso entre
+la exploración y explotación, donde el agente corre el riesgo 
+de no observar suficientes eventos para actualizar la política.
+
+
+El método propuesto está muy limitado,
+pues quedan fuera bastantes problemas mucho más interesantes.
+Sin embargo, los resultados indican
+que la metodología presentada, es una alternativa
+adecuada para atacar tareas de interaccióń, donde el ambiente
+es gobernado un modelo causal. Utilizar el grafo causal como
+medio para consultar la información del modelo causal latente
+es conveniente para reducir el tiempo de aprendizaje con 
+respecto a una interacción a prueba y error con el ambiente.
+Por ahora, se implementó sobre un algoritmo clásico de aprendizaje
+por refuerzo, Q-learning, sin embargo, es fácil de
+trasladar a otros escenarios. Por otra parte, 
+desde la perspectiva del autor, se deja un marco de trabajo, 
+que puede ser utilizado en otros esquemas más atractivos, 
+como el de aprender un modelo causal, mientras se utiliza
+para tomar decisiones.
 
 \section{Trabajo futuro}
 
@@ -52,26 +105,45 @@ Con respecto a los problemas atacados en el trabajo,
 varios experimentos y análisis quedan pendientes. Entre ellos, 
 para el problema de los interruptores falta 
 definir una recompensa óptima por episodio y 
-calcular quién tiene la racha más larga como en el dominio del taxi.  Otro escenario que sería interesante
+calcular quién tiene la racha más larga como en el dominio del taxi.  
+Esto podría llevarse a cabo, tomando en cuenta la duración del episodio
+e interactuar a través del modelo verdadero. Además, falta revisar si la función
+de recompensa propuesta por \citet{nair2019causal} es la indicada para todos
+los tipos de estructuras.
+
+Otro escenario que sería interesante
 explorar es aquel donde hay estructuras con caminos causales con más de dos aristas. Por ejemplo, para el problema de los interruptores, se pueden
 tener escenarios donde sea necesario mover un interruptor ``maestro'' para
-poder mover los otros interruptores. Además, queda abierto el problema
-de las estructuras uno-a-uno y el comportamiento anormal, en comparación
-a las otras configuraciones, de sus curvas de recompensa.
+poder mover los otros interruptores. 
+Hasta ahora, el trabajo se limita a usar las causas directas de las variables de la meta final, es decir, si $x$ es diferente al valor deseado entonces se realiza la acción $a$.
+En este nuevo problema, se piden qué padres de $a$ necesitan ser modificados.
+En general, se necesitaría aplicar el método anterior de manera recursiva, esto es, buscar cambiar el estado a los predecesores no directos.
+Sin embargo, una nueva pregunta surge: ¿hasta dónde detener la búsqueda y qué variable alterar? Por lo tanto, podría usarse una memoria para guardar el estado de las variables de acuerdo a los cambios que se han hecho durante la interacción con el ambiente.
+
+Además, queda abierto el problema
+de las estructuras uno-a-uno y el comportamiento inesperado, en comparación
+a las otras configuraciones, de sus curvas de recompensa. Esto podría resolverse
+al motivar al agente a explorar más para no dejar fuera ciertos eventos,
+tal que se actualice la política de manera adecuada.
 
 Un problema abierto, es adaptar, en caso de que se pueda, el método propuesto para 
-tareas de control continuo. En tareas de esta naturaleza no es trivial definir que una acción 
+tareas de control continuo. En tareas de esta naturaleza no es trivial definir que una acción
 causa o no cierto efecto en un estado. Principalmente porque las acciones se encuentran
 en el dominio de los reales y no se simplifica a decir que la acción se lleva a cabo o no.
 Además, otro aspecto a explorar es el reutilizar conocimiento causal. Por ejemplo, 
 para problemas del mismo dominio, pero cada problema puede tener distinta meta, sistema
 de recompensa o incluso cambiar elementos del modelo de transición.
+Un posible enfoque para atacar este tipo de problemas es discretizando el espacio de acciones.
 
 Por otro lado, sigue abierta la tarea del proceso de aprendizaje del modelo
-causal. De manera general, una propuesta consiste en iniciar con una estructura con pesos que representen 
-una distribución de probabilidad de creencias de que realizar una acción $a$ cause un estado $x$, i.e., $P_{a\rightarrow x}$. Estos pesos (probabilidades) se pueden
+causal. De manera general, la propuesta presentada por \citet{gonzalezsoto2020causal}
+sigue una metodología de aprendizaje a través de interacciones con un ambiente
+gobernado por un modelo causal. Ésta, consiste en iniciar con una estructura con pesos que representen una distribución de probabilidad de creencias de que realizar una acción $a$ cause un estado $x$, i.e., $P_{a\rightarrow x}$. Estos pesos (probabilidades) se pueden
 ir actualizando conforme el agente interactúe con el mundo y
 a través de sus respuestas le brinde información del modelo causal que lo gobierna.
+Se adopta un punto de vista Bayesiano, tal que se capture la estructura causal y además
+se aprenda una política de selección de acción en un paradigma de interacción
+agente-ambiente.
 
 Por otra parte, también se está intentando atacar tareas más 
 complejas que subsumen los siguientes problemas: 1) debido al problema de la asignación de crédito es difícil saber qué acción a la larga causará un estado deseado, 2) los efectos de una acción en el ambiente puede ser imperceptibles, por lo que es necesario medir el efecto causal de una acción sobre un estado una función similar a una función de valor. En particular, un ejemplo de un ambiente con estas dificultades, es Animal AI \cite{beyret2019animalai}.

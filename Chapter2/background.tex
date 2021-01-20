@@ -37,7 +37,7 @@ Una perspectiva dentro del \textit{aprendizaje computacional} \cite{Goodfellow-e
 
 El aprendizaje por refuerzo se encarga de aprender el comportamiento de un agente 
 de tal forma que se maximice una señal de recompensa numérica, esto es, a que un
-agente aprenda a \hl{relacionar} estados de su mundo a acciones. Al aprendiz o agente no se le 
+agente aprenda a relacionar estados de su mundo a acciones. Al aprendiz o agente no se le 
 dice qué acciones tomar, en cambio éste debe descubrir cuáles, al intentarlas, producen
 una mayor recompensa. 
 En la Figura \ref{fig:rl-outline} se muestra el esquema general de la interacción de un agente de RL con su mundo.
@@ -78,7 +78,7 @@ selecciona \textit{acciones} y
 el ambiente responde a estas 
 acciones presentando nuevos 
 \textit{estados} al agente. Además,
-\hl{existen \textit{recompensas}},
+existen \textit{recompensas},
 las cuales son valores numéricos 
 que el agente busca maximizar con
 el paso del tiempo mediante la 
@@ -91,13 +91,13 @@ Formalmente, un MDP es una tupla $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \math
     \item $\mathcal{A}$ es el conjunto de acciones, donde $a_t \in \mathcal{A}$
     denota la acción realizada en un estado $s$ en el tiempo $t$.
     \item $\mathcal{P}_{ss'}^{a}: \mathcal{S}\times \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]$ (también denotada por $\mathcal{P}$) es una función de probabilidad de transición de pasar del estado $s \in \mathcal{S}$ al estado $s' \in \mathcal{S}$ cuando se toma la acción $a$.% en el tiempo $t$.
-    \item $\mathcal{R}_{ss'}^{a}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ (también denotada por $\mathcal{R}$) es la función de recompensa inmediata que el agente recibe después de pasar de $s$ a $s'$, \hl{habiendo tomado la acción $a$}.
+    \item $\mathcal{R}_{ss'}^{a}: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$ (también denotada por $\mathcal{R}$) es la función de recompensa inmediata que el agente recibe después de pasar de $s$ a $s'$, habiendo tomado la acción $a$.
     \item $\gamma \in [0,1]$ es el factor de descuento que sirve para
     calcular el retorno esperado con descuento.
 \end{itemize}
 
 
-Además de estos componentes, un sistema de aprendizaje por refuerzo subsume otros elementos como: una \textit{política} y una \textit{función de valor}. \hl{Por lo tanto, la tupla se puede reescribir como $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma, \pi, f>$, donde los últimos elementos representan la política y la función de valor, respectivamente}. Una política es una función $\pi$ que mapea estados
+Además de estos componentes, un sistema de aprendizaje por refuerzo subsume otros elementos como: una \textit{política} y una \textit{función de valor}. Por lo tanto, la tupla se puede reescribir como $< \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma, \pi, f>$, donde los últimos elementos representan la política y la función de valor, respectivamente. Una política es una función $\pi$ que mapea estados
 a acciones y que maximiza alguna medida de refuerzo a largo plazo. Mientras que la recompensa expresa lo que es bueno
 de manera inmediata, una función de valor especifica lo que
 es bueno a la larga. 
@@ -126,7 +126,7 @@ $r_{t+1}$.
 % aquella que maximiza la recompensa esperada por el agente a largo plazo.
 En RL, la meta del agente está formalizada
 en términos de la señal de recompensa que
-envía el ambiente al agente. En cada paso $t$, sin pérdida de generalidad, la recompensa es un número real $r_t \in \mathbb{R}$. \hl{Aunque las funciones de valor pueden estar en el dominio de $\mathbb{C}$ como en} \cite{complexRLhamagami}. La meta de un agente
+envía el ambiente al agente. En cada paso $t$, sin pérdida de generalidad, la recompensa es un número real $r_t \in \mathbb{R}$. Aunque las funciones de valor pueden estar en el dominio de $\mathbb{C}$ como en \cite{complexRLhamagami}. La meta de un agente
 es maximizar la recompensa total recibida.
 Esto significa, que no solo se maximiza la recompensa inmediata sino la recompensa acumulada a largo plazo.
 
@@ -151,7 +151,7 @@ Si se tiene un punto terminal se llaman tareas \textit{episódicas}, si no se ti
 Una política, denotada por $\pi(s, a)$, describe una manera de actuar. Es una función que mapea un estado $s$ y una acción $a$ a la probabilidad de tomar esa acción en ese estado.
 Por lo tanto para un estado dado, 
 $\sum_a \pi (s, a) = 1$. El problema fundamental en los MDP es encontrar una política óptima $\pi^*$, es decir, aquella que maximiza la recompensa que espera recibir el agente a largo plazo.
-A veces es escrita como $\pi^*(s) = a$, la cual es una \hl{relación} de estados a las acciones óptimas en esos estados.
+A veces es escrita como $\pi^*(s) = a$, la cual es una relación de estados a las acciones óptimas en esos estados.
 
 Para aprender la política óptima, se utilizan las \textit{funciones de valor}. Existen dos tipos de funciones de valor: la \textit{función de valor de estado},
 denotada por $V(s)$, y la \textit{función de valor de acción}, expresada como $Q(s, a)$.
@@ -212,7 +212,7 @@ V^\pi(s) = \mathbb{E}_\pi[r_{t+1} + \gamma r_{t+2} + \dots | s_t = s] = \mathbb{
 \end{equation}
 
 
-Si se deja fuera de la suma la \hl{recompensa más antigua}, se tiene
+Si se deja fuera de la suma la recompensa más antigua, se tiene
 \begin{equation}
 V^\pi(s) = \mathbb{E}_\pi[r_{t+1} + \gamma \sum_{k = 0}^\infty \gamma^{k} r_{t+k+2} | s_t =s].
 \end{equation}
@@ -423,7 +423,7 @@ siguiente estado $r_{t+1} + \gamma V(s_{t+1})$. El error que mide la diferencia 
 % \subsubsection{Deep Q Network}
 
 El algoritmo $Q$-learning \cite{watkins1992q} es un método de control TD \textit{fuera de política}, es decir,
-la política $\pi$ no se utiliza, \hl{de manera explícita}, para actualizar la tabla $Q$. 
+la política $\pi$ no se utiliza, de manera explícita, para actualizar la tabla $Q$. 
 La regla de actualización del $Q$-learning está dada por 
 
 \begin{equation}\label{eq:q-learning-update}
@@ -455,7 +455,7 @@ $\epsilon$ es un valor entre 0 y 1 y pondera la relación entre
 exploración y explotación.
 
 En general, el algoritmo Q-learning consiste de de los siguientes pasos:
-1) se inicializa la tabla $Q$ que \hl{relaciona} los estados a valores de las acciones,
+1) se inicializa la tabla $Q$ que relaciona los estados a valores de las acciones,
 2) en un paso de tiempo $t$ del episodio el agente interactúa con su ambiente al realizar una acción $a_t$ de acuerdo con una política $\epsilon$-greedy (ecuación \ref{eq:epsilongreedy}) y obtiene una señal de recompensa $r_{t+1}$ y una observación $s_{t+1}$, y finalmente 3) actualiza los valores
 correspondientes de la tabla $Q$ usando la ecuación \ref{eq:q-learning-update}. El método
 se explica a detalle en el Algoritmo \ref{alg:q-algo}.
@@ -516,8 +516,8 @@ es muy grande. Por ejemplo, en algunos videojuegos se puede tener una gran varie
 de imágenes diferentes, por lo que  si se decide a usar pixeles como 
 estados individuales es fácil notar que se tiene que seguir la pista de muchos
 estados y se tienen que aproximar muchos valores. 
-\hl{Una solución a este problema es usar una función que se aproxime a aquella que relaciona
-el par estado-acción a un valor.}
+Una solución a este problema es usar una función que se aproxime a aquella que relaciona
+el par estado-acción a un valor.
 Existen diversas formas de representar y entrenar dicha función, la que 
 se explora en esta sección es usando una red neuronal profunda \cite{lapan_2020, Goodfellow-et-al-2016}.
 
@@ -529,7 +529,7 @@ La primera versión del algoritmo DQN fue aplicada al dominio de los videojuegos
 extraer características del espacio y tiempo. El último mapa de características
 de las capas convolucionales es procesado por varias capas completamente conectadas, que codifican los efectos de las acciones.
 
-Son tres los elementos que forman las bases que permitieron \hl{mostrar}
+Son tres los elementos que forman las bases que permitieron mostrar
 la eficiencia y efectividad de este enfoque en ambientes complejos: el uso de una política $\epsilon$-greedy, un búfer de repetición o experiencia de repetición \cite{lin1993reinforcement} y una red objetivo.
 El búfer cíclico de experiencias de repetición guarda transiciones de la forma 
 $(s_t, a_t, s_{t+1}, r_{t+1})$, permitiendo que un agente de RL 
@@ -675,7 +675,7 @@ teoría de probabilidad se le llama \textit{causalidad probabilista}.
 La idea central detrás de estas teorías es que las causas cambian las probabilidades de sus efectos.
 
 El nombre de \textit{modelado causal} se usa para describir al campo 
-que estudia, \hl{entre otras cosas}, los métodos de la \textit{inferencia causal}. Dentro de este campo
+que estudia, entre otras cosas, los métodos de la \textit{inferencia causal}. Dentro de este campo
 entre los autores principales están
 Judea Pearl \cite{pearl2010introduction} y Peter Spirtes \cite{spirtes2000causation}, entre otros. En las siguientes secciones
 se describen formalmentes algunos elementos importantes utilizados en esta investigación
@@ -683,7 +683,7 @@ siguiendo el marco de trabajo de los \textit{modelos gráficos causales} propues
 
 De acuerdo con \cite{spirtes2000causation} la \textit{causalidad}
 es una relación entre eventos: \textit{algo sucede y causa que algo más suceda}. Cada causa es un evento específico y cada efecto es una evento
-en particular. \hl{Esta relación es} \textit{transitiva}, \textit{irreflexiva} y \textit{antisimétrica}. Esto es 
+en particular. Esta relación es \textit{transitiva}, \textit{irreflexiva} y \textit{antisimétrica}. Esto es 
 \begin{itemize}
     \item Si $A$ es una causa de $B$ y $B$ es una causa de $C$, entonces
     $A$ es también una causa de $C$,
@@ -694,7 +694,7 @@ en particular. \hl{Esta relación es} \textit{transitiva}, \textit{irreflexiva} 
 \subsection{Estructura y modelo causal}
 
 Supóngase un conjunto de variables $\mathcal{V}$ que incluyen a $A$ y $X$. 
-Se dice que $A$ es \hl{\textit{causa directa}} de $X$ con respecto a $\mathcal{V}$
+Se dice que $A$ es \textit{causa directa} de $X$ con respecto a $\mathcal{V}$
 solo en caso de que $A$ sea un miembro de algún conjunto 
 $\mathcal{A} \subseteq \mathcal{V} - \{X\}$ tal que 
 
@@ -716,7 +716,7 @@ dirigido $D = <\mathcal{V},E>$ que representa una estructura causal suficiente $
 arista dirigida de $A$ a $B$ en $D$ si y sólo si $A$ es
 una causa directa de $B$.
 A un grafo acíclico dirigido que representa una estructura causal se le llama \textit{grafo causal}.
-Además, para que una estructura causal tenga una interpretación de causalidad, se deben cumplir las 
+Además, para que una estructura causal tenga una interpretación en el contexto causal, se deben cumplir las 
 siguientes condiciones: \textit{la condición causal de Markov}, \textit{la condición de minimalidad} y \textit{la condición
 de fidelidad} \cite{gonzalez-soto, spirtes2000causation}.
 
@@ -787,8 +787,8 @@ $P(A)$ y $P(C|A, E)$.
 % si se \textit{interviene} al fijar el valor de $X$ a un valor $x$ en particular. Esto último se denota como $P(Y=y| do(X=x))$ \cite{pearl_2009}.
 ¿Cuál es la diferencia entre observar e intervenir o
 manipular? 
-Cuando se interviene una variable en un modelo, se fija su valor \hl{y se elimina el efecto de sus padres}, con esto se modifica el sistema y como resultado, normalmente, los valores de las otras variables cambian.
-Cuando se condiciona sobre una variable, nada cambia, simplemente se limita el enfoque al subconjunto de casos en los que variable toma el valor de interés. 
+Cuando se interviene una variable en un modelo, se fija su valor y se elimina el efecto de sus padres, con esto se modifica el sistema y como resultado, normalmente, los valores de las otras variables cambian.
+Por otra parte, cuando se condiciona sobre una variable, nada cambia, simplemente se limita el enfoque al subconjunto de casos en los que variable toma el valor de interés. 
 % Por lo tanto, lo que cambia es la percepción del mundo, no el mundo mismo.
 
 Para distinguir los casos donde una variable $X$ toma un valor $x$ naturalmente
@@ -801,9 +801,9 @@ cuando se hace la intervención $X=x$.
 En términos de distribuciones, $P(Y = y|X = x)$ refleja la distribución 
 de la población de $Y$ entre individuos donde $X=x$.
 Por otra parte, $P(Y = y|do(X = x))$ representa la distribución de
-la población de $Y$ si todos en la población tuvieran el valor de $X$ fijo como
-$x$.
-Similarmente, $P(Y = y|do(X = x), Z = z)$ sirve para denotar
+la población de $Y$ si todos en la población tuvieran el valor de $X$ fijado a
+$x$ y eliminando el efecto de los padres de $X$ sobre ésta.
+De manera similar, $P(Y = y|do(X = x), Z = z)$ sirve para denotar
 la probabilidad condicional de $Y = y$, dado $Z = z$, 
 en la distribución creada por la intervención $do(X = x)$.
 % Cuando simplemente se observa el valor que una variable toma, se está aprendiendo acerca del valor de la 
@@ -820,11 +820,11 @@ efecto de esta intervención eliminando las aristas
 dirigidas a las variables que se desean intervenir. Tal
 intervención a veces es descrita como ``romper'' esas aristas \cite{sep-causal-models}.
 
-\hl{Dadas dos variables, $X$, $Y$ y $W$,
-el efecto causal de $X$ sobre $Y$ se denota como $P(Y=y|do(X=x), W=x)$. Para 
-cada realización $x$ de $X$, $P(Y=y| do(X=x), W=x)$ es la probabilidad de $Y=y$ 
+Dadas tres variables, $X$, $Y$ y $W$,
+el efecto causal de $X$ sobre $Y$ se denota como $P(Y=y|do(X=x), W=w)$. Para 
+cada realización $x$ de $X$, $P(Y=y| do(X=x), W=w)$ es la probabilidad de $Y=y$ 
 inducida al eliminar del modelo todas las ecuaciones que corresponde a las
-variables en $X$, sustituir $X=x$ en el resto de ecuaciones y observar los valores que toma otra variable $(W=x)$ en el mismo ``mundo'' donde la intervención se lleva a cabo}.
+variables en $X$, sustituir $X=x$ en el resto de ecuaciones y observar los valores que toma otra variable, $W=w$, en el mismo ``mundo'' donde la intervención se lleva a cabo.
 En general, si $X$ y $Y$ pueden tomar más de un valor, se desea poder
 predecir el \textit{efecto causal general}.
 La diferencia $\mathbb{E}(Y|do(x'))- \mathbb{E}(Y|do(x''))$ a veces
@@ -867,7 +867,16 @@ dirigida $A \rightarrow E$ (Figura \ref{fig:dag-intervention}) y sin alterar los
 
 De acuerdo con algunos trabajos, la relación entre el aprendizaje por refuerzo
 y la causalidad es mucho más estrecha que con otras áreas del
-aprendizaje automático \cite{schlkopf2019causality} \cite{Gershman2017}. 
+aprendizaje automático, por lo que trabajos recientes
+se han enfocado en conectar ideas de ambas
+áreas \cite{Gershman2017, 6-DBLP:journals/midm/YuDLR19, lu2018deconfounding, dasgupta2019causal, schlkopf2019causality}.
+ En este documento, más que intentar construir los fundamentos de una nueva 
+teoría que combine ambas áreas, se apunta hacia una perspectiva
+en la que elementos de una auxilien a la otra de tal forma que
+los aproveche y mejore. En particular, en esta investigación
+se sigue la dirección de utilizar información causal para ayudar al 
+aprendizaje de un agente.
+
 % Esto debido a que al ejecutar acciones sobre su ambiente, entonces
 % estima distribuciones intervencionistas y por lo tanto el aprendizaje por refuerzo es un problema causal. Sin embargo, se ha demostrado que el aprendizaje
 % por refuerzo no está formulado tal que se utilicen operaciones
@@ -883,7 +892,7 @@ aprendizaje automático \cite{schlkopf2019causality} \cite{Gershman2017}.
 % En capítulos posteriores se introducen algunas definiciones y notación
 % que sirven para entender el método propuesto y que sirven para acotar el
 % problema atacado.
-La mayoría de los algoritmos de aprendizaje por refuerzo son métodos genéricos que pueden ser aplicados a cualquier tarea modelada como un proceso de decisión de Markov.
+% La mayoría de los algoritmos de aprendizaje por refuerzo son métodos genéricos que pueden ser aplicados a cualquier tarea modelada como un proceso de decisión de Markov.
 En específico, esta investigación se restringe a hacer frente
 a problemas que pueden ser planteados como un proceso de decisión de Markov condicionado a metas
 \cite{nair2019causal}. Esto, debido a que de acuerdo  con la definición propuesta por \cite{nair2019causal} este 
@@ -909,8 +918,11 @@ una tupla $<\mathcal{S}, \mathcal{A}, \mathcal{X},
     \item $r : \mathcal{S} \times \mathcal{A} \times \mathcal{G} \rightarrow \mathbb{R}$ es una función
 de recompensa, donde $r(s, a, \mathbf{g})$ produce la recompensa inmediata condicionada a la meta $\mathbf{g} \in \mathcal{G}$,
 \item $\gamma$ es el factor de descuento,
-\item $\phi : \mathcal{S} \rightarrow \mathcal{X}$ es una función que mapea el espacio de estados al de macro-variables.
+\item $\phi : \mathcal{S} \rightarrow \mathcal{X}$ es una función que relaciona el espacio de estados con el de macro-variables.
 \end{itemize}
 
 En un MDP condicionado a metas, el objetivo es aprender una 
 política óptima condicionada a una meta $\pi^*_g: \mathcal{S} \times \mathcal{G} \rightarrow \mathcal{A}$ que maximice el retorno esperado $R = \sum_{k}^{\infty}\gamma^{k} r(s_k, a_k, g)$.
+
+La definición y notación de MDP condicionado a metas
+permiten entender el método propuesto y que sirven para acotar el problema atacado en los siguientes capítulos.

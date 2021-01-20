@@ -36,10 +36,10 @@ y entonces acelerar su proceso de aprendizaje.
 Además, la capacidad de razonar sobre causas y efectos es parte integral de
 la inteligencia natural \cite{nair2019causal}.
 
-\hl{Conocer relaciones causales entre eventos podría permitir a un agente 
+Conocer relaciones causales entre eventos podría permitir a un agente 
 utilizar este conocimiento extra
 para predecir qué causará realizar cierta acción
-y entonces acelerar su proceso de aprendizaje.}
+y entonces acelerar su proceso de aprendizaje.
 Además, la capacidad de razonar sobre causas y efectos es parte integral de
 la inteligencia natural \cite{nair2019causal}.
 
@@ -74,8 +74,8 @@ causalidad probabilista de Suppes \cite{suppes1973probabilistic}.
 % }
 
 
-\hl{Este trabajo sigue el enfoque de la teoría de causalidad} \textit{manipulacionista} \cite{sep-causation-mani}. En ésta, la idea
-fundamental sobre causalidad se puede describir de manera muy burda como: si $A$ es genuinamente una causa de $X$, entonces si se manipula $A$ de la manera correcta, esto debe ser una forma de manipular o cambiar $X$ \cite{campbell1979quasi, woodward2005making}. En específico, 
+Este trabajo sigue el enfoque de la teoría de causalidad \textit{manipulacionista} \cite{sep-causation-mani}. En ésta, la idea
+fundamental sobre causalidad se puede describir de manera intuitiva como: si $A$ es genuinamente una causa de $X$, entonces si se manipula $A$ de la manera correcta, esto debe ser una forma de manipular o cambiar $X$ \cite{campbell1979quasi, woodward2005making}. En específico, 
 se propone utilizar el marco de trabajo manipulacionista, a través de \textit{intervenciones}, que
 ha sido desarrollado ampliamente por Judea Pearl \cite{pearl_2009}. En su trabajo Pearl ha 
 utilizado sistemas de ecuaciones y grafos dirigidos para representar relaciones causales. Además en
@@ -151,11 +151,11 @@ Por ejemplo, un robot que entiende que dejar caer cosas hace que se rompan, no n
 
 % ¿Cuáles son los objetivos y las principales metas de investigación y porqué son importantes?
 
-\hl{La finalidad de este trabajo de investigación es 
+La finalidad de este trabajo de investigación es 
 acelerar el entrenamiento de un agente de RL
 a través de la selección de acciones guiadas por un 
 modelo causal para completar tareas que tienen una
-estructura causal subyacente.}
+estructura causal subyacente.
 
 En general, un agente comienza su búsqueda a ciegas,
 mediante interacciones a prueba y error.
@@ -191,15 +191,15 @@ el problema del bandido dado el grafo causal. Además, en \cite{nair2019causal}
 se muestra que una estructura causal permite que una política condicionada a una
 meta (aprendida mediante aprendizaje por imitación) generalice para instancias no vistas de 
 un problema. 
-\hl{La principal diferencia con estos trabajos es que se atacan tareas con descripciones discretas y continuas de su ambiente; y se asiste el aprendizaje de una política, a través de la función de valor, utilizando un paradigma por refuerzo clásico.
+La principal diferencia con estos trabajos es que se atacan tareas con descripciones discretas y continuas de su ambiente; y se asiste el aprendizaje de una política, a través de la función de valor, utilizando un paradigma por refuerzo clásico.
 El modelo causal se supone conocido, y éste permite una selección de acciones 
-guiada para la inmediata actualización de la política o para guardar experiencias.}
+guiada para la inmediata actualización de la política o para guardar experiencias.
 
 Los resultados de la prueba de concepto presentada en este trabajo, 
 muestran las ventajas de usar un modelo causal durante el entrenamiento de un agente. Entre ellas están: 
 \begin{itemize}
     \item Alcanzar una recompensa mayor en un menor tiempo.
-    \item \hl{Incluso un modelo incompleto (sin algunas relaciones del modelo verdadero) o incompleto y con relaciones falsas (al que denotaremos como incorrecto por simplicidad) mejoran el desempeño de un agente.}
+    \item Incluso un modelo incompleto (sin algunas relaciones del modelo verdadero) o incompleto y con relaciones falsas (al que denotaremos como incorrecto por simplicidad) mejoran el desempeño de un agente.
 \end{itemize}
 
 \section{Motivación y justificación}
@@ -218,8 +218,8 @@ requeridos para aprender a realizar una tarea \cite{Silver1140}.
 
 A pesar del éxito del RL, su teoría está basada 
 en relaciones asociativas \cite{playingagainstnature2018}.
-De acuerdo con \cite{pearl2018bookofwhy}, \hl{existen tres niveles de
-habilidad cognitiva en un agente: \textit{observar}, \textit{hacer} e \textit{imaginar}.}
+De acuerdo con \cite{pearl2018bookofwhy}, existen tres niveles de
+habilidad cognitiva en un agente: \textit{observar}, \textit{hacer} e \textit{imaginar}.
 % Y de acuerdo a estos niveles, 
 % De acuerdo con los tres niveles
 % de razonamiento causal definidos por \cite{pearl2018bookofwhy}, 
@@ -229,7 +229,6 @@ habilidad cognitiva en un agente: \textit{observar}, \textit{hacer} e \textit{im
 En el primer nivel se ubican las 
 relaciones asociativas, donde se detectan regularidades
 en el ambiente.
-% \hl{a partir de observaciones pasivas de los datos.}
 El segundo nivel, hacer, implica predecir los 
 efectos de alteraciones intencionales sobre el ambiente
 y elegir entre estas alteraciones  para producir una
@@ -252,7 +251,7 @@ cada vez que selecciona una acción durante su entrenamiento.
 
 % Examples are interventional questions: “What if I act?” and retrospective or explanatoryquestions: “What if I had acted differently?” No learning machine in operation today can answer suchquestions about interventions not encountered before, say, “What if we ban cigarettes.” Moreover, mostlearning machines today do not provide a representation from whichthe answers to such questions can bederived.
 
-Actualmente, de acuerdo con \cite{pearl2018theoretical}, \hl{ la mayoría de los agentes en funcionamiento no contestan preguntas sobre intervenciones que no han visto antes}. 
+Actualmente, de acuerdo con \cite{pearl2018theoretical}, la mayoría de los agentes en funcionamiento no contestan preguntas sobre intervenciones que no han visto antes. 
 Por lo tanto, es necesario equipar a
 los algoritmos de aprendizaje con herramientas de razonamiento
 causal para acelerar su aprendizaje y además alcanzar 
@@ -265,9 +264,9 @@ ventajas:
 
 \begin{itemize}
 
-\item \hl{Permite razonamiento contrafactual, esto es, brindar al agente la
+\item Permite razonamiento contrafactual, esto es, brindar al agente la
 capacidad de responder a preguntas como: ¿qué pasaría si tomara cierta
-acción?} 
+acción? 
 %   Cosa, que no es posible con modelos asociativos.}
 \item En general, 
 %el conocimiento causal es genérico, así que sería fácil
@@ -278,7 +277,7 @@ transferir a otras aplicaciones en dominios similares.
 decisiones.
 \end{itemize}
 
-\hl{Un ejemplo que muestra una ventaja de un modelo causal sobre uno asociativo es el siguiente.
+Un ejemplo que muestra una ventaja de un modelo causal sobre uno asociativo es el siguiente.
 Se tiene una tarea robótica que involucra las variables $T$, $L$ y $D$, que denotan tomar objeto, llevar objeto y
 dejar objeto, respectivamente.
 Un modelo causal podría representarse con las
@@ -289,7 +288,7 @@ correctas.
 Desde una perspectiva asociativa, estos dos modelos son equivalente al anterior: $T \leftarrow L\leftarrow D$, $T\leftarrow L\rightarrow D$,
 con respecto a las relaciones de independencia condicional.
 Por lo tanto, éstos no necesariamente indican el orden correcto de las acciones o intervenciones que se deben
-realizar.}
+realizar.
 
 Este trabajo explora un marco de trabajo donde un agente
 de aprendizaje por refuerzo acelera su entrenamiento a través
@@ -306,10 +305,10 @@ describe al ambiente que habita un agente de RL.
 
 Un agente de RL debe aprender a mapear los estados
 que percibe a acciones que se deben tomar cuando
-se encuentre en esos estados. \hl{Este comportamiento
-se infiere con la interacción a prueba y error con el ambiente y la única respuesta que el agente recibe después de llevar a cabo una acción, es una recompensa que mide que tan buena fue la acción ejecutada.}(Dr. José)
+se encuentre en esos estados. Este comportamiento
+se infiere con la interacción a prueba y error con el ambiente y la única respuesta que el agente recibe después de llevar a cabo una acción, es una recompensa que mide que tan buena fue la acción ejecutada.
 Este proceso puede ser muy lento en tareas donde no hay recompensas inmediatas, donde la mayoría de secuencias
-de decisiones \hl{se basa en comportamientos no dirigidos}
+de decisiones se basa en comportamientos no dirigidos
 que producen una señal de recompensa nula.
 Por lo tanto, para recibir una mayor recompensa, un agente debe intentar acciones que no haya \textit{explorado} o \textit{explotar} la experiencia que ya ha obtenido.
 
@@ -326,7 +325,7 @@ estados no deseados. Un modelo causal parece una herramienta adecuada en
 tareas de RL donde elegir una acción pueda representar una intervención en el modelo o la estructura causal del modelo permita conocer el orden causal de las acciones y estados.
 
 Por otra parte, definir un modelo causal del ambiente no es trivial.
-\hl{La información recibida por los agentes de RL en tareas actuales, a menudo está en un espacio de pixeles, es decir, perciben como imágenes a los estados del ambiente. Modelar las relaciones causales directamente de esos espacios de estados es intratable.}
+La información recibida por los agentes de RL en tareas actuales, a menudo está en un espacio de pixeles, es decir, perciben como imágenes a los estados del ambiente. Modelar las relaciones causales directamente de esos espacios de estados es intratable.
 Por esta razón, el modelo causal puede representar sólo pequeñas partes del mundo del agente. Además, incluso cuando se trabajen sobre un espacio donde la información sea 
 mucho más manejable, contar con los parámetros de un modelo causal puede ser una tarea muy difícil. Por lo tanto, se necesita una representación que no exceda por mucho la complejidad de los problemas de RL pero que proporcione información suficiente para ayudar a resolver la tarea.
 
@@ -356,13 +355,13 @@ mucho más manejable, contar con los parámetros de un modelo causal puede ser u
 %     \item ¿Se puede establecer una representación de las relaciones causales
 % del ambiente que pueda ser utilizada por un agente en el proceso
 % de aprendizaje por refuerzo?
-\item \hl{¿Se puede establecer una representación de las relaciones causales
+\item ¿Se puede establecer una representación de las relaciones causales
 del ambiente que pueda ser beneficiosa para un agente
-de aprendizaje por refuerzo?}
+de aprendizaje por refuerzo?
     % \item ¿Se puede añadir conocimiento causal al entrenamiento de un agente de RL?
     % \item ¿La reducción del espacio de búsqueda dado por una selección de acciones guiada por el modelo causal permite al agente tener un mejor desempeño durante el entrenamiento con respecto a una exploración a ciegas?
     
-    \item \hl{¿La acotación del espacio de búsqueda dada por una selección de acciones guiada por el modelo causal permite al agente reducir el tiempo de entrenamiento con respecto a una exploración a ciegas?}
+    \item ¿La acotación del espacio de búsqueda dada por una selección de acciones guiada por el modelo causal permite al agente reducir el tiempo de entrenamiento con respecto a una exploración a ciegas?
     % \item ¿Es posible aprender el modelo causal durante la interacción del
     % agente con el ambiente?
 \end{enumerate}
@@ -389,7 +388,8 @@ es establecer y validar un modelo computacional que integre
 un modelo causal a un algoritmo de RL; a través de
 la selección de acciones guiada por un 
 modelo causal en problemas que contienen
-un mecanismo causal subyacente; para acelerar el entrenamiento de un agente \hl{sin decrementar la recompensa}.
+un mecanismo causal subyacente; para acelerar el entrenamiento de un agente sin decrementar la recompensa.
+
 \section{Objetivos específicos}
 
 Para alcanzar la meta de la investigación, se proponen
@@ -436,15 +436,15 @@ El método propuesto en esta tesis se enfoca en guiar la
 selección acciones de un agente de RL. De manera superficial y general, el método sigue un esquema similar al de la política $\epsilon$-greedy.
 % , aunque puede adaptarse para otros enfoques de selección de acción.
 El algoritmo propuesto recibe como entrada una estructura causal que describe las relaciones entre variables de estado y acciones.
-\hl{Esta estructura causal puede ser definida a mano por un experto,
+Esta estructura causal puede ser definida a mano por un experto,
 o incluso puede ser aprendida previamente, utilizando algoritmos como
-el presentado en} \cite{gonzalezsoto2020causal} (Dr. José).
+el presentado en \cite{gonzalezsoto2020causal}.
 Con cierta probabilidad se elige consultar el modelo, en otro caso, se elige la mejor acción según una función de valor o una política. 
 Si el agente elige utilizar el modelo causal, entonces se obtiene una lista de aquellas variables que necesitan cambiar para aproximarse o alcanzar una meta de la tarea del agente. Para obtener una acción que acerca a la meta y además evitar aquellas que pueden desviar al agente, se consulta la estructura causal. La consulta consiste en obtener las acciones predecesoras de la lista de variables calculada en el paso anterior. Con esto, 
 el agente puede realizar alguna acción deseable y evitar las que conducen a un comportamiento erróneo.
 
 % En este trabajo, se incorpora el método propuesto en el algoritmo clásico de RL, Q-learning y se realizan diferentes experimentos.
-Los resultados de los experimentos muestran, entre otras cosas, lo que es intuitivo, esto es, que una exploración guiada (incluso cuando no está completamente correcta) es mejor que una búsqueda a ciegas. Además, a pesar de que contar con un modelo completo parece resolver la tarea sin necesidad del aprendizaje, este es un escenario \hl{que no representa a la mayoría de los casos}. Por lo tanto, se puede suponer que la información del modelo causal y el RL se complementan entre sí.
+Los resultados de los experimentos muestran, entre otras cosas, lo que es intuitivo, esto es, que una exploración guiada (incluso cuando no está completamente correcta) es mejor que una búsqueda a ciegas. Además, a pesar de que contar con un modelo completo parece resolver la tarea sin necesidad del aprendizaje, este es un escenario que no representa a la mayoría de los casos. Por lo tanto, se puede suponer que la información del modelo causal y el RL se complementan entre sí.
 
 \section{Estructura del documento}
 
